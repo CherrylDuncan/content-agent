@@ -237,14 +237,37 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
     <div class="page" id="page-voice">
       <div class="page-title">My voice</div>
-      <div class="page-sub">Paste your own words here — captions, transcripts, notes. The more you add, the more the AI sounds like you.</div>
-      <div class="card" style="margin-bottom:1rem">
-        <div class="card-label">What to paste in</div>
-        <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions from posts that felt right. Transcripts from coaching calls. Voice notes transcribed. Rough notes on your philosophy. Anything in your natural voice.</p>
+      <div class="page-sub">Build your voice profile so every post sounds like you, not like AI.</div>
+
+      <div style="display:flex;gap:10px;margin-bottom:1.25rem">
+        <button class="btn" id="tab-transcript" onclick="switchVoiceTab('transcript')" style="flex:1;padding:10px;font-size:13px;font-weight:500;border-color:var(--pink);color:var(--pink-dark);background:var(--pink-light)">Extract from coaching call ❖</button>
+        <button class="btn" id="tab-manual" onclick="switchVoiceTab('manual')" style="flex:1;padding:10px;font-size:13px">Add my own words</button>
       </div>
-      <textarea id="voice-input" placeholder="Paste your content here..." style="min-height:160px"></textarea>
-      <button class="btn-primary" onclick="saveVoice()">Save to my voice profile →</button>
-      <div id="voice-saved-list"></div>
+
+      <div id="voice-tab-transcript">
+        <div class="card" style="margin-bottom:1rem;background:var(--pink-light);border-color:var(--pink)">
+          <div class="card-label" style="color:var(--pink-dark)">How this works</div>
+          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript — client lines and all. The AI will automatically extract only <em>your</em> words, remove the client, and save your coaching voice to your profile.</p>
+        </div>
+        <div style="margin-bottom:10px">
+          <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">Your name in the transcript (so we know which lines are yours)</label>
+          <input type="text" id="coach-name" placeholder="e.g. Cherryl, Coach, C:" style="margin-bottom:0" />
+        </div>
+        <textarea id="transcript-input" placeholder="Paste your full coaching call transcript here — include everything, client lines too. We will handle the filtering..." style="min-height:200px;margin-top:10px"></textarea>
+        <button class="btn-primary" onclick="extractTranscript()" style="margin-top:10px">Extract my voice from this transcript →</button>
+        <div id="transcript-out"></div>
+      </div>
+
+      <div id="voice-tab-manual" style="display:none">
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-label">What to paste in</div>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions from posts that felt right. Voice notes transcribed. Rough notes on your philosophy. Anything written in your natural voice.</p>
+        </div>
+        <textarea id="voice-input" placeholder="Paste your content here..." style="min-height:160px"></textarea>
+        <button class="btn-primary" onclick="saveVoice()">Save to my voice profile →</button>
+      </div>
+
+      <div id="voice-saved-list" style="margin-top:1.5rem"></div>
     </div>
 
     <div class="page" id="page-manifesto">
@@ -310,6 +333,51 @@ function saveKey() {
   localStorage.setItem("tww_api_key", val);
   document.getElementById("saved-notice").style.display = "block";
   updateKeyStatus();
+
+function switchVoiceTab(tab) {
+  document.getElementById('voice-tab-transcript').style.display = tab === 'transcript' ? 'block' : 'none';
+  document.getElementById('voice-tab-manual').style.display = tab === 'manual' ? 'block' : 'none';
+  document.getElementById('tab-transcript').style.background = tab === 'transcript' ? 'var(--pink-light)' : '';
+  document.getElementById('tab-transcript').style.color = tab === 'transcript' ? 'var(--pink-dark)' : '';
+  document.getElementById('tab-transcript').style.borderColor = tab === 'transcript' ? 'var(--pink)' : '';
+  document.getElementById('tab-transcript').style.fontWeight = tab === 'transcript' ? '500' : '';
+  document.getElementById('tab-manual').style.background = tab === 'manual' ? 'var(--pink-light)' : '';
+  document.getElementById('tab-manual').style.color = tab === 'manual' ? 'var(--pink-dark)' : '';
+  document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? 'var(--pink)' : '';
+  document.getElementById('tab-manual').style.fontWeight = tab === 'manual' ? '500' : '';
+}
+
+async function extractTranscript() {
+  var transcript = document.getElementById('transcript-input').value.trim();
+  var coachName = document.getElementById('coach-name').value.trim() || 'Cherryl';
+  if (!transcript) return;
+  var out = document.getElementById('transcript-out');
+  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
+  var prompt = 'Here is a coaching call transcript. The coach is identified as: ' + coachName + '.
+
+Transcript:
+' + transcript.substring(0, 6000) + '
+
+Your task: Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, filler words like "um", "uh", speaker labels. Output only the coach's words as flowing natural text, preserving their exact phrasing, vocabulary, and way of explaining things. Do not summarise — keep their actual words. Output nothing else, just the extracted coach voice.';
+  try {
+    var extracted = await callClaude(prompt, 2000);
+    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
+      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted — your words only</div>" +
+      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto'>" + extracted.substring(0, 500) + (extracted.length > 500 ? '...' : '') + "</div>" +
+      "<div class='btn-actions' style='margin-top:10px'>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile ✓</button>" +
+      "</div></div>";
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+function saveExtracted(text) {
+  var samples = [];
+  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
+  samples.unshift({ text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" });
+  localStorage.setItem("tww_voice", JSON.stringify(samples));
+  document.getElementById('transcript-out').innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>✓ Saved to your voice profile! All future posts will draw on this.</div>";
+  loadVoiceSamples();
+}
 }
 
 function updateKeyStatus() {
@@ -657,6 +725,51 @@ async function generateReplies() {
 }
 
 updateKeyStatus();
+
+function switchVoiceTab(tab) {
+  document.getElementById('voice-tab-transcript').style.display = tab === 'transcript' ? 'block' : 'none';
+  document.getElementById('voice-tab-manual').style.display = tab === 'manual' ? 'block' : 'none';
+  document.getElementById('tab-transcript').style.background = tab === 'transcript' ? 'var(--pink-light)' : '';
+  document.getElementById('tab-transcript').style.color = tab === 'transcript' ? 'var(--pink-dark)' : '';
+  document.getElementById('tab-transcript').style.borderColor = tab === 'transcript' ? 'var(--pink)' : '';
+  document.getElementById('tab-transcript').style.fontWeight = tab === 'transcript' ? '500' : '';
+  document.getElementById('tab-manual').style.background = tab === 'manual' ? 'var(--pink-light)' : '';
+  document.getElementById('tab-manual').style.color = tab === 'manual' ? 'var(--pink-dark)' : '';
+  document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? 'var(--pink)' : '';
+  document.getElementById('tab-manual').style.fontWeight = tab === 'manual' ? '500' : '';
+}
+
+async function extractTranscript() {
+  var transcript = document.getElementById('transcript-input').value.trim();
+  var coachName = document.getElementById('coach-name').value.trim() || 'Cherryl';
+  if (!transcript) return;
+  var out = document.getElementById('transcript-out');
+  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
+  var prompt = 'Here is a coaching call transcript. The coach is identified as: ' + coachName + '.
+
+Transcript:
+' + transcript.substring(0, 6000) + '
+
+Your task: Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, filler words like "um", "uh", speaker labels. Output only the coach's words as flowing natural text, preserving their exact phrasing, vocabulary, and way of explaining things. Do not summarise — keep their actual words. Output nothing else, just the extracted coach voice.';
+  try {
+    var extracted = await callClaude(prompt, 2000);
+    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
+      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted — your words only</div>" +
+      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto'>" + extracted.substring(0, 500) + (extracted.length > 500 ? '...' : '') + "</div>" +
+      "<div class='btn-actions' style='margin-top:10px'>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile ✓</button>" +
+      "</div></div>";
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+function saveExtracted(text) {
+  var samples = [];
+  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
+  samples.unshift({ text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" });
+  localStorage.setItem("tww_voice", JSON.stringify(samples));
+  document.getElementById('transcript-out').innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>✓ Saved to your voice profile! All future posts will draw on this.</div>";
+  loadVoiceSamples();
+}
 </script>
 </body>
 </html>
