@@ -1157,7 +1157,7 @@ function getVoiceContext() {
   const samples = JSON.parse(localStorage.getItem('voice_samples') || '[]');
   if (!samples.length) return '';
   const combined = samples.map(s => s.text).join('\n\n').substring(0, 2000);
-  return `\n\nHere are examples of her actual voice and writing style — use these as your primary reference:\n"""\n${combined}\n"""`;
+return '\n\nHere are examples of her actual voice — use these as your primary reference:\n"""\n' + combined + '\n"""';
 }
 
 // Init
