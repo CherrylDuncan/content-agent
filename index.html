@@ -343,6 +343,21 @@
   .audio-example { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 
   /* Comment input display */
+  /* Chat follow-up */
+  .chat-wrap { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  .chat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
+  .chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .chat-msg { max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+  .chat-msg.user { background: var(--pink-light); color: var(--pink-dark); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-msg.ai { background: var(--bg); border: 1px solid var(--border); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; white-space: pre-wrap; }
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; }
+  .chat-send { padding: 9px 16px; font-size: 13px; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap; }
+  .chat-send:hover { background: var(--pink); }
+  .chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chat-chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .chat-chip:hover { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
+
   .comment-display {
     font-size: 13px;
     color: var(--text-muted);
@@ -461,6 +476,16 @@
     </button>
     <button class="nav-item" onclick="goTo('schedule')" data-page="schedule">
       <span class="nav-icon">○</span><span>Post schedule</span>
+    </button>
+    <div class="nav-section">My content</div>
+    <button class="nav-item" onclick="goTo('saved')" data-page="saved">
+      <span class="nav-icon">♡</span><span>Saved posts</span>
+    </button>
+    <button class="nav-item" onclick="goTo('voice')" data-page="voice">
+      <span class="nav-icon">◐</span><span>My voice</span>
+    </button>
+    <button class="nav-item" onclick="goTo('manifesto')" data-page="manifesto">
+      <span class="nav-icon">✧</span><span>Manifesto</span>
     </button>
     <div class="nav-section">Settings</div>
     <button class="nav-item" onclick="goTo('setup')" data-page="setup">
@@ -658,6 +683,58 @@
       </div>
     </div>
 
+    <!-- SAVED POSTS -->
+    <div class="page" id="page-saved">
+      <div class="page-title">Saved posts</div>
+      <div class="page-sub">Posts you've saved — your personal library of content that resonates.</div>
+      <div id="saved-out"><div class="loading" style="padding:2rem 0">No saved posts yet. Hit the Save ♡ button on any generated post.</div></div>
+    </div>
+
+    <!-- MY VOICE -->
+    <div class="page" id="page-voice">
+      <div class="page-title">My voice</div>
+      <div class="page-sub">Paste your own words here — captions, transcripts, notes, anything you've written or said. The more you add, the more the AI sounds like you.</div>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-label">What to paste in</div>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions from posts that felt right. Transcripts from your coaching calls. Voice notes you've had transcribed. Rough notes on your philosophy. Even WhatsApp messages where you explained your views. Anything in your natural voice.</p>
+      </div>
+      <textarea id="voice-input" placeholder="Paste your content here — captions, transcripts, anything you've written or said in your own words..." style="min-height:160px"></textarea>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:1.5rem">
+        <button class="btn-primary" style="margin:0;flex:1" onclick="saveVoice()">Save to my voice profile →</button>
+      </div>
+      <div id="voice-saved-list"></div>
+    </div>
+
+    <!-- MANIFESTO -->
+    <div class="page" id="page-manifesto">
+      <div class="page-title">My manifesto</div>
+      <div class="page-sub">Your philosophy, in full. Share this link with anyone who needs to read it.</div>
+      <div class="card" style="font-family:'Playfair Display',serif; line-height:1.85;">
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.5rem;font-family:'DM Sans',sans-serif">A manifesto for women who love fully — without losing themselves</p>
+        <h2 style="font-size:28px;font-weight:400;margin-bottom:2rem;line-height:1.2">The whole woman manifesto</h2>
+        <div style="border-left:2px solid var(--pink);padding-left:1.25rem;margin-bottom:2rem">
+          <p style="font-size:17px;font-style:italic;color:var(--text)">You were never meant to shrink into someone else's story. You are not a gap to be filled. You are not an understudy. You are the whole thing.</p>
+        </div>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">I. The grief they don't name</p>
+        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">When you love a man who already has children, the world hands you a script you never auditioned for. You hear <em>the children come first</em> — and you cannot argue. So you grieve in silence. You grieve the romance you were promised: the <em>just us against the world</em> version. That grief is real. It deserves to be named. And then — it deserves to be set down.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">II. The invitation inside the difficulty</p>
+        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">Here is what no one tells you: the very thing that feels like a wound is also a doorway. Loving a man with children forces something rare and radical — it forces you to keep your own life. You cannot dissolve into this relationship even if you tried. And that refusal to dissolve? That is not loss. That is freedom.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">III. The life I am choosing</p>
+        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I keep my own space. I keep my own schedule. I travel — sometimes alone, sometimes with friends — and I return to a love that is deeper because it is chosen freshly, again and again. I do not compete with a family that existed before me. I do not earn my place. I opt out of dynamics that are not mine. The time we share is rare. And because it is rare, it is luminous.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">IV. What this heals</p>
+        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I used to reach. I used to scan for signs of belonging, of approval, of being enough. This way of living cured that. Not because I stopped caring — but because I stopped needing. I am cool. I am grounded. I belong to myself first. When approval comes, I receive it warmly. When it doesn't, I am already whole.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">V. What I believe</p>
+        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I believe a woman can have love and sovereignty at the same time. I believe intimacy with depth does not require enmeshment. I believe you can be almost-single in your independence and deeply partnered in your heart — and that this is not a compromise. It is a design. I believe the woman who keeps her own life is not cold. She is <em>awake</em>.</p>
+        <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+          <p style="font-size:15px;font-style:italic;color:var(--text);margin-bottom:0.75rem">You do not have to play a role written before you arrived. The boldest thing you can do — in love, in life — is to remain entirely yourself.</p>
+          <p style="font-size:14px;font-weight:500;color:var(--pink-dark);font-family:'DM Sans',sans-serif">Stay whole. Stay yours.</p>
+        </div>
+      </div>
+      <div class="btn-actions" style="margin-top:1rem">
+        <button class="btn accent" onclick="cp(this, document.querySelector('#page-manifesto .card').innerText)">Copy full manifesto</button>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -707,6 +784,8 @@ function goTo(page) {
     const key = getKey();
     if (key) document.getElementById('api-key-input').value = key;
   }
+  if (page === 'saved') loadSavedPosts();
+  if (page === 'voice') loadVoiceSamples();
 }
 
 async function callClaude(prompt, maxTokens = 1000) {
@@ -757,7 +836,7 @@ async function generatePosts() {
   const out = document.getElementById('gen-out');
   out.innerHTML = '<div class="loading">Writing posts in your voice...</div>';
   const n = platform === 'both' ? 4 : 2;
-  const prompt = `${VOICE}\n\nGenerate ${n} social media posts for ${platform === 'both' ? 'Instagram and TikTok (mix them evenly)' : platform} about: ${ANGLES[angle]}.\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats across the batch: hot take, personal story snippet, reframe, permission slip. Raw, real, shareable.`;
+  const prompt = `${VOICE}${getVoiceContext()}\n\nGenerate ${n} social media posts for ${platform === 'both' ? 'Instagram and TikTok (mix them evenly)' : platform} about: ${ANGLES[angle]}.\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats across the batch: hot take, personal story snippet, reframe, permission slip. Raw, real, shareable.`;
   try {
     const text = await callClaude(prompt);
     const blocks = text.split('---').map(s => s.trim()).filter(Boolean);
@@ -772,6 +851,7 @@ async function generatePosts() {
         <div class="post-text">${post}</div>
         <div class="btn-actions">
           <button class="btn" onclick="cp(this,${JSON.stringify(post)})">Copy caption</button>
+          <button class="btn accent" onclick="savePost(this,${JSON.stringify(hook)},${JSON.stringify(post)},${JSON.stringify(isIG?'Instagram':'TikTok')})">Save ♡</button>
           <button class="btn accent" onclick="regenPost(this,${JSON.stringify(plat)})">Regenerate</button>
         </div>
       </div>`;
@@ -814,6 +894,12 @@ async function runTest() {
     const format = g('FORMAT');
     const pct = score * 10;
     const col = score >= 8 ? '#1D9E75' : score >= 6 ? '#BA7517' : '#D85A30';
+    // Store context for chat
+    testChatHistory = [
+      { role: 'user', content: `${VOICE}\n\nAnalyse this content idea for Instagram/TikTok:\n"${idea}"` },
+      { role: 'assistant', content: text }
+    ];
+
     out.innerHTML = `<div class="card">
       <div class="score-num">${score}<span style="font-size:20px;color:var(--text-faint)">/10</span></div>
       <div class="score-verdict">${verdict}</div>
@@ -825,6 +911,22 @@ async function runTest() {
       ${format ? `<div class="section-head" style="margin-top:1rem">Best format</div><p style="font-size:14px;color:var(--text)">${format}</p>` : ''}
       <div class="btn-actions" style="margin-top:1rem">
         ${sharpen ? `<button class="btn accent" onclick="cp(this,${JSON.stringify(sharpen)})">Copy sharper hook</button>` : ''}
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-label">Refine this idea</div>
+        <div class="chat-suggestions">
+          <button class="chat-chip" onclick="sendChat('Make it shorter')">Make it shorter</button>
+          <button class="chat-chip" onclick="sendChat('Make it more provocative')">More provocative</button>
+          <button class="chat-chip" onclick="sendChat('Rewrite for TikTok')">Rewrite for TikTok</button>
+          <button class="chat-chip" onclick="sendChat('Give me 3 variations')">3 variations</button>
+          <button class="chat-chip" onclick="sendChat('Make it more personal and story-led')">More personal</button>
+          <button class="chat-chip" onclick="sendChat('Turn this into a video script')">Make it a script</button>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything — make it shorter, rewrite it, try a different angle..." onkeydown="if(event.key==='Enter')sendChat()" />
+          <button class="chat-send" onclick="sendChat()">Send</button>
+        </div>
       </div>
     </div>`;
   } catch (e) {
@@ -909,6 +1011,136 @@ async function generateReplies() {
   } catch (e) {
     out.innerHTML = `<div class="loading">${e.message}</div>`;
   }
+}
+
+// IDEA TESTER CHAT
+let testChatHistory = [];
+
+async function sendChat(prefill) {
+  const input = document.getElementById('chat-input');
+  const msg = prefill || input?.value.trim();
+  if (!msg) return;
+  if (input) input.value = '';
+
+  const messagesEl = document.getElementById('chat-messages');
+  if (!messagesEl) return;
+
+  // Add user bubble
+  messagesEl.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  messagesEl.innerHTML += `<div class="chat-msg ai" id="chat-thinking">Thinking...</div>`;
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+
+  testChatHistory.push({ role: 'user', content: msg });
+
+  try {
+    const key = getKey();
+    if (!key) { goTo('setup'); return; }
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system: VOICE + '\n\nYou are helping refine a social media post idea. Be concise and practical. If asked to rewrite, just give the rewrite. If asked for variations, give numbered options. No preamble.',
+        messages: testChatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content.map(b => b.text || '').join('');
+    testChatHistory.push({ role: 'assistant', content: reply });
+    document.getElementById('chat-thinking').textContent = reply;
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  } catch (e) {
+    document.getElementById('chat-thinking').textContent = 'Something went wrong — try again.';
+  }
+}
+
+// SAVED POSTS
+function savePost(btn, hook, post, platform) {
+  const saved = JSON.parse(localStorage.getItem('saved_posts') || '[]');
+  saved.unshift({ hook, post, platform, date: new Date().toLocaleDateString() });
+  localStorage.setItem('saved_posts', JSON.stringify(saved));
+  btn.textContent = 'Saved ♥';
+  btn.style.color = 'var(--pink)';
+}
+
+function loadSavedPosts() {
+  const saved = JSON.parse(localStorage.getItem('saved_posts') || '[]');
+  const out = document.getElementById('saved-out');
+  if (!saved.length) {
+    out.innerHTML = '<div class="loading" style="padding:2rem 0">No saved posts yet. Hit the Save ♡ button on any generated post.</div>';
+    return;
+  }
+  out.innerHTML = saved.map((p, i) => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span class="badge ${p.platform === 'Instagram' ? 'badge-ig' : 'badge-tt'}">${p.platform}</span>
+        <span style="font-size:11px;color:var(--text-faint)">${p.date}</span>
+      </div>
+      ${p.hook ? `<div class="hook-line">"${p.hook}"</div>` : ''}
+      <div class="post-text">${p.post}</div>
+      <div class="btn-actions">
+        <button class="btn" onclick="cp(this,${JSON.stringify(p.post)})">Copy</button>
+        <button class="btn" onclick="deleteSaved(${i})">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteSaved(i) {
+  const saved = JSON.parse(localStorage.getItem('saved_posts') || '[]');
+  saved.splice(i, 1);
+  localStorage.setItem('saved_posts', JSON.stringify(saved));
+  loadSavedPosts();
+}
+
+// VOICE TRAINING
+function saveVoice() {
+  const input = document.getElementById('voice-input').value.trim();
+  if (!input) return;
+  const existing = JSON.parse(localStorage.getItem('voice_samples') || '[]');
+  existing.unshift({ text: input, date: new Date().toLocaleDateString(), words: input.split(' ').length });
+  localStorage.setItem('voice_samples', JSON.stringify(existing));
+  document.getElementById('voice-input').value = '';
+  loadVoiceSamples();
+}
+
+function loadVoiceSamples() {
+  const samples = JSON.parse(localStorage.getItem('voice_samples') || '[]');
+  const out = document.getElementById('voice-saved-list');
+  if (!samples.length) { out.innerHTML = ''; return; }
+  const totalWords = samples.reduce((a, s) => a + s.words, 0);
+  out.innerHTML = `
+    <div class="card" style="margin-bottom:1rem;background:var(--teal-light);border-color:var(--teal)">
+      <div style="font-size:13px;color:var(--teal-dark);font-weight:500">${totalWords} words of your voice saved</div>
+      <div style="font-size:12px;color:var(--teal-dark);margin-top:3px;opacity:0.8">The AI uses all of this when generating content for you</div>
+    </div>
+    ${samples.map((s, i) => `
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--text-faint)">${s.words} words · ${s.date}</span>
+          <button class="btn" style="padding:2px 10px;font-size:11px" onclick="deleteVoice(${i})">Remove</button>
+        </div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;max-height:80px;overflow:hidden">${s.text.substring(0, 200)}${s.text.length > 200 ? '...' : ''}</div>
+      </div>`).join('')}`;
+}
+
+function deleteVoice(i) {
+  const samples = JSON.parse(localStorage.getItem('voice_samples') || '[]');
+  samples.splice(i, 1);
+  localStorage.setItem('voice_samples', JSON.stringify(samples));
+  loadVoiceSamples();
+}
+
+function getVoiceContext() {
+  const samples = JSON.parse(localStorage.getItem('voice_samples') || '[]');
+  if (!samples.length) return '';
+  const combined = samples.map(s => s.text).join('\n\n').substring(0, 2000);
+  return `\n\nHere are examples of her actual voice and writing style — use these as your primary reference:\n"""\n${combined}\n"""`;
 }
 
 // Init
