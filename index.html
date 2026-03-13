@@ -911,6 +911,7 @@ async function runTest() {
       ${format ? `<div class="section-head" style="margin-top:1rem">Best format</div><p style="font-size:14px;color:var(--text)">${format}</p>` : ''}
       <div class="btn-actions" style="margin-top:1rem">
         ${sharpen ? `<button class="btn accent" onclick="cp(this,${JSON.stringify(sharpen)})">Copy sharper hook</button>` : ''}
+        ${sharpen ? `<button class="btn accent" onclick="savePost(this,'',${JSON.stringify(sharpen)},'Idea tester')">Save sharper hook ♡</button>` : ''}
       </div>
       <div class="chat-wrap">
         <div class="chat-label">Refine this idea</div>
@@ -1053,7 +1054,16 @@ async function sendChat(prefill) {
     const data = await res.json();
     const reply = data.content.map(b => b.text || '').join('');
     testChatHistory.push({ role: 'assistant', content: reply });
-    document.getElementById('chat-thinking').textContent = reply;
+    const thinkingEl = document.getElementById('chat-thinking');
+    thinkingEl.textContent = reply;
+    thinkingEl.removeAttribute('id');
+    // Add save button under AI response
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn accent';
+    saveBtn.style.cssText = 'margin-top:6px;font-size:11px;padding:3px 10px';
+    saveBtn.textContent = 'Save this ♡';
+    saveBtn.onclick = () => savePost(saveBtn, '', reply, 'Idea tester');
+    thinkingEl.insertAdjacentElement('afterend', saveBtn);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   } catch (e) {
     document.getElementById('chat-thinking').textContent = 'Something went wrong — try again.';
