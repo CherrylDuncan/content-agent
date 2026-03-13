@@ -1072,11 +1072,18 @@ async function sendChat(prefill) {
 
 // SAVED POSTS
 function savePost(btn, hook, post, platform) {
-  const saved = JSON.parse(localStorage.getItem('saved_posts') || '[]');
-  saved.unshift({ hook, post, platform, date: new Date().toLocaleDateString() });
-  localStorage.setItem('saved_posts', JSON.stringify(saved));
-  btn.textContent = 'Saved ♥';
-  btn.style.color = 'var(--pink)';
+  try {
+    const saved = JSON.parse(localStorage.getItem('saved_posts') || '[]');
+    saved.unshift({ hook, post, platform, date: new Date().toLocaleDateString() });
+    localStorage.setItem('saved_posts', JSON.stringify(saved));
+    btn.textContent = '✓ Saved!';
+    btn.style.background = 'var(--teal-light)';
+    btn.style.borderColor = 'var(--teal)';
+    btn.style.color = 'var(--teal-dark)';
+    btn.disabled = true;
+  } catch(e) {
+    alert('Could not save — please try again.');
+  }
 }
 
 function loadSavedPosts() {
