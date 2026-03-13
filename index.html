@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Whole Woman — Content Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #D4537E;
+    --pink-light: #FBEAF0;
+    --pink-dark: #72243E;
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-dark: #085041;
+    --purple-light: #EEEDFE;
+    --purple-dark: #3C3489;
+    --amber-light: #FAEEDA;
+    --amber-dark: #633806;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-faint: #a0a0a0;
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .logo span { color: var(--pink); font-style: italic; }
+
+  .api-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    transition: background 0.15s;
+  }
+  .api-status:hover { background: var(--bg); }
+
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ccc;
+  }
+  .dot.connected { background: var(--teal); }
+
+  /* Layout */
+  .app { display: flex; min-height: calc(100vh - 60px); }
+
+  /* Sidebar */
+  nav {
+    width: 200px;
+    min-width: 200px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 1.25rem;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    border-radius: 0;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg); }
+  .nav-item.active {
+    color: var(--pink-dark);
+    background: var(--pink-light);
+    border-left-color: var(--pink);
+    font-weight: 500;
+  }
+
+  .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+  .nav-section {
+    padding: 1rem 1.25rem 0.25rem;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* Main */
+  main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 780px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+  }
+  .page-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .badge-ig { background: var(--pink-light); color: var(--pink-dark); }
+  .badge-tt { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-both { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-warm { background: var(--pink-light); color: var(--pink-dark); }
+  .badge-bold { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-hook { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-hook-tag { background: var(--pink-light); color: var(--pink-dark); }
+  .badge-body { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-cta { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-visual { background: var(--amber-light); color: var(--amber-dark); }
+
+  /* Form elements */
+  select, textarea, input[type="text"], input[type="password"] {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  select:focus, textarea:focus, input:focus {
+    border-color: var(--pink);
+  }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  .row { display: flex; gap: 10px; margin-bottom: 1rem; }
+  .row select { flex: 1; }
+
+  /* Buttons */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--surface);
+    background: var(--pink-dark);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--pink); }
+  .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+
+  .btn {
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--bg); color: var(--text); }
+  .btn.accent { border-color: var(--pink); color: var(--pink-dark); }
+  .btn.accent:hover { background: var(--pink-light); }
+
+  .btn-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+  /* Hook line */
+  .hook-line {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--pink-dark);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .post-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 2.5rem;
+    color: var(--text-faint);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* Score bar */
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+  }
+  .score-verdict {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    margin-bottom: 1rem;
+  }
+  .bar-wrap {
+    background: var(--bg);
+    border-radius: 4px;
+    height: 6px;
+    margin: 10px 0 4px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 6px; border-radius: 4px; transition: width 0.5s ease; }
+  .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .section-head {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 1rem 0 5px;
+  }
+
+  /* Ideas pills */
+  .pill {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin: 3px;
+    transition: all 0.15s;
+  }
+  .pill:hover { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
+
+  /* Script sections */
+  .script-block { margin-bottom: 1.25rem; }
+  .script-timing { font-size: 11px; color: var(--text-faint); margin-left: 8px; }
+
+  /* Audio cards */
+  .audio-item {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .audio-formula { font-size: 14px; font-weight: 500; color: var(--pink-dark); font-family: 'Playfair Display', serif; font-style: italic; }
+  .audio-example { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+  /* Comment input display */
+  .comment-display {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--pink);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Schedule grid */
+  .schedule-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-time { font-size: 13px; color: var(--text-faint); min-width: 52px; padding-top: 2px; }
+  .schedule-label { font-size: 14px; font-weight: 500; color: var(--text); }
+  .schedule-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  /* API setup page */
+  .setup-hero {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .setup-hero em { color: var(--pink); }
+
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--pink-light);
+    color: var(--pink-dark);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.25rem; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .step-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .step-body a { color: var(--pink); text-decoration: none; }
+  .step-body a:hover { text-decoration: underline; }
+
+  .key-input-wrap { position: relative; margin-top: 8px; }
+  .key-input-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
+  .key-save-btn {
+    position: absolute;
+    right: 6px; top: 50%;
+    transform: translateY(-50%);
+    padding: 5px 12px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    background: var(--pink-dark);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .key-save-btn:hover { background: var(--pink); }
+
+  .saved-notice {
+    font-size: 12px;
+    color: var(--teal);
+    margin-top: 6px;
+    display: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    nav { width: 52px; min-width: 52px; }
+    .nav-item span:last-child { display: none; }
+    .nav-section { display: none; }
+    main { padding: 1.25rem; }
+    .row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">The Whole Woman — <span>Content Agent</span></div>
+  <button class="api-status" onclick="goTo('setup')" id="api-btn">
+    <div class="dot" id="api-dot"></div>
+    <span id="api-label">Add API key</span>
+  </button>
+</header>
+
+<div class="app">
+  <nav>
+    <div class="nav-section">Create</div>
+    <button class="nav-item active" onclick="goTo('generate')" data-page="generate">
+      <span class="nav-icon">✦</span><span>Generate posts</span>
+    </button>
+    <button class="nav-item" onclick="goTo('test')" data-page="test">
+      <span class="nav-icon">◎</span><span>Idea tester</span>
+    </button>
+    <button class="nav-item" onclick="goTo('script')" data-page="script">
+      <span class="nav-icon">▶</span><span>Video scripts</span>
+    </button>
+    <div class="nav-section">Strategy</div>
+    <button class="nav-item" onclick="goTo('audio')" data-page="audio">
+      <span class="nav-icon">◈</span><span>Hooks + audio</span>
+    </button>
+    <button class="nav-item" onclick="goTo('reply')" data-page="reply">
+      <span class="nav-icon">◇</span><span>Reply templates</span>
+    </button>
+    <button class="nav-item" onclick="goTo('schedule')" data-page="schedule">
+      <span class="nav-icon">○</span><span>Post schedule</span>
+    </button>
+    <div class="nav-section">Settings</div>
+    <button class="nav-item" onclick="goTo('setup')" data-page="setup">
+      <span class="nav-icon">⚙</span><span>API setup</span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- GENERATE -->
+    <div class="page active" id="page-generate">
+      <div class="page-title">Generate posts</div>
+      <div class="page-sub">Create captions for Instagram and TikTok in your voice.</div>
+      <div class="row">
+        <select id="gen-platform">
+          <option value="both">Instagram + TikTok</option>
+          <option value="instagram">Instagram only</option>
+          <option value="tiktok">TikTok only</option>
+        </select>
+        <select id="gen-angle">
+          <option value="random">Any angle</option>
+          <option value="grief">The silent grief</option>
+          <option value="freedom">Freedom + sovereignty</option>
+          <option value="attachment">Healing anxious attachment</option>
+          <option value="space">Keeping your own space</option>
+          <option value="travel">Solo travel in a relationship</option>
+          <option value="myth">Myth-busting the holy family</option>
+          <option value="approval">Not needing approval to belong</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="generatePosts()">Generate today's posts →</button>
+      <div id="gen-out"></div>
+    </div>
+
+    <!-- IDEA TESTER -->
+    <div class="page" id="page-test">
+      <div class="page-title">Idea tester</div>
+      <div class="page-sub">Paste a rough idea or draft. Get an honest score and sharper version.</div>
+      <textarea id="test-input" placeholder="Paste your idea, hook, or full caption draft here..."></textarea>
+      <div style="margin-bottom:1rem;">
+        <div class="card-label">Try a sample idea</div>
+        <span class="pill" onclick="fillTest(`I keep my own apartment even though we've been together 3 years. Best decision I ever made.`)">keeping my own apartment</span>
+        <span class="pill" onclick="fillTest(`Nobody talks about the grief of joining a family that already exists without you`)">the grief no one names</span>
+        <span class="pill" onclick="fillTest(`Dating a dad cured my anxious attachment style`)">dating a dad cured my anxiety</span>
+        <span class="pill" onclick="fillTest(`I travel alone. I have a partner. Both are true.`)">I travel alone + I have a partner</span>
+        <span class="pill" onclick="fillTest(`I don't try to win his kids over and my relationship is better for it`)">I don't try to win the kids over</span>
+      </div>
+      <button class="btn-primary" onclick="runTest()">Test this idea →</button>
+      <div id="test-out"></div>
+    </div>
+
+    <!-- VIDEO SCRIPTS -->
+    <div class="page" id="page-script">
+      <div class="page-title">Video scripts</div>
+      <div class="page-sub">Face-to-camera scripts with hook, body, CTA, and on-screen direction.</div>
+      <div class="row">
+        <select id="script-angle">
+          <option value="grief">The silent grief</option>
+          <option value="freedom">Keeping your own life</option>
+          <option value="attachment">Healing anxious attachment</option>
+          <option value="space">Keeping your own place</option>
+          <option value="travel">Traveling solo in a relationship</option>
+          <option value="myth">The holy family myth</option>
+          <option value="approval">Not needing approval to belong</option>
+        </select>
+        <select id="script-length">
+          <option value="30">30 sec — TikTok/Reel</option>
+          <option value="60">60 sec — longer Reel</option>
+          <option value="90">90 sec — deep TikTok</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="generateScript()">Write my script →</button>
+      <div id="script-out"></div>
+    </div>
+
+    <!-- HOOKS + AUDIO -->
+    <div class="page" id="page-audio">
+      <div class="page-title">Hooks + audio tips</div>
+      <div class="page-sub">Hook formulas and sound strategy for face-to-camera content in your niche.</div>
+      <button class="btn-primary" onclick="generateAudio()">Get hook formulas + audio strategy →</button>
+      <div id="audio-out"></div>
+    </div>
+
+    <!-- REPLY TEMPLATES -->
+    <div class="page" id="page-reply">
+      <div class="page-title">Reply templates</div>
+      <div class="page-sub">Paste a comment — get three reply options that build community.</div>
+      <textarea id="reply-input" placeholder="e.g. 'This is so selfish' or 'This is exactly what I needed to hear'..."></textarea>
+      <button class="btn-primary" onclick="generateReplies()">Generate replies →</button>
+      <div id="reply-out"></div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="page" id="page-schedule">
+      <div class="page-title">Posting rhythm</div>
+      <div class="page-sub">Your recommended 5-posts-a-day schedule for Instagram and TikTok.</div>
+      <div class="card">
+        <div class="card-label">Daily posting schedule</div>
+        <div class="schedule-row">
+          <div class="schedule-time">7:00 am</div>
+          <div><div class="schedule-label">Morning provocation</div><div class="schedule-desc">A bold 1-liner or hot take — highest reach window of the day</div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-time">11:00 am</div>
+          <div><div class="schedule-label">Story or personal truth</div><div class="schedule-desc">A real moment from your life — builds trust and parasocial connection</div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-time">1:00 pm</div>
+          <div><div class="schedule-label">Reframe or myth-bust</div><div class="schedule-desc">Challenge a common belief — drives saves and shares</div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-time">5:00 pm</div>
+          <div><div class="schedule-label">Affirmation or permission slip</div><div class="schedule-desc">Something women screenshot and send to friends</div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-time">8:00 pm</div>
+          <div><div class="schedule-label">Question or conversation starter</div><div class="schedule-desc">Invites replies and comments — boosts the algorithm</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Auto-scheduling tools</div>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:1rem;">To auto-post to Instagram and TikTok, connect a free scheduling tool. Generate your posts here, then paste them into your scheduler with the times above.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://buffer.com" target="_blank" class="btn">Buffer (free plan) ↗</a>
+          <a href="https://later.com" target="_blank" class="btn">Later ↗</a>
+          <a href="https://publer.com" target="_blank" class="btn">Publer ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETUP -->
+    <div class="page" id="page-setup">
+      <div class="setup-hero">Set up your <em>API key</em></div>
+      <div class="page-sub" style="margin-bottom:1.75rem;">You need a free Anthropic API key to power this app. It only takes 2 minutes.</div>
+
+      <div class="card">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Create a free Anthropic account</div>
+            <div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up. It's free — you only pay for what you use (fractions of a cent per generation).</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Get your API key</div>
+            <div class="step-body">Once logged in, go to <strong>API Keys</strong> in the sidebar. Click <strong>Create Key</strong>, give it a name like "content agent", and copy it.</div>
+          </div>
+        </div>
+        <div class="step-row" style="margin-bottom:0">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Paste your key below</div>
+            <div class="step-body">Your key is saved only in your browser — it never leaves your device.</div>
+            <div class="key-input-wrap">
+              <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." />
+              <button class="key-save-btn" onclick="saveKey()">Save</button>
+            </div>
+            <div class="saved-notice" id="saved-notice">✓ Key saved. You're ready to generate.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Deploy to GitHub Pages (make it a real app)</div>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Create a GitHub account</div>
+            <div class="step-body">Go to <a href="https://github.com" target="_blank">github.com</a> and sign up for free.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Create a new repository</div>
+            <div class="step-body">Click the <strong>+</strong> icon → New repository. Name it <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:12px">content-agent</code>. Set it to Public. Click Create.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Upload this file</div>
+            <div class="step-body">Click <strong>uploading an existing file</strong>, drag in the <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:12px">index.html</code> file you downloaded, then click <strong>Commit changes</strong>.</div>
+          </div>
+        </div>
+        <div class="step-row" style="margin-bottom:0">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Turn on GitHub Pages</div>
+            <div class="step-body">Go to your repo → <strong>Settings</strong> → <strong>Pages</strong> → set Source to <strong>main branch</strong> → Save. In ~60 seconds your app is live at <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:12px">yourusername.github.io/content-agent</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const VOICE = `You are a content strategist writing for a woman with a bold, countercultural philosophy about relationships. Her belief: when women partner with a man who already has children, society's script sets them up to fail — to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This cured her anxious attachment. She doesn't try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Speaks from lived experience. Like a wise friend who says what women think but don't say out loud. Never preachy. Never generic. Never motivational-poster language.`;
+
+const ANGLES = {
+  grief: 'the silent grief of joining an existing family',
+  freedom: 'freedom and sovereignty through keeping your own life',
+  attachment: 'how this lifestyle healed anxious attachment',
+  space: 'keeping your own home even when committed',
+  travel: 'traveling solo while in a relationship',
+  myth: 'dismantling the holy family myth that sets women up to fail',
+  approval: 'not needing anyone\'s approval to belong',
+  random: 'any angle from her core philosophy'
+};
+
+function getKey() { return localStorage.getItem('anthropic_key') || ''; }
+
+function saveKey() {
+  const val = document.getElementById('api-key-input').value.trim();
+  if (!val) return;
+  localStorage.setItem('anthropic_key', val);
+  document.getElementById('saved-notice').style.display = 'block';
+  updateKeyStatus();
+}
+
+function updateKeyStatus() {
+  const key = getKey();
+  const dot = document.getElementById('api-dot');
+  const label = document.getElementById('api-label');
+  if (key) {
+    dot.classList.add('connected');
+    label.textContent = 'Connected';
+  } else {
+    dot.classList.remove('connected');
+    label.textContent = 'Add API key';
+  }
+}
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+  if (page === 'setup') {
+    const key = getKey();
+    if (key) document.getElementById('api-key-input').value = key;
+  }
+}
+
+async function callClaude(prompt, maxTokens = 1000) {
+  const key = getKey();
+  if (!key) {
+    goTo('setup');
+    throw new Error('No API key. Please add your key in Settings.');
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || 'API error');
+  }
+  const data = await res.json();
+  return data.content.map(b => b.text || '').join('');
+}
+
+function cp(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+
+function fillTest(text) {
+  document.getElementById('test-input').value = text;
+  runTest();
+}
+
+// GENERATE POSTS
+async function generatePosts() {
+  const platform = document.getElementById('gen-platform').value;
+  const angle = document.getElementById('gen-angle').value;
+  const out = document.getElementById('gen-out');
+  out.innerHTML = '<div class="loading">Writing posts in your voice...</div>';
+  const n = platform === 'both' ? 4 : 2;
+  const prompt = `${VOICE}\n\nGenerate ${n} social media posts for ${platform === 'both' ? 'Instagram and TikTok (mix them evenly)' : platform} about: ${ANGLES[angle]}.\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats across the batch: hot take, personal story snippet, reframe, permission slip. Raw, real, shareable.`;
+  try {
+    const text = await callClaude(prompt);
+    const blocks = text.split('---').map(s => s.trim()).filter(Boolean);
+    out.innerHTML = blocks.map(block => {
+      const plat = (block.match(/PLATFORM:\s*(.+)/i) || [])[1]?.trim() || '';
+      const hook = (block.match(/HOOK:\s*(.+)/i) || [])[1]?.trim() || '';
+      const post = (block.match(/POST:\s*([\s\S]+)/i) || [])[1]?.trim() || block;
+      const isIG = plat.toLowerCase().includes('instagram');
+      return `<div class="card">
+        <span class="badge ${isIG ? 'badge-ig' : 'badge-tt'}">${isIG ? 'Instagram' : 'TikTok'}</span>
+        ${hook ? `<div class="hook-line">"${hook}"</div>` : ''}
+        <div class="post-text">${post}</div>
+        <div class="btn-actions">
+          <button class="btn" onclick="cp(this,${JSON.stringify(post)})">Copy caption</button>
+          <button class="btn accent" onclick="regenPost(this,${JSON.stringify(plat)})">Regenerate</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    out.innerHTML = `<div class="loading">${e.message}</div>`;
+  }
+}
+
+async function regenPost(btn, plat) {
+  const card = btn.closest('.card');
+  card.querySelector('.post-text').textContent = 'Regenerating...';
+  const prompt = `${VOICE}\nWrite one ${plat} post in her voice. Output:\nHOOK: [one punchy line]\nPOST: [3-5 sentences, no hashtags]`;
+  try {
+    const text = await callClaude(prompt, 400);
+    const hook = (text.match(/HOOK:\s*(.+)/i) || [])[1]?.trim() || '';
+    const post = (text.match(/POST:\s*([\s\S]+)/i) || [])[1]?.trim() || text;
+    if (hook && card.querySelector('.hook-line')) card.querySelector('.hook-line').textContent = `"${hook}"`;
+    card.querySelector('.post-text').textContent = post;
+  } catch (e) {
+    card.querySelector('.post-text').textContent = 'Error — try again.';
+  }
+}
+
+// IDEA TESTER
+async function runTest() {
+  const idea = document.getElementById('test-input').value.trim();
+  if (!idea) return;
+  const out = document.getElementById('test-out');
+  out.innerHTML = '<div class="loading">Analysing your idea...</div>';
+  const prompt = `${VOICE}\n\nA creator wants to post this idea:\n"${idea}"\n\nAnalyse it for Instagram/TikTok performance. Output EXACTLY this format:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Won't land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences, be honest]\nSHARPEN: [rewrite the hook to make it stronger]\nFORMAT: [face-to-camera / carousel / text overlay / voiceover]\n---`;
+  try {
+    const text = await callClaude(prompt, 700);
+    const g = key => (text.match(new RegExp(key + ':\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---)', 's')) || [])[1]?.trim() || '';
+    const score = parseInt(g('SCORE')) || 7;
+    const verdict = g('VERDICT');
+    const works = g('WHY_WORKS');
+    const wont = g('WHY_WONT');
+    const sharpen = g('SHARPEN');
+    const format = g('FORMAT');
+    const pct = score * 10;
+    const col = score >= 8 ? '#1D9E75' : score >= 6 ? '#BA7517' : '#D85A30';
+    out.innerHTML = `<div class="card">
+      <div class="score-num">${score}<span style="font-size:20px;color:var(--text-faint)">/10</span></div>
+      <div class="score-verdict">${verdict}</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="bar-labels"><span>Won't land</span><span>Viral potential</span></div>
+      ${works ? `<div class="section-head">What's working</div><p style="font-size:14px;color:var(--text);line-height:1.7">${works}</p>` : ''}
+      ${wont ? `<div class="section-head">What to watch</div><p style="font-size:14px;color:var(--text);line-height:1.7">${wont}</p>` : ''}
+      ${sharpen ? `<div class="section-head">Sharper hook</div><div class="hook-line" style="margin-top:6px">"${sharpen}"</div>` : ''}
+      ${format ? `<div class="section-head" style="margin-top:1rem">Best format</div><p style="font-size:14px;color:var(--text)">${format}</p>` : ''}
+      <div class="btn-actions" style="margin-top:1rem">
+        ${sharpen ? `<button class="btn accent" onclick="cp(this,${JSON.stringify(sharpen)})">Copy sharper hook</button>` : ''}
+      </div>
+    </div>`;
+  } catch (e) {
+    out.innerHTML = `<div class="loading">${e.message}</div>`;
+  }
+}
+
+// VIDEO SCRIPTS
+async function generateScript() {
+  const angle = document.getElementById('script-angle').value;
+  const length = document.getElementById('script-length').value;
+  const out = document.getElementById('script-out');
+  out.innerHTML = '<div class="loading">Writing your script...</div>';
+  const prompt = `${VOICE}\n\nWrite a ${length}-second face-to-camera video script about: ${ANGLES[angle]}.\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences — must stop the scroll in 2 seconds]\nBODY: [what she says in the middle]\nCTA: [final line — invites comment, save, or follow]\nVISUAL: [what she should do on screen — location, movement, expression]\n---\n\nMake the hook provocative enough to stop a scroll. Write in her voice — like she's talking to a close friend.`;
+  try {
+    const text = await callClaude(prompt, 800);
+    const g = key => (text.match(new RegExp(key + ':\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---)', 's')) || [])[1]?.trim() || '';
+    const hook = g('HOOK');
+    const body = g('BODY');
+    const cta = g('CTA');
+    const visual = g('VISUAL');
+    const full = [hook, body, cta].filter(Boolean).join('\n\n');
+    out.innerHTML = `<div class="card">
+      <div class="card-label">${length}-second face-to-camera script</div>
+      ${hook ? `<div class="script-block"><span class="badge badge-hook-tag">Hook</span><span class="script-timing">0–3s</span><div class="hook-line" style="margin-top:8px">"${hook}"</div></div>` : ''}
+      ${body ? `<div class="script-block"><span class="badge badge-body">Body</span><div class="post-text" style="margin-top:8px">${body}</div></div>` : ''}
+      ${cta ? `<div class="script-block"><span class="badge badge-cta">CTA</span><span class="script-timing">last 5s</span><div class="post-text" style="margin-top:8px;font-weight:500">"${cta}"</div></div>` : ''}
+      ${visual ? `<div class="script-block"><span class="badge badge-visual">On screen</span><div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px">${visual}</div></div>` : ''}
+      <div class="btn-actions">
+        <button class="btn" onclick="cp(this,${JSON.stringify(full)})">Copy full script</button>
+        <button class="btn accent" onclick="generateScript()">Regenerate</button>
+      </div>
+    </div>`;
+  } catch (e) {
+    out.innerHTML = `<div class="loading">${e.message}</div>`;
+  }
+}
+
+// AUDIO + HOOKS
+async function generateAudio() {
+  const out = document.getElementById('audio-out');
+  out.innerHTML = '<div class="loading">Generating hook formulas and audio strategy...</div>';
+  const prompt = `${VOICE}\n\nGenerate two things:\n\n1. HOOKS — 6 proven hook formulas with examples filled in for this niche. Format each as:\nFORMULA: [template]\nEXAMPLE: [example for her niche]\n\n2. AUDIO — 4 specific audio/sound strategy tips for TikTok and Instagram Reels for emotional, countercultural, spoken-word content. Be specific.\n\nSeparate with ===`;
+  try {
+    const text = await callClaude(prompt, 1000);
+    const [hooksRaw, audioRaw] = text.split('===').map(s => s.trim());
+    const hookBlocks = (hooksRaw || '').split(/\nFORMULA:/i).filter(s => s.trim() && !s.match(/^HOOK/i));
+    const hooksHTML = hookBlocks.map(block => {
+      const formula = (block.match(/^(.+?)(?=\nEXAMPLE:)/s) || [])[1]?.trim() || block.split('\n')[0];
+      const example = (block.match(/EXAMPLE:\s*([\s\S]+)/i) || [])[1]?.trim() || '';
+      return `<div class="audio-item"><div class="audio-formula">"${formula}"</div>${example ? `<div class="audio-example">${example}</div>` : ''}</div>`;
+    }).join('');
+    const audioLines = (audioRaw || '').split('\n').filter(l => l.trim() && !l.match(/^AUDIO/i));
+    const audioHTML = audioLines.map(l => `<div class="audio-item"><div class="audio-example" style="color:var(--text)">${l.replace(/^\d+\.\s*/, '')}</div></div>`).join('');
+    out.innerHTML = `<div style="font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Hook formulas for your niche</div>${hooksHTML}<div style="font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 10px">Audio + sound strategy</div>${audioHTML}`;
+  } catch (e) {
+    out.innerHTML = `<div class="loading">${e.message}</div>`;
+  }
+}
+
+// REPLY TEMPLATES
+async function generateReplies() {
+  const comment = document.getElementById('reply-input').value.trim();
+  if (!comment) return;
+  const out = document.getElementById('reply-out');
+  out.innerHTML = '<div class="loading">Writing reply options...</div>';
+  const prompt = `${VOICE}\n\nSomeone left this comment:\n"${comment}"\n\nWrite 3 replies:\n1. TYPE: Warm — validates and builds community\n2. TYPE: Bold — stands firm in the philosophy without being defensive\n3. TYPE: Hook — turns it into a conversation that invites more engagement\n\nFormat each:\nTYPE: [Warm/Bold/Hook]\nREPLY: [1-3 sentences in her voice]\n---`;
+  try {
+    const text = await callClaude(prompt, 700);
+    const blocks = text.split('---').map(s => s.trim()).filter(Boolean);
+    const badgeMap = { warm: 'badge-warm', bold: 'badge-tt', hook: 'badge-cta' };
+    out.innerHTML = `<div class="comment-display">"${comment}"</div>` + blocks.map(block => {
+      const type = (block.match(/TYPE:\s*(.+)/i) || [])[1]?.trim() || '';
+      const reply = (block.match(/REPLY:\s*([\s\S]+)/i) || [])[1]?.trim() || block;
+      const cls = badgeMap[type.toLowerCase()] || 'badge-warm';
+      return `<div class="card">
+        <span class="badge ${cls}">${type}</span>
+        <div class="post-text" style="font-size:14px">${reply}</div>
+        <div class="btn-actions"><button class="btn" onclick="cp(this,${JSON.stringify(reply)})">Copy</button></div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    out.innerHTML = `<div class="loading">${e.message}</div>`;
+  }
+}
+
+// Init
+updateKeyStatus();
+</script>
+</body>
+</html>
