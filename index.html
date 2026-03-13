@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Whole Woman — Content Agent</title>
+<title>The Whole Woman - Content Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -18,24 +18,23 @@
   --radius: 12px; --radius-sm: 8px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+body { font-family: "DM Sans", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
 header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
-.logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text); }
+.logo { font-family: "Playfair Display", serif; font-size: 18px; }
 .logo span { color: var(--pink); font-style: italic; }
 .api-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; }
 .dot.connected { background: var(--teal); }
 .app { display: flex; min-height: calc(100vh - 60px); }
-nav { width: 200px; min-width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; display: flex; flex-direction: column; gap: 2px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 1.25rem; font-size: 14px; color: var(--text-muted); cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; border-left: 2px solid transparent; transition: all 0.15s; }
+nav { width: 200px; min-width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 1.25rem; font-size: 14px; color: var(--text-muted); cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; border-left: 2px solid transparent; }
 .nav-item:hover { color: var(--text); background: var(--bg); }
 .nav-item.active { color: var(--pink-dark); background: var(--pink-light); border-left-color: var(--pink); font-weight: 500; }
-.nav-icon { font-size: 15px; width: 18px; text-align: center; }
 .nav-section { padding: 1rem 1.25rem 0.25rem; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
 main { flex: 1; padding: 2rem; max-width: 780px; }
 .page { display: none; }
 .page.active { display: block; }
-.page-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; margin-bottom: 0.25rem; }
+.page-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 400; margin-bottom: 0.25rem; }
 .page-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 1.75rem; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
 .card-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; }
@@ -44,28 +43,25 @@ main { flex: 1; padding: 2rem; max-width: 780px; }
 .badge-tt { background: var(--teal-light); color: var(--teal-dark); }
 .badge-both { background: var(--purple-light); color: var(--purple-dark); }
 .badge-saved { background: var(--amber-light); color: var(--amber-dark); }
-select, textarea, input[type="text"], input[type="password"] { font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; outline: none; width: 100%; }
+select, textarea, input { font-family: "DM Sans", sans-serif; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; outline: none; width: 100%; }
 textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .row { display: flex; gap: 10px; margin-bottom: 1rem; }
 .row select { flex: 1; }
-.btn-primary { display: block; width: 100%; padding: 11px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--surface); background: var(--pink-dark); border: none; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1.5rem; }
-.btn-primary:hover { background: var(--pink); }
-.btn { padding: 6px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
-.btn:hover { background: var(--bg); color: var(--text); }
+.btn-primary { display: block; width: 100%; padding: 11px; font-family: "DM Sans", sans-serif; font-size: 14px; font-weight: 500; color: white; background: var(--pink-dark); border: none; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1.5rem; }
+.btn { padding: 6px 14px; font-family: "DM Sans", sans-serif; font-size: 13px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
 .btn.accent { border-color: var(--pink); color: var(--pink-dark); }
-.btn.saved-btn { border-color: var(--teal); color: var(--teal-dark); background: var(--teal-light); }
 .btn-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-.hook-line { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--pink-dark); font-style: italic; margin-bottom: 8px; }
+.hook-line { font-family: "Playfair Display", serif; font-size: 16px; color: var(--pink-dark); font-style: italic; margin-bottom: 8px; }
 .post-text { font-size: 15px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
 .loading { text-align: center; padding: 2.5rem; color: var(--text-faint); font-size: 14px; font-style: italic; }
-.score-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 400; color: var(--text); line-height: 1; }
+.score-num { font-family: "Playfair Display", serif; font-size: 36px; font-weight: 400; }
 .score-verdict { font-size: 14px; color: var(--text-muted); margin-top: 4px; margin-bottom: 1rem; }
 .bar-wrap { background: var(--bg); border-radius: 4px; height: 6px; margin: 10px 0 4px; overflow: hidden; }
 .bar-fill { height: 6px; border-radius: 4px; }
 .bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-faint); }
 .section-head { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 1rem 0 5px; }
 .pill { display: inline-block; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 20px; padding: 5px 14px; font-size: 13px; color: var(--text-muted); cursor: pointer; margin: 3px; }
-.pill:hover { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
+.pill:hover { border-color: var(--pink); color: var(--pink-dark); }
 .chat-wrap { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
 .chat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
 .chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
@@ -73,40 +69,25 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .chat-msg.user { background: var(--pink-light); color: var(--pink-dark); align-self: flex-end; }
 .chat-msg.ai { background: var(--bg); border: 1px solid var(--border); color: var(--text); align-self: flex-start; white-space: pre-wrap; }
 .chat-input-row { display: flex; gap: 8px; }
-.chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; }
-.chat-send { padding: 9px 16px; font-size: 13px; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; }
-.chat-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; }
-.chip:hover { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
-.comment-display { font-size: 13px; color: var(--text-muted); font-style: italic; padding: 10px 14px; background: var(--bg); border-radius: var(--radius-sm); border-left: 3px solid var(--pink); margin-bottom: 1rem; }
-.schedule-row { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); }
-.schedule-row:last-child { border-bottom: none; }
-.schedule-time { font-size: 13px; color: var(--text-faint); min-width: 52px; padding-top: 2px; }
-.schedule-label { font-size: 14px; font-weight: 500; color: var(--text); }
-.schedule-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-.setup-hero { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; line-height: 1.2; margin-bottom: 0.5rem; }
-.setup-hero em { color: var(--pink); }
+.chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); }
+.chat-send { padding: 9px 16px; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: "DM Sans", sans-serif; }
+.chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); cursor: pointer; margin: 3px; font-family: "DM Sans", sans-serif; }
+.voice-tabs { display: flex; gap: 10px; margin-bottom: 1.25rem; }
+.voice-tab { flex: 1; padding: 10px; font-size: 13px; font-weight: 500; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; font-family: "DM Sans", sans-serif; }
+.voice-tab.active { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
 .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--pink-light); color: var(--pink-dark); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .step-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.25rem; }
-.step-content { flex: 1; }
-.step-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.step-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
 .step-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
 .step-body a { color: var(--pink); text-decoration: none; }
-.key-input-wrap { position: relative; margin-top: 8px; }
-.key-input-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
-.key-save-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
-.saved-notice { font-size: 12px; color: var(--teal); margin-top: 6px; display: none; }
-.script-block { margin-bottom: 1.25rem; }
-.script-timing { font-size: 11px; color: var(--text-faint); margin-left: 8px; }
-.audio-item { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px; }
-.audio-formula { font-size: 14px; font-weight: 500; color: var(--pink-dark); font-family: 'Playfair Display', serif; font-style: italic; }
-.audio-example { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
-@media (max-width: 640px) { nav { width: 52px; min-width: 52px; } .nav-item span:last-child { display: none; } .nav-section { display: none; } main { padding: 1.25rem; } .row { flex-direction: column; } }
+.key-wrap { position: relative; margin-top: 8px; }
+.key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
+.key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">The Whole Woman — <span>Content Agent</span></div>
+  <div class="logo">The Whole Woman &mdash; <span>Content Agent</span></div>
   <button class="api-status" onclick="goTo('setup')" id="api-btn">
     <div class="dot" id="api-dot"></div>
     <span id="api-label">Add API key</span>
@@ -115,19 +96,19 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 <div class="app">
   <nav>
     <div class="nav-section">Create</div>
-    <button class="nav-item active" onclick="goTo('generate')" data-page="generate"><span class="nav-icon">✦</span><span>Generate posts</span></button>
-    <button class="nav-item" onclick="goTo('test')" data-page="test"><span class="nav-icon">◎</span><span>Idea tester</span></button>
-    <button class="nav-item" onclick="goTo('script')" data-page="script"><span class="nav-icon">▶</span><span>Video scripts</span></button>
+    <button class="nav-item active" onclick="goTo('generate')" data-page="generate"><span>&#10022;</span><span>Generate posts</span></button>
+    <button class="nav-item" onclick="goTo('test')" data-page="test"><span>&#9678;</span><span>Idea tester</span></button>
+    <button class="nav-item" onclick="goTo('script')" data-page="script"><span>&#9654;</span><span>Video scripts</span></button>
     <div class="nav-section">Strategy</div>
-    <button class="nav-item" onclick="goTo('audio')" data-page="audio"><span class="nav-icon">◈</span><span>Hooks + audio</span></button>
-    <button class="nav-item" onclick="goTo('reply')" data-page="reply"><span class="nav-icon">◇</span><span>Reply templates</span></button>
-    <button class="nav-item" onclick="goTo('schedule')" data-page="schedule"><span class="nav-icon">○</span><span>Post schedule</span></button>
+    <button class="nav-item" onclick="goTo('audio')" data-page="audio"><span>&#9672;</span><span>Hooks + audio</span></button>
+    <button class="nav-item" onclick="goTo('reply')" data-page="reply"><span>&#9671;</span><span>Reply templates</span></button>
+    <button class="nav-item" onclick="goTo('schedule')" data-page="schedule"><span>&#9675;</span><span>Post schedule</span></button>
     <div class="nav-section">My content</div>
-    <button class="nav-item" onclick="goTo('saved')" data-page="saved"><span class="nav-icon">♡</span><span>Saved posts</span></button>
-    <button class="nav-item" onclick="goTo('voice')" data-page="voice"><span class="nav-icon">◐</span><span>My voice</span></button>
-    <button class="nav-item" onclick="goTo('manifesto')" data-page="manifesto"><span class="nav-icon">✧</span><span>Manifesto</span></button>
+    <button class="nav-item" onclick="goTo('saved')" data-page="saved"><span>&#9825;</span><span>Saved posts</span></button>
+    <button class="nav-item" onclick="goTo('voice')" data-page="voice"><span>&#9680;</span><span>My voice</span></button>
+    <button class="nav-item" onclick="goTo('manifesto')" data-page="manifesto"><span>&#10023;</span><span>Manifesto</span></button>
     <div class="nav-section">Settings</div>
-    <button class="nav-item" onclick="goTo('setup')" data-page="setup"><span class="nav-icon">⚙</span><span>API setup</span></button>
+    <button class="nav-item" onclick="goTo('setup')" data-page="setup"><span>&#9881;</span><span>API setup</span></button>
   </nav>
   <main>
 
@@ -151,7 +132,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
           <option value="approval">Not needing approval to belong</option>
         </select>
       </div>
-      <button class="btn-primary" onclick="generatePosts()">Generate today's posts →</button>
+      <button class="btn-primary" onclick="generatePosts()">Generate posts &rarr;</button>
       <div id="gen-out"></div>
     </div>
 
@@ -161,19 +142,19 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <textarea id="test-input" placeholder="Paste your idea, hook, or full caption draft here..."></textarea>
       <div style="margin-bottom:1rem;">
         <div class="card-label">Try a sample idea</div>
-        <span class="pill" onclick="fillTest('I keep my own apartment even though we have been together 3 years. Best decision I ever made.')">keeping my own apartment</span>
-        <span class="pill" onclick="fillTest('Nobody talks about the grief of joining a family that already exists without you')">the grief no one names</span>
-        <span class="pill" onclick="fillTest('Dating a dad cured my anxious attachment style')">dating a dad cured my anxiety</span>
-        <span class="pill" onclick="fillTest('I travel alone. I have a partner. Both are true.')">I travel alone + I have a partner</span>
-        <span class="pill" onclick="fillTest('I do not try to win his kids over and my relationship is better for it')">I don't try to win the kids over</span>
+        <span class="pill" onclick="fillTest(this)">keeping my own apartment</span>
+        <span class="pill" onclick="fillTest(this)">the grief no one names</span>
+        <span class="pill" onclick="fillTest(this)">dating a dad cured my anxiety</span>
+        <span class="pill" onclick="fillTest(this)">I travel alone and I have a partner</span>
+        <span class="pill" onclick="fillTest(this)">I do not try to win the kids over</span>
       </div>
-      <button class="btn-primary" onclick="runTest()">Test this idea →</button>
+      <button class="btn-primary" onclick="runTest()">Test this idea &rarr;</button>
       <div id="test-out"></div>
     </div>
 
     <div class="page" id="page-script">
       <div class="page-title">Video scripts</div>
-      <div class="page-sub">Face-to-camera scripts with hook, body, CTA, and on-screen direction.</div>
+      <div class="page-sub">Face-to-camera scripts with hook, body, CTA and visual notes.</div>
       <div class="row">
         <select id="script-angle">
           <option value="grief">The silent grief</option>
@@ -185,126 +166,113 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
           <option value="approval">Not needing approval to belong</option>
         </select>
         <select id="script-length">
-          <option value="30">30 sec — TikTok/Reel</option>
-          <option value="60">60 sec — longer Reel</option>
-          <option value="90">90 sec — deep TikTok</option>
+          <option value="30">30 sec</option>
+          <option value="60">60 sec</option>
+          <option value="90">90 sec</option>
         </select>
       </div>
-      <button class="btn-primary" onclick="generateScript()">Write my script →</button>
+      <button class="btn-primary" onclick="generateScript()">Write my script &rarr;</button>
       <div id="script-out"></div>
     </div>
 
     <div class="page" id="page-audio">
       <div class="page-title">Hooks + audio tips</div>
-      <div class="page-sub">Hook formulas and sound strategy for face-to-camera content in your niche.</div>
-      <button class="btn-primary" onclick="generateAudio()">Get hook formulas + audio strategy →</button>
+      <div class="page-sub">Hook formulas and sound strategy for face-to-camera content.</div>
+      <button class="btn-primary" onclick="generateAudio()">Get hook formulas + audio strategy &rarr;</button>
       <div id="audio-out"></div>
     </div>
 
     <div class="page" id="page-reply">
       <div class="page-title">Reply templates</div>
-      <div class="page-sub">Paste a comment — get three reply options that build community.</div>
-      <textarea id="reply-input" placeholder="e.g. 'This is so selfish' or 'This is exactly what I needed to hear'..."></textarea>
-      <button class="btn-primary" onclick="generateReplies()">Generate replies →</button>
+      <div class="page-sub">Paste a comment and get three reply options.</div>
+      <textarea id="reply-input" placeholder="Paste a comment here..."></textarea>
+      <button class="btn-primary" onclick="generateReplies()">Generate replies &rarr;</button>
       <div id="reply-out"></div>
     </div>
 
     <div class="page" id="page-schedule">
       <div class="page-title">Posting rhythm</div>
-      <div class="page-sub">Your recommended 5-posts-a-day schedule.</div>
+      <div class="page-sub">Your recommended daily posting schedule.</div>
       <div class="card">
-        <div class="schedule-row"><div class="schedule-time">7:00 am</div><div><div class="schedule-label">Morning provocation</div><div class="schedule-desc">A bold 1-liner or hot take — highest reach window</div></div></div>
-        <div class="schedule-row"><div class="schedule-time">11:00 am</div><div><div class="schedule-label">Story or personal truth</div><div class="schedule-desc">A real moment from your life — builds trust</div></div></div>
-        <div class="schedule-row"><div class="schedule-time">1:00 pm</div><div><div class="schedule-label">Reframe or myth-bust</div><div class="schedule-desc">Challenge a common belief — drives saves and shares</div></div></div>
-        <div class="schedule-row"><div class="schedule-time">5:00 pm</div><div><div class="schedule-label">Affirmation or permission slip</div><div class="schedule-desc">Something women screenshot and send to friends</div></div></div>
-        <div class="schedule-row"><div class="schedule-time">8:00 pm</div><div><div class="schedule-label">Question or conversation starter</div><div class="schedule-desc">Invites replies and comments — boosts algorithm</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">7:00 am</div><div><div style="font-size:14px;font-weight:500">Morning provocation</div><div style="font-size:13px;color:var(--text-muted)">Bold 1-liner or hot take</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">11:00 am</div><div><div style="font-size:14px;font-weight:500">Story or personal truth</div><div style="font-size:13px;color:var(--text-muted)">A real moment from your life</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">1:00 pm</div><div><div style="font-size:14px;font-weight:500">Reframe or myth-bust</div><div style="font-size:13px;color:var(--text-muted)">Challenge a belief, drives saves and shares</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">5:00 pm</div><div><div style="font-size:14px;font-weight:500">Affirmation or permission slip</div><div style="font-size:13px;color:var(--text-muted)">Something women screenshot</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0"><div style="font-size:13px;color:var(--text-faint);min-width:52px">8:00 pm</div><div><div style="font-size:14px;font-weight:500">Question or conversation starter</div><div style="font-size:13px;color:var(--text-muted)">Invites replies, boosts algorithm</div></div></div>
       </div>
       <div class="card">
-        <div class="card-label">Auto-scheduling tools</div>
-        <p style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:1rem;">Generate posts here, then paste them into a scheduler with the times above.</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="https://buffer.com" target="_blank" class="btn">Buffer (free plan) ↗</a>
-          <a href="https://later.com" target="_blank" class="btn">Later ↗</a>
-        </div>
+        <div class="card-label">Scheduling tools</div>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:1rem">Generate posts here, paste into a scheduler with the times above.</p>
+        <a href="https://buffer.com" target="_blank" class="btn" style="margin-right:8px;text-decoration:none">Buffer &rarr;</a>
+        <a href="https://later.com" target="_blank" class="btn" style="text-decoration:none">Later &rarr;</a>
       </div>
     </div>
 
     <div class="page" id="page-saved">
       <div class="page-title">Saved posts</div>
-      <div class="page-sub">Posts you have saved — your personal library of content that resonates.</div>
+      <div class="page-sub">Your personal library of content that resonates.</div>
       <div id="saved-out"></div>
     </div>
 
     <div class="page" id="page-voice">
       <div class="page-title">My voice</div>
       <div class="page-sub">Build your voice profile so every post sounds like you, not like AI.</div>
-
-      <div style="display:flex;gap:10px;margin-bottom:1.25rem">
-        <button class="btn" id="tab-transcript" onclick="switchVoiceTab('transcript')" style="flex:1;padding:10px;font-size:13px;font-weight:500;border-color:var(--pink);color:var(--pink-dark);background:var(--pink-light)">Extract from coaching call ❖</button>
-        <button class="btn" id="tab-manual" onclick="switchVoiceTab('manual')" style="flex:1;padding:10px;font-size:13px">Add my own words</button>
+      <div class="voice-tabs">
+        <button class="voice-tab active" id="vtab-extract" onclick="switchVoiceTab(0)">Extract from coaching call</button>
+        <button class="voice-tab" id="vtab-manual" onclick="switchVoiceTab(1)">Add my own words</button>
       </div>
-
-      <div id="voice-tab-transcript">
-        <div class="card" style="margin-bottom:1rem;background:var(--pink-light);border-color:var(--pink)">
+      <div id="vpanel-extract">
+        <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1rem">
           <div class="card-label" style="color:var(--pink-dark)">How this works</div>
-          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript — client lines and all. The AI will automatically extract only <em>your</em> words, remove the client, and save your coaching voice to your profile.</p>
+          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript, client lines and all. The AI extracts only your words and saves them to your voice profile.</p>
         </div>
-        <div style="margin-bottom:10px">
-          <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">Your name in the transcript (so we know which lines are yours)</label>
-          <input type="text" id="coach-name" placeholder="e.g. Cherryl, Coach, C:" style="margin-bottom:0" />
-        </div>
-        <textarea id="transcript-input" placeholder="Paste your full coaching call transcript here — include everything, client lines too. We will handle the filtering..." style="min-height:200px;margin-top:10px"></textarea>
-        <button class="btn-primary" onclick="extractTranscript()" style="margin-top:10px">Extract my voice from this transcript →</button>
+        <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">Your name as it appears in the transcript</label>
+        <input type="text" id="coach-name" placeholder="e.g. Cherryl, Coach, C:" style="margin-bottom:10px" />
+        <textarea id="transcript-input" placeholder="Paste your full coaching call transcript here..." style="min-height:200px"></textarea>
+        <button class="btn-primary" onclick="extractTranscript()" style="margin-top:10px">Extract my voice from this transcript &rarr;</button>
         <div id="transcript-out"></div>
       </div>
-
-      <div id="voice-tab-manual" style="display:none">
+      <div id="vpanel-manual" style="display:none">
         <div class="card" style="margin-bottom:1rem">
           <div class="card-label">What to paste in</div>
-          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions from posts that felt right. Voice notes transcribed. Rough notes on your philosophy. Anything written in your natural voice.</p>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions, book proposals, voice notes, rough notes. Anything in your natural voice.</p>
         </div>
         <textarea id="voice-input" placeholder="Paste your content here..." style="min-height:160px"></textarea>
-        <button class="btn-primary" onclick="saveVoice()">Save to my voice profile →</button>
+        <button class="btn-primary" onclick="saveVoice()">Save to my voice profile &rarr;</button>
       </div>
-
       <div id="voice-saved-list" style="margin-top:1.5rem"></div>
     </div>
 
     <div class="page" id="page-manifesto">
       <div class="page-title">My manifesto</div>
       <div class="page-sub">Your philosophy, in full.</div>
-      <div class="card" style="font-family:'Playfair Display',serif;line-height:1.85;">
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.5rem;font-family:'DM Sans',sans-serif">A manifesto for women who love fully — without losing themselves</p>
-        <h2 style="font-size:28px;font-weight:400;margin-bottom:2rem;line-height:1.2">The whole woman manifesto</h2>
-        <div style="border-left:2px solid var(--pink);padding-left:1.25rem;margin-bottom:2rem">
-          <p style="font-size:17px;font-style:italic;color:var(--text)">You were never meant to shrink into someone else's story. You are not a gap to be filled. You are not an understudy. You are the whole thing.</p>
-        </div>
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">I. The grief they don't name</p>
-        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">When you love a man who already has children, the world hands you a script you never auditioned for. You hear the children come first — and you cannot argue. So you grieve in silence. That grief is real. It deserves to be named. And then — it deserves to be set down.</p>
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">II. The invitation inside the difficulty</p>
-        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">Loving a man with children forces something rare and radical — it forces you to keep your own life. You cannot dissolve into this relationship even if you tried. And that refusal to dissolve? That is not loss. That is freedom.</p>
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">III. The life I am choosing</p>
-        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I keep my own space. I travel — sometimes alone, sometimes with friends — and I return to a love that is deeper because it is chosen freshly, again and again. I do not compete with a family that existed before me. I do not earn my place. The time we share is rare. And because it is rare, it is luminous.</p>
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">IV. What this heals</p>
-        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I used to reach. I used to scan for signs of belonging, of approval, of being enough. This way of living cured that. Not because I stopped caring — but because I stopped needing. I belong to myself first.</p>
-        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;font-weight:500">V. What I believe</p>
-        <p style="font-size:15px;color:var(--text);margin-bottom:1.75rem">I believe a woman can have love and sovereignty at the same time. I believe you can be almost-single in your independence and deeply partnered in your heart. I believe the woman who keeps her own life is not cold. She is awake.</p>
-        <div style="border-top:1px solid var(--border);padding-top:1.5rem">
-          <p style="font-size:15px;font-style:italic;color:var(--text);margin-bottom:0.75rem">The boldest thing you can do — in love, in life — is to remain entirely yourself.</p>
-          <p style="font-size:14px;font-weight:500;color:var(--pink-dark);font-family:'DM Sans',sans-serif">Stay whole. Stay yours.</p>
-        </div>
+      <div class="card" style="line-height:1.85">
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.5rem">A manifesto for women who love fully without losing themselves</p>
+        <h2 style="font-family:Playfair Display,serif;font-size:28px;font-weight:400;margin-bottom:2rem">The whole woman manifesto</h2>
+        <div style="border-left:2px solid var(--pink);padding-left:1.25rem;margin-bottom:2rem"><p style="font-size:17px;font-style:italic;font-family:Playfair Display,serif">You were never meant to shrink into someone else&apos;s story. You are not a gap to be filled. You are not an understudy. You are the whole thing.</p></div>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">I. The grief they don&apos;t name</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">When you love a man who already has children, the world hands you a script you never auditioned for. You hear the children come first and you cannot argue. So you grieve in silence. That grief is real. It deserves to be named. And then it deserves to be set down.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">II. The invitation inside the difficulty</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">Loving a man with children forces something rare and radical. It forces you to keep your own life. You cannot dissolve into this relationship even if you tried. And that refusal to dissolve is not loss. That is freedom.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">III. The life I am choosing</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I keep my own space. I travel sometimes alone, sometimes with friends, and I return to a love that is deeper because it is chosen freshly again and again. I do not compete with a family that existed before me. The time we share is rare. And because it is rare, it is luminous.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">IV. What this heals</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I used to reach. I used to scan for signs of belonging, of approval, of being enough. This way of living cured that. Not because I stopped caring but because I stopped needing. I belong to myself first.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">V. What I believe</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I believe a woman can have love and sovereignty at the same time. I believe you can be almost-single in your independence and deeply partnered in your heart. I believe the woman who keeps her own life is not cold. She is awake.</p>
+        <div style="border-top:1px solid var(--border);padding-top:1.5rem"><p style="font-size:15px;font-style:italic;margin-bottom:0.75rem">The boldest thing you can do in love and in life is to remain entirely yourself.</p><p style="font-size:14px;font-weight:500;color:var(--pink-dark)">Stay whole. Stay yours.</p></div>
       </div>
     </div>
 
     <div class="page" id="page-setup">
-      <div class="setup-hero">Set up your <em>API key</em></div>
-      <div class="page-sub" style="margin-bottom:1.75rem">You need a free Anthropic API key to power this app.</div>
+      <div class="page-title">API setup</div>
+      <div class="page-sub">You need a free Anthropic API key to power this app.</div>
       <div class="card">
-        <div class="step-row"><div class="step-num">1</div><div class="step-content"><div class="step-title">Create a free Anthropic account</div><div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up.</div></div></div>
-        <div class="step-row"><div class="step-num">2</div><div class="step-content"><div class="step-title">Get your API key</div><div class="step-body">Go to API Keys, click Create Key, copy it.</div></div></div>
-        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div class="step-content"><div class="step-title">Paste your key below</div><div class="step-body">Your key is saved only in your browser.</div>
-          <div class="key-input-wrap"><input type="password" id="api-key-input" placeholder="sk-ant-api03-..." /><button class="key-save-btn" onclick="saveKey()">Save</button></div>
-          <div class="saved-notice" id="saved-notice">Key saved. You are ready to generate.</div>
+        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Anthropic account</div><div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Get your API key</div><div class="step-body">Go to API Keys, click Create Key, copy it.</div></div></div>
+        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your key below</div><div class="step-body">Saved only in your browser.</div>
+          <div class="key-wrap"><input type="password" id="api-key-input" placeholder="sk-ant-api03-..." /><button class="key-btn" onclick="saveKey()">Save</button></div>
+          <div id="saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Key saved. You are ready to generate.</div>
         </div></div>
       </div>
     </div>
@@ -312,7 +280,8 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   </main>
 </div>
 <script>
-var VOICE = "You are a content strategist writing for a woman with a bold, countercultural philosophy about relationships. Her belief: when women partner with a man who already has children, society sets them up to fail — to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This cured her anxious attachment. She does not try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Like a wise friend who says what women think but do not say out loud. Never preachy. Never generic.";
+
+var VOICE = "You are a content strategist writing for a woman with a bold countercultural philosophy about relationships. When women partner with a man who already has children, society sets them up to fail: to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This cured her anxious attachment. She does not try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Like a wise friend who says what women think but do not say out loud. Never preachy. Never generic.";
 
 var ANGLES = {
   grief: "the silent grief of joining an existing family",
@@ -321,82 +290,47 @@ var ANGLES = {
   space: "keeping your own home even when committed",
   travel: "traveling solo while in a relationship",
   myth: "dismantling the holy family myth that sets women up to fail",
-  approval: "not needing anyone's approval to belong",
+  approval: "not needing approval to belong",
   random: "any angle from her core philosophy"
 };
 
-function getKey() { return localStorage.getItem("tww_api_key") || ""; }
+function getKey() {
+  return localStorage.getItem("tww_key") || "";
+}
 
 function saveKey() {
   var val = document.getElementById("api-key-input").value.trim();
   if (!val) return;
-  localStorage.setItem("tww_api_key", val);
+  localStorage.setItem("tww_key", val);
   document.getElementById("saved-notice").style.display = "block";
   updateKeyStatus();
-
-function switchVoiceTab(tab) {
-  document.getElementById('voice-tab-transcript').style.display = tab === 'transcript' ? 'block' : 'none';
-  document.getElementById('voice-tab-manual').style.display = tab === 'manual' ? 'block' : 'none';
-  document.getElementById('tab-transcript').style.background = tab === 'transcript' ? 'var(--pink-light)' : '';
-  document.getElementById('tab-transcript').style.color = tab === 'transcript' ? 'var(--pink-dark)' : '';
-  document.getElementById('tab-transcript').style.borderColor = tab === 'transcript' ? 'var(--pink)' : '';
-  document.getElementById('tab-transcript').style.fontWeight = tab === 'transcript' ? '500' : '';
-  document.getElementById('tab-manual').style.background = tab === 'manual' ? 'var(--pink-light)' : '';
-  document.getElementById('tab-manual').style.color = tab === 'manual' ? 'var(--pink-dark)' : '';
-  document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? 'var(--pink)' : '';
-  document.getElementById('tab-manual').style.fontWeight = tab === 'manual' ? '500' : '';
-}
-
-async function extractTranscript() {
-  var transcript = document.getElementById('transcript-input').value.trim();
-  var coachName = document.getElementById('coach-name').value.trim() || 'Cherryl';
-  if (!transcript) return;
-  var out = document.getElementById('transcript-out');
-  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
-  var prompt = 'Here is a coaching call transcript. The coach is identified as: ' + coachName + '.
-
-Transcript:
-' + transcript.substring(0, 6000) + '
-
-Your task: Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, filler words like "um", "uh", speaker labels. Output only the coach's words as flowing natural text, preserving their exact phrasing, vocabulary, and way of explaining things. Do not summarise — keep their actual words. Output nothing else, just the extracted coach voice.';
-  try {
-    var extracted = await callClaude(prompt, 2000);
-    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
-      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted — your words only</div>" +
-      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto'>" + extracted.substring(0, 500) + (extracted.length > 500 ? '...' : '') + "</div>" +
-      "<div class='btn-actions' style='margin-top:10px'>" +
-      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile ✓</button>" +
-      "</div></div>";
-  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
-}
-
-function saveExtracted(text) {
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  samples.unshift({ text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" });
-  localStorage.setItem("tww_voice", JSON.stringify(samples));
-  document.getElementById('transcript-out').innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>✓ Saved to your voice profile! All future posts will draw on this.</div>";
-  loadVoiceSamples();
-}
 }
 
 function updateKeyStatus() {
   var key = getKey();
   var dot = document.getElementById("api-dot");
   var label = document.getElementById("api-label");
-  if (key) { dot.classList.add("connected"); label.textContent = "Connected"; }
-  else { dot.classList.remove("connected"); label.textContent = "Add API key"; }
+  if (key) {
+    dot.className = "dot connected";
+    label.textContent = "Connected";
+  } else {
+    dot.className = "dot";
+    label.textContent = "Add API key";
+  }
 }
 
 function goTo(page) {
-  var pages = document.querySelectorAll(".page");
-  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
-  var navItems = document.querySelectorAll(".nav-item");
-  for (var i = 0; i < navItems.length; i++) navItems[i].classList.remove("active");
+  var all = document.querySelectorAll(".page");
+  for (var i = 0; i < all.length; i++) all[i].classList.remove("active");
+  var navs = document.querySelectorAll(".nav-item");
+  for (var i = 0; i < navs.length; i++) navs[i].classList.remove("active");
   document.getElementById("page-" + page).classList.add("active");
   var navEl = document.querySelector("[data-page='" + page + "']");
   if (navEl) navEl.classList.add("active");
-  if (page === "setup") { var k = getKey(); if (k) document.getElementById("api-key-input").value = k; }
+  if (page === "setup") {
+    var k = getKey();
+    if (k) document.getElementById("api-key-input").value = k;
+  }
   if (page === "saved") loadSavedPosts();
   if (page === "voice") loadVoiceSamples();
 }
@@ -414,30 +348,35 @@ function savePost(hook, post, platform) {
   try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) { saved = []; }
   saved.unshift({ hook: hook, post: post, platform: platform, date: new Date().toLocaleDateString() });
   localStorage.setItem("tww_saved", JSON.stringify(saved));
-  alert("Saved! Check the Saved posts tab.");
+  alert("Saved! Go to Saved posts in the sidebar.");
 }
 
 function loadSavedPosts() {
   var saved = [];
   try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) { saved = []; }
   var out = document.getElementById("saved-out");
-  if (!saved.length) { out.innerHTML = "<div class='loading'>No saved posts yet. Use the Save button on any generated post or idea.</div>"; return; }
+  if (!saved.length) {
+    out.innerHTML = "<div class='loading'>No saved posts yet. Hit Save on any generated post.</div>";
+    return;
+  }
   var html = "";
   for (var i = 0; i < saved.length; i++) {
     var p = saved[i];
-    var badgeClass = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
+    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
     html += "<div class='card'>";
-    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'>";
-    html += "<span class='badge " + badgeClass + "'>" + p.platform + "</span>";
-    html += "<span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
+    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
     if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
     html += "<div class='post-text'>" + p.post + "</div>";
-    html += "<div class='btn-actions'>";
-    html += "<button class='btn' onclick='cp(this, " + JSON.stringify(p.post) + ")'>Copy</button>";
-    html += "<button class='btn' onclick='deleteSaved(" + i + ")'>Remove</button>";
-    html += "</div></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpSaved(" + i + ")'>Copy</button><button class='btn' onclick='deleteSaved(" + i + ")'>Remove</button></div>";
+    html += "</div>";
   }
   out.innerHTML = html;
+}
+
+function cpSaved(i) {
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+  if (saved[i]) cp(event.target, saved[i].post);
 }
 
 function deleteSaved(i) {
@@ -448,12 +387,19 @@ function deleteSaved(i) {
   loadSavedPosts();
 }
 
+function switchVoiceTab(n) {
+  document.getElementById("vpanel-extract").style.display = n === 0 ? "block" : "none";
+  document.getElementById("vpanel-manual").style.display = n === 1 ? "block" : "none";
+  document.getElementById("vtab-extract").className = n === 0 ? "voice-tab active" : "voice-tab";
+  document.getElementById("vtab-manual").className = n === 1 ? "voice-tab active" : "voice-tab";
+}
+
 function saveVoice() {
   var input = document.getElementById("voice-input").value.trim();
   if (!input) return;
   var samples = [];
   try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  samples.unshift({ text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length });
+  samples.unshift({ text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length, source: "manual" });
   localStorage.setItem("tww_voice", JSON.stringify(samples));
   document.getElementById("voice-input").value = "";
   loadVoiceSamples();
@@ -465,18 +411,18 @@ function loadVoiceSamples() {
   var out = document.getElementById("voice-saved-list");
   if (!samples.length) { out.innerHTML = ""; return; }
   var totalWords = 0;
-  for (var i = 0; i < samples.length; i++) totalWords += samples[i].words;
+  for (var i = 0; i < samples.length; i++) totalWords += (samples[i].words || 0);
   var html = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-bottom:1rem'>";
   html += "<div style='font-size:13px;color:var(--teal-dark);font-weight:500'>" + totalWords + " words of your voice saved</div>";
   html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>The AI uses all of this when generating content for you</div></div>";
   for (var i = 0; i < samples.length; i++) {
     var s = samples[i];
+    var preview = s.text ? s.text.substring(0, 200) + (s.text.length > 200 ? "..." : "") : "";
     html += "<div class='card'>";
     html += "<div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
-    html += "<span style='font-size:11px;color:var(--text-faint)'>" + s.words + " words · " + s.date + "</span>";
+    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words - " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
     html += "<button class='btn' style='padding:2px 10px;font-size:11px' onclick='deleteVoice(" + i + ")'>Remove</button></div>";
-    html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + s.text.substring(0, 200) + (s.text.length > 200 ? "..." : "") + "</div>";
-    html += "</div>";
+    html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + preview + "</div></div>";
   }
   out.innerHTML = html;
 }
@@ -494,15 +440,16 @@ function getVoiceContext() {
   try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { return ""; }
   if (!samples.length) return "";
   var combined = "";
-  for (var i = 0; i < samples.length; i++) combined += samples[i].text + "\n\n";
+  for (var i = 0; i < samples.length; i++) combined += (samples[i].text || "") + "\n\n";
   combined = combined.substring(0, 2000);
-  return "\n\nHere are examples of her actual voice — use these as your primary reference:\n" + combined;
+  return "\n\nHere are examples of her actual writing and speaking voice. Use these as your primary reference:\n" + combined;
 }
 
-async function callClaude(prompt, maxTokens) {
+async function callClaude(messages, maxTokens, systemPrompt) {
   var key = getKey();
   if (!key) { goTo("setup"); throw new Error("No API key. Please add your key in Settings."); }
-  maxTokens = maxTokens || 1000;
+  var body = { model: "claude-sonnet-4-20250514", max_tokens: maxTokens || 1000, messages: messages };
+  if (systemPrompt) body.system = systemPrompt;
   var res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -511,9 +458,12 @@ async function callClaude(prompt, maxTokens) {
       "anthropic-version": "2023-06-01",
       "anthropic-dangerous-direct-browser-access": "true"
     },
-    body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: maxTokens, messages: [{ role: "user", content: prompt }] })
+    body: JSON.stringify(body)
   });
-  if (!res.ok) { var err = await res.json().catch(function() { return {}; }); throw new Error(err.error ? err.error.message : "API error"); }
+  if (!res.ok) {
+    var err = await res.json().catch(function() { return {}; });
+    throw new Error(err.error ? err.error.message : "API error " + res.status);
+  }
   var data = await res.json();
   return data.content.map(function(b) { return b.text || ""; }).join("");
 }
@@ -524,9 +474,10 @@ async function generatePosts() {
   var out = document.getElementById("gen-out");
   out.innerHTML = "<div class='loading'>Writing posts in your voice...</div>";
   var n = platform === "both" ? 4 : 2;
-  var prompt = VOICE + getVoiceContext() + "\n\nGenerate " + n + " social media posts for " + (platform === "both" ? "Instagram and TikTok (mix them evenly)" : platform) + " about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats: hot take, personal story, reframe, permission slip. Raw, real, shareable.";
+  var platformLabel = platform === "both" ? "Instagram and TikTok (mix them evenly)" : platform;
+  var msg = VOICE + getVoiceContext() + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, shareable.";
   try {
-    var text = await callClaude(prompt);
+    var text = await callClaude([{ role: "user", content: msg }], 1200);
     var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
     var html = "";
     for (var i = 0; i < blocks.length; i++) {
@@ -534,26 +485,27 @@ async function generatePosts() {
       var platMatch = block.match(/PLATFORM:\s*(.+)/i);
       var hookMatch = block.match(/HOOK:\s*(.+)/i);
       var postMatch = block.match(/POST:\s*([\s\S]+)/i);
-      var plat = platMatch ? platMatch[1].trim() : "";
+      var plat = platMatch ? platMatch[1].trim() : "Instagram";
       var hook = hookMatch ? hookMatch[1].trim() : "";
       var post = postMatch ? postMatch[1].trim() : block;
       var isIG = plat.toLowerCase().indexOf("instagram") >= 0;
-      var platformLabel = isIG ? "Instagram" : "TikTok";
+      var platName = isIG ? "Instagram" : "TikTok";
+      var hookEnc = JSON.stringify(hook);
+      var postEnc = JSON.stringify(post);
+      var platEnc = JSON.stringify(platName);
       html += "<div class='card'>";
-      html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platformLabel + "</span>";
+      html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
       if (hook) html += "<div class='hook-line'>\"" + hook + "\"</div>";
       html += "<div class='post-text'>" + post + "</div>";
-      html += "<div class='btn-actions'>";
-      html += "<button class='btn' onclick='cp(this, " + JSON.stringify(post) + ")'>Copy</button>";
-      html += "<button class='btn accent' onclick='savePost(" + JSON.stringify(hook) + ", " + JSON.stringify(post) + ", " + JSON.stringify(platformLabel) + ")'>Save ♡</button>";
-      html += "</div></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + postEnc + ")'>Copy</button><button class='btn accent' onclick='savePost(" + hookEnc + "," + postEnc + "," + platEnc + ")'>Save</button></div>";
+      html += "</div>";
     }
-    out.innerHTML = html;
+    out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-function fillTest(text) {
-  document.getElementById("test-input").value = text;
+function fillTest(el) {
+  document.getElementById("test-input").value = el.textContent;
   runTest();
 }
 
@@ -564,17 +516,17 @@ async function runTest() {
   if (!idea) return;
   var out = document.getElementById("test-out");
   out.innerHTML = "<div class='loading'>Analysing your idea...</div>";
-  var prompt = VOICE + "\n\nA creator wants to post this idea:\n\"" + idea + "\"\n\nAnalyse it for Instagram/TikTok performance. Output EXACTLY:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Won't land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences]\nSHARPEN: [rewrite the hook to make it stronger]\nFORMAT: [face-to-camera / carousel / text overlay / voiceover]\n---";
+  var msg = VOICE + "\n\nA creator wants to post this idea:\n" + idea + "\n\nAnalyse it for Instagram and TikTok. Output EXACTLY:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Will not land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences]\nSHARPEN: [rewrite the hook stronger]\nFORMAT: [face-to-camera / carousel / text overlay / voiceover]\n---";
   try {
-    var text = await callClaude(prompt, 700);
-    chatHistory = [{ role: "user", content: prompt }, { role: "assistant", content: text }];
-    function g(key) {
-      var re = new RegExp(key + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---)", "s");
+    var text = await callClaude([{ role: "user", content: msg }], 700);
+    chatHistory = [{ role: "user", content: msg }, { role: "assistant", content: text }];
+    function g(k) {
+      var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---|$)", "i");
       var m = text.match(re);
       return m ? m[1].trim() : "";
     }
     var score = parseInt(g("SCORE")) || 7;
-    var verdict = g("VERDICT");
+    var verdict = g("VERDICT") || "Solid";
     var works = g("WHY_WORKS");
     var wont = g("WHY_WONT");
     var sharpen = g("SHARPEN");
@@ -585,17 +537,19 @@ async function runTest() {
     html += "<div class='score-num'>" + score + "<span style='font-size:20px;color:var(--text-faint)'>/10</span></div>";
     html += "<div class='score-verdict'>" + verdict + "</div>";
     html += "<div class='bar-wrap'><div class='bar-fill' style='width:" + pct + "%;background:" + col + "'></div></div>";
-    html += "<div class='bar-labels'><span>Won't land</span><span>Viral potential</span></div>";
-    if (works) html += "<div class='section-head'>What's working</div><p style='font-size:14px;color:var(--text);line-height:1.7'>" + works + "</p>";
-    if (wont) html += "<div class='section-head'>What to watch</div><p style='font-size:14px;color:var(--text);line-height:1.7'>" + wont + "</p>";
+    html += "<div class='bar-labels'><span>Will not land</span><span>Viral potential</span></div>";
+    if (works) html += "<div class='section-head'>What is working</div><p style='font-size:14px;line-height:1.7'>" + works + "</p>";
+    if (wont) html += "<div class='section-head'>What to watch</div><p style='font-size:14px;line-height:1.7'>" + wont + "</p>";
     if (sharpen) html += "<div class='section-head'>Sharper hook</div><div class='hook-line' style='margin-top:6px'>\"" + sharpen + "\"</div>";
-    if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px;color:var(--text)'>" + format + "</p>";
+    if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px'>" + format + "</p>";
     html += "<div class='btn-actions' style='margin-top:1rem'>";
-    if (sharpen) html += "<button class='btn' onclick='cp(this, " + JSON.stringify(sharpen) + ")'>Copy hook</button>";
-    if (sharpen) html += "<button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(sharpen) + ", \"Idea tester\")'>Save hook ♡</button>";
+    if (sharpen) {
+      html += "<button class='btn' onclick='cpText(this,\"" + sharpen.replace(/\\/g,"\\\\").replace(/"/g,"&quot;") + "\")'>Copy hook</button>";
+      html += "<button class='btn accent' onclick='savePost(\"\",\"" + sharpen.replace(/\\/g,"\\\\").replace(/"/g,"&quot;") + "\",\"Idea tester\")'>Save hook</button>";
+    }
     html += "</div>";
     html += "<div class='chat-wrap'><div class='chat-label'>Refine this idea</div>";
-    html += "<div class='chat-chips'>";
+    html += "<div style='margin-bottom:10px'>";
     html += "<button class='chip' onclick='sendChat(\"Make it shorter\")'>Make it shorter</button>";
     html += "<button class='chip' onclick='sendChat(\"More provocative\")'>More provocative</button>";
     html += "<button class='chip' onclick='sendChat(\"Rewrite for TikTok\")'>Rewrite for TikTok</button>";
@@ -610,6 +564,14 @@ async function runTest() {
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
+function cpText(btn, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(function() { btn.textContent = orig; }, 2000);
+  });
+}
+
 async function sendChat(prefill) {
   var input = document.getElementById("chat-in");
   var msg = prefill || (input ? input.value.trim() : "");
@@ -617,37 +579,29 @@ async function sendChat(prefill) {
   if (input) input.value = "";
   var msgs = document.getElementById("chat-msgs");
   if (!msgs) return;
-  msgs.innerHTML += "<div class='chat-msg user'>" + msg + "</div>";
-  var thinkingId = "think-" + Date.now();
-  msgs.innerHTML += "<div class='chat-msg ai' id='" + thinkingId + "'>Thinking...</div>";
+  var userDiv = document.createElement("div");
+  userDiv.className = "chat-msg user";
+  userDiv.textContent = msg;
+  msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div");
+  aiDiv.className = "chat-msg ai";
+  aiDiv.textContent = "Thinking...";
+  msgs.appendChild(aiDiv);
   chatHistory.push({ role: "user", content: msg });
   try {
-    var key = getKey();
-    if (!key) { goTo("setup"); return; }
-    var res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 800, system: VOICE + " You are helping refine a social media post idea. Be concise and practical. No preamble.", messages: chatHistory })
-    });
-    var data = await res.json();
-    var reply = data.content.map(function(b) { return b.text || ""; }).join("");
+    var reply = await callClaude(chatHistory, 800, VOICE + " You are helping refine a social media post idea. Be concise and practical.");
     chatHistory.push({ role: "assistant", content: reply });
-    var el = document.getElementById(thinkingId);
-    if (el) {
-      el.textContent = reply;
-      el.removeAttribute("id");
-      var saveBtn = document.createElement("button");
-      saveBtn.className = "btn accent";
-      saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
-      saveBtn.textContent = "Save this ♡";
-      var replyText = reply;
-      saveBtn.onclick = function() { savePost("", replyText, "Idea tester"); };
-      el.insertAdjacentElement("afterend", saveBtn);
-    }
+    aiDiv.textContent = reply;
+    var saveBtn = document.createElement("button");
+    saveBtn.className = "btn accent";
+    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
+    saveBtn.textContent = "Save this";
+    var snap = reply;
+    saveBtn.onclick = function() { savePost("", snap, "Idea tester"); };
+    aiDiv.insertAdjacentElement("afterend", saveBtn);
     msgs.scrollTop = msgs.scrollHeight;
   } catch(e) {
-    var el = document.getElementById(thinkingId);
-    if (el) el.textContent = "Something went wrong — try again.";
+    aiDiv.textContent = "Something went wrong - try again.";
   }
 }
 
@@ -656,19 +610,24 @@ async function generateScript() {
   var length = document.getElementById("script-length").value;
   var out = document.getElementById("script-out");
   out.innerHTML = "<div class='loading'>Writing your script...</div>";
-  var prompt = VOICE + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences — must stop the scroll]\nBODY: [what she says in the middle]\nCTA: [final line — invites comment, save, or follow]\nVISUAL: [what she should do on screen]\n---\n\nMake the hook provocative. Write in her voice — like talking to a close friend.";
+  var msg = VOICE + getVoiceContext() + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook provocative. Write in her voice.";
   try {
-    var text = await callClaude(prompt, 800);
-    function g(key) { var re = new RegExp(key + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---)", "s"); var m = text.match(re); return m ? m[1].trim() : ""; }
+    var text = await callClaude([{ role: "user", content: msg }], 900);
+    function g(k) {
+      var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i");
+      var m = text.match(re);
+      return m ? m[1].trim() : "";
+    }
     var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
     var full = [hook, body, cta].filter(Boolean).join("\n\n");
+    var fullEnc = JSON.stringify(full);
     var html = "<div class='card'>";
     html += "<div class='card-label'>" + length + "-second face-to-camera script</div>";
-    if (hook) html += "<div class='script-block'><span class='badge badge-ig'>Hook</span><span class='script-timing'>0-3s</span><div class='hook-line' style='margin-top:8px'>\"" + hook + "\"</div></div>";
-    if (body) html += "<div class='script-block'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
-    if (cta) html += "<div class='script-block'><span class='badge badge-both'>CTA</span><span class='script-timing'>last 5s</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
-    if (visual) html += "<div class='script-block'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cp(this, " + JSON.stringify(full) + ")'>Copy full script</button><button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(full) + ", \"Script\")'>Save ♡</button><button class='btn accent' onclick='generateScript()'>Regenerate</button></div></div>";
+    if (hook) html += "<div style='margin-bottom:1rem'><span class='badge badge-ig'>Hook</span><div class='hook-line' style='margin-top:8px'>\"" + hook + "\"</div></div>";
+    if (body) html += "<div style='margin-bottom:1rem'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
+    if (cta) html += "<div style='margin-bottom:1rem'><span class='badge badge-both'>CTA</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
+    if (visual) html += "<div style='margin-bottom:1rem'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + fullEnc + ")'>Copy script</button><button class='btn accent' onclick='generateScript()'>Regenerate</button></div></div>";
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
@@ -676,27 +635,33 @@ async function generateScript() {
 async function generateAudio() {
   var out = document.getElementById("audio-out");
   out.innerHTML = "<div class='loading'>Generating hook formulas and audio strategy...</div>";
-  var prompt = VOICE + "\n\nGenerate two things:\n\n1. HOOKS: 6 proven hook formulas with examples for this niche. Format each:\nFORMULA: [template]\nEXAMPLE: [example]\n\n2. AUDIO: 4 audio/sound strategy tips for TikTok and Instagram Reels for emotional, countercultural, spoken-word content.\n\nSeparate with ===";
+  var msg = VOICE + "\n\nGenerate:\n1. HOOKS: 6 proven hook formulas with examples for this niche. Format each:\nFORMULA: [template]\nEXAMPLE: [example]\n\n2. AUDIO: 4 audio strategy tips for TikTok and Instagram Reels for emotional spoken-word content.\n\nSeparate the two sections with ===";
   try {
-    var text = await callClaude(prompt, 1000);
+    var text = await callClaude([{ role: "user", content: msg }], 1000);
     var parts = text.split("===");
-    var hooksRaw = parts[0] || ""; var audioRaw = parts[1] || "";
-    var hookBlocks = hooksRaw.split(/\nFORMULA:/i).filter(function(s) { return s.trim() && !s.match(/^HOOK/i); });
-    var hooksHTML = "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px'>Hook formulas for your niche</div>";
+    var hooksRaw = parts[0] || "";
+    var audioRaw = parts[1] || "";
+    var hookBlocks = hooksRaw.split(/\nFORMULA:/i).filter(function(s) { return s.trim() && !s.match(/^1\.|^HOOK/i); });
+    var html = "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px'>Hook formulas</div>";
     for (var i = 0; i < hookBlocks.length; i++) {
       var block = hookBlocks[i];
-      var fMatch = block.match(/^([\s\S]+?)(?=\nEXAMPLE:)/s);
       var eMatch = block.match(/EXAMPLE:\s*([\s\S]+)/i);
-      var formula = fMatch ? fMatch[1].trim() : block.split("\n")[0];
+      var formula = block.split("\n")[0].replace(/^FORMULA:\s*/i, "").trim();
       var example = eMatch ? eMatch[1].trim() : "";
-      hooksHTML += "<div class='audio-item'><div class='audio-formula'>\"" + formula + "\"</div>" + (example ? "<div class='audio-example'>" + example + "</div>" : "") + "</div>";
+      if (!formula) continue;
+      html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px'>";
+      html += "<div style='font-family:Playfair Display,serif;font-size:14px;color:var(--pink-dark);font-style:italic'>\"" + formula + "\"</div>";
+      if (example) html += "<div style='font-size:13px;color:var(--text-muted);margin-top:4px;line-height:1.5'>" + example + "</div>";
+      html += "</div>";
     }
-    var audioLines = audioRaw.split("\n").filter(function(l) { return l.trim() && !l.match(/^AUDIO/i); });
-    var audioHTML = "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 10px'>Audio + sound strategy</div>";
+    var audioLines = audioRaw.split("\n").filter(function(l) { return l.trim() && !l.match(/^AUDIO|^2\./i); });
+    html += "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 10px'>Audio strategy</div>";
     for (var i = 0; i < audioLines.length; i++) {
-      audioHTML += "<div class='audio-item'><div class='audio-example' style='color:var(--text)'>" + audioLines[i].replace(/^\d+\.\s*/, "") + "</div></div>";
+      var line = audioLines[i].replace(/^\d+\.\s*/, "").trim();
+      if (!line) continue;
+      html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;font-size:14px;color:var(--text);line-height:1.6'>" + line + "</div>";
     }
-    out.innerHTML = hooksHTML + audioHTML;
+    out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
@@ -705,60 +670,44 @@ async function generateReplies() {
   if (!comment) return;
   var out = document.getElementById("reply-out");
   out.innerHTML = "<div class='loading'>Writing reply options...</div>";
-  var prompt = VOICE + "\n\nSomeone left this comment:\n\"" + comment + "\"\n\nWrite 3 replies:\n1. TYPE: Warm\n2. TYPE: Bold\n3. TYPE: Hook\n\nFormat each:\nTYPE: [Warm/Bold/Hook]\nREPLY: [1-3 sentences]\n---";
+  var msg = VOICE + "\n\nSomeone left this comment:\n" + comment + "\n\nWrite 3 replies. Format each:\nTYPE: [Warm/Bold/Hook]\nREPLY: [1-3 sentences]\n---";
   try {
-    var text = await callClaude(prompt, 700);
+    var text = await callClaude([{ role: "user", content: msg }], 700);
     var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
-    var html = "<div class='comment-display'>\"" + comment + "\"</div>";
+    var html = "<div style='font-size:13px;color:var(--text-muted);font-style:italic;padding:10px 14px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--pink);margin-bottom:1rem'>\"" + comment + "\"</div>";
     for (var i = 0; i < blocks.length; i++) {
       var block = blocks[i];
       var tMatch = block.match(/TYPE:\s*(.+)/i);
       var rMatch = block.match(/REPLY:\s*([\s\S]+)/i);
-      var type = tMatch ? tMatch[1].trim() : "";
+      var type = tMatch ? tMatch[1].trim() : "Warm";
       var reply = rMatch ? rMatch[1].trim() : block;
-      var badgeClass = type.toLowerCase() === "warm" ? "badge-ig" : type.toLowerCase() === "bold" ? "badge-tt" : "badge-both";
-      html += "<div class='card'><span class='badge " + badgeClass + "'>" + type + "</span><div class='post-text' style='font-size:14px'>" + reply + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this, " + JSON.stringify(reply) + ")'>Copy</button></div></div>";
+      var replyEnc = JSON.stringify(reply);
+      var bc = type.toLowerCase() === "warm" ? "badge-ig" : type.toLowerCase() === "bold" ? "badge-tt" : "badge-both";
+      html += "<div class='card'><span class='badge " + bc + "'>" + type + "</span><div class='post-text' style='font-size:14px'>" + reply + "</div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + replyEnc + ")'>Copy</button></div></div>";
     }
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-updateKeyStatus();
-
-function switchVoiceTab(tab) {
-  document.getElementById('voice-tab-transcript').style.display = tab === 'transcript' ? 'block' : 'none';
-  document.getElementById('voice-tab-manual').style.display = tab === 'manual' ? 'block' : 'none';
-  document.getElementById('tab-transcript').style.background = tab === 'transcript' ? 'var(--pink-light)' : '';
-  document.getElementById('tab-transcript').style.color = tab === 'transcript' ? 'var(--pink-dark)' : '';
-  document.getElementById('tab-transcript').style.borderColor = tab === 'transcript' ? 'var(--pink)' : '';
-  document.getElementById('tab-transcript').style.fontWeight = tab === 'transcript' ? '500' : '';
-  document.getElementById('tab-manual').style.background = tab === 'manual' ? 'var(--pink-light)' : '';
-  document.getElementById('tab-manual').style.color = tab === 'manual' ? 'var(--pink-dark)' : '';
-  document.getElementById('tab-manual').style.borderColor = tab === 'manual' ? 'var(--pink)' : '';
-  document.getElementById('tab-manual').style.fontWeight = tab === 'manual' ? '500' : '';
-}
-
 async function extractTranscript() {
-  var transcript = document.getElementById('transcript-input').value.trim();
-  var coachName = document.getElementById('coach-name').value.trim() || 'Cherryl';
+  var transcript = document.getElementById("transcript-input").value.trim();
+  var coachName = document.getElementById("coach-name").value.trim();
+  if (!coachName) coachName = "the coach";
   if (!transcript) return;
-  var out = document.getElementById('transcript-out');
+  var out = document.getElementById("transcript-out");
   out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
-  var prompt = 'Here is a coaching call transcript. The coach is identified as: ' + coachName + '.
-
-Transcript:
-' + transcript.substring(0, 6000) + '
-
-Your task: Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, filler words like "um", "uh", speaker labels. Output only the coach's words as flowing natural text, preserving their exact phrasing, vocabulary, and way of explaining things. Do not summarise — keep their actual words. Output nothing else, just the extracted coach voice.';
+  var snippet = transcript.substring(0, 6000);
+  var msg = "Here is a coaching call transcript. The coach is labelled as: " + coachName + ". Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, speaker labels, filler words like um and uh. Output only the coach words as flowing natural text, preserving their exact phrasing and vocabulary. Do not summarise - keep their actual words. Output nothing else.\n\nTranscript:\n" + snippet;
   try {
-    var extracted = await callClaude(prompt, 2000);
+    var extracted = await callClaude([{ role: "user", content: msg }], 2000);
+    var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
+    var extractedEnc = JSON.stringify(extracted);
     out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
-      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted — your words only</div>" +
-      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto'>" + extracted.substring(0, 500) + (extracted.length > 500 ? '...' : '') + "</div>" +
-      "<div class='btn-actions' style='margin-top:10px'>" +
-      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile ✓</button>" +
-      "</div></div>";
+      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted - your words only</div>" +
+      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + extractedEnc + ")'>Save to my voice profile</button>" +
+      "</div>";
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
@@ -767,9 +716,11 @@ function saveExtracted(text) {
   try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
   samples.unshift({ text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" });
   localStorage.setItem("tww_voice", JSON.stringify(samples));
-  document.getElementById('transcript-out').innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>✓ Saved to your voice profile! All future posts will draw on this.</div>";
+  document.getElementById("transcript-out").innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>Saved to your voice profile!</div>";
   loadVoiceSamples();
 }
+
+updateKeyStatus();
 </script>
 </body>
 </html>
