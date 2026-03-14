@@ -551,8 +551,8 @@ async function runTest() {
     if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px'>" + format + "</p>";
     html += "<div class='btn-actions' style='margin-top:1rem'>";
     if (sharpen) {
-      html += "<button class='btn' onclick='cpText(this,\"" + sharpen.replace(/\\/g,"\\\\").replace(/"/g,"&quot;") + "\")'>Copy hook</button>";
-      html += "<button class='btn accent' onclick='savePost(\"\",\"" + sharpen.replace(/\\/g,"\\\\").replace(/"/g,"&quot;") + "\",\"Idea tester\")'>Save hook</button>";
+      html += "<button class='btn' data-post=" + JSON.stringify(sharpen) + " onclick='cpText(this,this.getAttribute(\"data-post\"))'>Copy hook</button>";
+      html += "<button class='btn accent' data-post=" + JSON.stringify(sharpen) + " onclick='saveFromBtn(this)' data-hook='' data-plat='Idea tester'>Save hook</button>";
     }
     html += "</div>";
     html += "<div class='chat-wrap'><div class='chat-label'>Refine this idea</div>";
