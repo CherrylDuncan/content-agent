@@ -205,10 +205,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     <div class="page" id="page-planner">
       <div class="page-title">Weekly planner</div>
       <div class="page-sub">Your 7 posts for the week. Fill in each row, then copy to Later on Monday.</div>
-      <div style="display:flex;gap:10px;margin-bottom:1.5rem;align-items:center">
+      <div style="display:flex;gap:10px;margin-bottom:1.5rem;align-items:center;flex-wrap:wrap">
+        <button class="btn accent" onclick="savePlannerFromTable()">Save week</button>
         <button class="btn" onclick="clearPlanner()">Clear week</button>
         <button class="btn" onclick="copyPlannerToClipboard()">Copy all for Later</button>
         <span id="planner-count" style="font-size:13px;color:var(--text-muted)"></span>
+        <span id="planner-saved-msg" style="font-size:13px;color:var(--teal);display:none">Saved!</span>
       </div>
       <div id="planner-table"></div>
     </div>
@@ -401,6 +403,24 @@ function renderPlanner() {
   }
   html += "</tbody></table></div>";
   el.innerHTML = html;
+}
+
+function savePlannerFromTable() {
+  var rows = document.querySelectorAll("#planner-table tbody tr");
+  var items = loadPlanner();
+  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
+  for (var i = 0; i < rows.length; i++) {
+    var selects = rows[i].querySelectorAll("select");
+    var ta = rows[i].querySelector("textarea");
+    if (selects[0]) items[i].day = selects[0].value;
+    if (selects[1]) items[i].time = selects[1].value;
+    if (selects[2]) items[i].format = selects[2].value;
+    if (selects[3]) items[i].platform = selects[3].value;
+    if (ta) items[i].idea = ta.value;
+  }
+  savePlanner(items);
+  var msg = document.getElementById("planner-saved-msg");
+  if (msg) { msg.style.display = "inline"; setTimeout(function() { msg.style.display = "none"; }, 2000); }
 }
 
 function savePlannerCell(i, key, val) {
