@@ -396,15 +396,16 @@ function renderPlanner() {
     var assigned = item.day && item.format ? " assigned" : "";
     cards += "<div class='planner-card" + assigned + "' id='pcard-" + i + "'>";
     cards += "<button class='planner-del' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
-    cards += "<div class='planner-row'>";
+    cards += "<div class='planner-row' style='flex-wrap:wrap'>";
     cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select>";
     cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select>";
     cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select>";
     cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
     cards += "</div>";
-    cards += "<div class='planner-idea' contenteditable='true' data-placeholder='Paste your idea or caption here...' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.innerText)'>" + (item.idea || "") + "</div>";
-    cards += "<div class='btn-actions'>";
+    cards += "<textarea class='planner-idea' style='width:100%;min-height:80px;resize:vertical;font-size:13px;line-height:1.6;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg)' placeholder='Paste your caption or idea here...' onchange='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)'>" + (item.idea || "").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</textarea>";
+    cards += "<div class='btn-actions' style='margin-top:8px'>";
     cards += "<button class='btn accent' onclick='plannerToScript(" + i + ")'>Write script</button>";
+    cards += "<button class='btn' onclick='savePlannerItem(" + i + ")'>Save idea</button>";
     cards += "</div>";
     cards += "</div>";
   }
@@ -429,6 +430,17 @@ function deletePlannerItem(i) {
   items.splice(i, 1);
   savePlanner(items);
   renderPlanner();
+}
+
+function savePlannerItem(i) {
+  var items = loadPlanner();
+  if (!items[i]) return;
+  var card = document.getElementById("pcard-" + i);
+  if (card) {
+    var ta = card.querySelector("textarea");
+    if (ta) { items[i].idea = ta.value; savePlanner(items); }
+  }
+  alert("Idea saved to your planner.");
 }
 
 function clearPlanner() {
