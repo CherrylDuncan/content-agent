@@ -83,6 +83,19 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .key-wrap { position: relative; margin-top: 8px; }
 .key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
 .key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
+.planner-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:10px;position:relative; }
+.planner-card.assigned { border-left:3px solid var(--teal); }
+.planner-row { display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px; }
+.planner-select { font-family:"DM Sans",sans-serif;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:6px;padding:5px 8px;outline:none; }
+.planner-day { font-size:11px;font-weight:500;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px; }
+.planner-idea { font-size:13px;line-height:1.6;color:var(--text);background:var(--bg);border-radius:6px;padding:8px 10px;margin-bottom:8px;min-height:44px;border:1px solid var(--border); }
+.planner-idea[contenteditable]:empty:before { content:attr(data-placeholder);color:var(--text-faint); }
+.planner-del { position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-faint);padding:2px 6px; }
+.planner-del:hover { color:var(--pink); }
+.week-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:1.5rem; }
+.week-col { background:var(--bg);border-radius:var(--radius-sm);padding:8px;min-height:60px; }
+.week-col-label { font-size:10px;font-weight:500;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;text-align:center; }
+.week-dot { width:8px;height:8px;border-radius:50%;background:var(--teal);margin:2px auto; }
 </style>
 </head>
 <body>
@@ -99,6 +112,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     <button class="nav-item active" onclick="goTo('generate')" data-page="generate"><span>&#10022;</span><span>Generate posts</span></button>
     <button class="nav-item" onclick="goTo('test')" data-page="test"><span>&#9678;</span><span>Idea tester</span></button>
     <button class="nav-item" onclick="goTo('script')" data-page="script"><span>&#9654;</span><span>Video scripts</span></button>
+    <button class="nav-item" onclick="goTo('planner')" data-page="planner"><span>&#9635;</span><span>Weekly planner</span></button>
     <div class="nav-section">Strategy</div>
     <button class="nav-item" onclick="goTo('audio')" data-page="audio"><span>&#9672;</span><span>Hooks + audio</span></button>
     <button class="nav-item" onclick="goTo('reply')" data-page="reply"><span>&#9671;</span><span>Reply templates</span></button>
@@ -186,6 +200,18 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
         </select>
         <button class="btn" onclick="generateScriptFromAngle()" style="width:100%;padding:10px">Generate from angle &rarr;</button>
       </div>
+    </div>
+
+    <div class="page" id="page-planner">
+      <div class="page-title">Weekly planner</div>
+      <div class="page-sub">Plan your 7 posts for the week. Assign formats, platforms and days before anything goes into Later.</div>
+      <div style="display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap">
+        <button class="btn accent" onclick="addPlannerSlot()">+ Add idea</button>
+        <button class="btn" onclick="clearPlanner()">Clear week</button>
+        <button class="btn" onclick="copyPlannerToClipboard()">Copy all for Later</button>
+      </div>
+      <div id="planner-week"></div>
+      <div id="planner-empty" style="text-align:center;padding:3rem;color:var(--text-faint);font-size:14px;font-style:italic">No ideas planned yet. Generate posts, save your favourites, then add them here.</div>
     </div>
 
     <div class="page" id="page-audio">
@@ -316,7 +342,128 @@ function saveKey() {
   if (!val) return;
   localStorage.setItem("tww_key", val);
   document.getElementById("saved-notice").style.display = "block";
-  updateKeyStatus();
+  
+// ── WEEKLY PLANNER ──────────────────────────────────────────────────
+
+var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+var FORMATS = ["Talking head","Reaction clip","Carousel","Text overlay","Raw TikTok","Story series"];
+var PLATFORMS = ["Both","TikTok only","Instagram only"];
+var TIMES = ["7:00 am","10:00 am","12:30 pm","3:30 pm","6:30 pm","9:00 pm"];
+
+function loadPlanner() {
+  var items = [];
+  try { items = JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { items = []; }
+  return items;
+}
+
+function savePlanner(items) {
+  localStorage.setItem("tww_plan", JSON.stringify(items));
+}
+
+function renderPlanner() {
+  var items = loadPlanner();
+  var out = document.getElementById("planner-week");
+  var empty = document.getElementById("planner-empty");
+  if (!out) return;
+  if (!items.length) {
+    out.innerHTML = "";
+    if (empty) empty.style.display = "block";
+    return;
+  }
+  if (empty) empty.style.display = "none";
+
+  // Week overview grid
+  var grid = "<div class='week-grid'>";
+  for (var d = 0; d < 7; d++) {
+    grid += "<div class='week-col'><div class='week-col-label'>" + DAYS[d].substring(0,3) + "</div>";
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].day === DAYS[d]) grid += "<div class='week-dot'></div>";
+    }
+    grid += "</div>";
+  }
+  grid += "</div>";
+
+  // Cards
+  var cards = "";
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var fmtOpts = FORMATS.map(function(f) { return "<option value='" + f + "'" + (item.format === f ? " selected" : "") + ">" + f + "</option>"; }).join("");
+    var platOpts = PLATFORMS.map(function(p) { return "<option value='" + p + "'" + (item.platform === p ? " selected" : "") + ">" + p + "</option>"; }).join("");
+    var dayOpts = DAYS.map(function(d) { return "<option value='" + d + "'" + (item.day === d ? " selected" : "") + ">" + d + "</option>"; }).join("");
+    var timeOpts = TIMES.map(function(t) { return "<option value='" + t + "'" + (item.time === t ? " selected" : "") + ">" + t + "</option>"; }).join("");
+    var assigned = item.day && item.format ? " assigned" : "";
+    cards += "<div class='planner-card" + assigned + "' id='pcard-" + i + "'>";
+    cards += "<button class='planner-del' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
+    cards += "<div class='planner-row'>";
+    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select>";
+    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select>";
+    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select>";
+    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
+    cards += "</div>";
+    cards += "<div class='planner-idea' contenteditable='true' data-placeholder='Paste your idea or caption here...' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.innerText)'>" + (item.idea || "") + "</div>";
+    cards += "<div class='btn-actions'>";
+    cards += "<button class='btn accent' onclick='plannerToScript(" + i + ")'>Write script</button>";
+    cards += "</div>";
+    cards += "</div>";
+  }
+  out.innerHTML = grid + cards;
+}
+
+function addPlannerSlot(idea) {
+  var items = loadPlanner();
+  items.push({ idea: idea || "", day: "", time: "", format: "", platform: "Both" });
+  savePlanner(items);
+  renderPlanner();
+  goTo("planner");
+}
+
+function updatePlannerItem(i, key, val) {
+  var items = loadPlanner();
+  if (items[i]) { items[i][key] = val; savePlanner(items); renderPlanner(); }
+}
+
+function deletePlannerItem(i) {
+  var items = loadPlanner();
+  items.splice(i, 1);
+  savePlanner(items);
+  renderPlanner();
+}
+
+function clearPlanner() {
+  if (!confirm("Clear the whole week plan?")) return;
+  localStorage.removeItem("tww_plan");
+  renderPlanner();
+}
+
+function plannerToScript(i) {
+  var items = loadPlanner();
+  if (!items[i] || !items[i].idea) return;
+  goTo("script");
+  setTimeout(function() {
+    var el = document.getElementById("script-idea");
+    if (el) el.value = items[i].idea;
+  }, 100);
+}
+
+function copyPlannerToClipboard() {
+  var items = loadPlanner();
+  if (!items.length) { alert("No ideas in your planner yet."); return; }
+  var sorted = items.slice().sort(function(a,b) {
+    return DAYS.indexOf(a.day) - DAYS.indexOf(b.day);
+  });
+  var text = "WEEKLY CONTENT PLAN\n\n";
+  for (var i = 0; i < sorted.length; i++) {
+    var it = sorted[i];
+    text += (it.day || "Unscheduled") + " " + (it.time || "") + "\n";
+    text += "Format: " + (it.format || "TBD") + " | Platform: " + (it.platform || "Both") + "\n";
+    text += (it.idea || "No idea yet") + "\n\n";
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    alert("Week plan copied! Paste into Later or your notes.");
+  });
+}
+
+updateKeyStatus();
 }
 
 function updateKeyStatus() {
@@ -346,6 +493,7 @@ function goTo(page) {
   }
   if (page === "saved") loadSavedPosts();
   if (page === "voice") loadVoiceSamples();
+  if (page === "planner") renderPlanner();
 }
 
 function cp(btn, text) {
@@ -517,7 +665,7 @@ async function generatePosts() {
       html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
       if (hook) html += "<div class='hook-line'>\"" + hook + "\"</div>";
       html += "<div class='post-text'>" + post + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + postEnc + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + postEnc + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addPlannerSlot(this.getAttribute(&quot;data-post&quot;))'>+ Planner</button></div>";
       html += "</div>";
     }
     out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
