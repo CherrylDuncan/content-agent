@@ -154,9 +154,27 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
     <div class="page" id="page-script">
       <div class="page-title">Video scripts</div>
-      <div class="page-sub">Face-to-camera scripts with hook, body, CTA and visual notes.</div>
-      <div class="row">
-        <select id="script-angle">
+      <div class="page-sub">Turn any saved idea into a platform-specific script. TikTok is punchy and fast. Instagram Reels can breathe more.</div>
+      <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1.25rem">
+        <div class="card-label" style="color:var(--pink-dark)">Paste your idea or saved caption</div>
+        <textarea id="script-idea" placeholder="Paste your idea, hook, or caption here..." style="min-height:80px;margin-bottom:10px"></textarea>
+        <div class="row" style="margin-bottom:0">
+          <select id="script-platform">
+            <option value="tiktok">TikTok</option>
+            <option value="instagram">Instagram Reel</option>
+          </select>
+          <select id="script-length">
+            <option value="30">30 sec (TikTok)</option>
+            <option value="60">60 sec</option>
+            <option value="90">90 sec (Reel)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="generateScript()">Write my script &rarr;</button>
+      <div id="script-out"></div>
+      <div style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem">
+        <div class="card-label">Or generate from an angle</div>
+        <select id="script-angle" style="margin-bottom:10px">
           <option value="grief">The silent grief</option>
           <option value="freedom">Keeping your own life</option>
           <option value="attachment">Healing disorganised attachment</option>
@@ -165,14 +183,8 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
           <option value="myth">The holy family myth</option>
           <option value="approval">Not needing approval to belong</option>
         </select>
-        <select id="script-length">
-          <option value="30">30 sec</option>
-          <option value="60">60 sec</option>
-          <option value="90">90 sec</option>
-        </select>
+        <button class="btn" onclick="generateScriptFromAngle()" style="width:100%;padding:10px">Generate from angle &rarr;</button>
       </div>
-      <button class="btn-primary" onclick="generateScript()">Write my script &rarr;</button>
-      <div id="script-out"></div>
     </div>
 
     <div class="page" id="page-audio">
@@ -374,7 +386,7 @@ function loadSavedPosts() {
     html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
     if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
     html += "<div class='post-text'>" + p.post + "</div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cpSaved(" + i + ")'>Copy</button><button class='btn' onclick='deleteSaved(" + i + ")'>Remove</button></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpSaved(" + i + ")'>Copy</button><button class='btn accent' onclick='scriptFromSaved(" + i + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + i + ")'>Remove</button></div>";
     html += "</div>";
   }
   out.innerHTML = html;
@@ -612,31 +624,116 @@ async function sendChat(prefill) {
   }
 }
 
-async function generateScript() {
+function scriptFromSaved(i) {
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+  if (!saved[i]) return;
+  var post = saved[i].post || saved[i].hook || "";
+  goTo("script");
+  setTimeout(function() {
+    var el = document.getElementById("script-idea");
+    if (el) el.value = post;
+  }, 100);
+}
+
+async function generateScriptFromAngle() {
   var angle = document.getElementById("script-angle").value;
   var length = document.getElementById("script-length").value;
+  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
   var out = document.getElementById("script-out");
   out.innerHTML = "<div class='loading'>Writing your script...</div>";
-  var msg = VOICE + getVoiceContext() + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook provocative. Write in her voice.";
+  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
+  var msg = VOICE + getVoiceContext() + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook stop the scroll. Write in her voice.";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 900);
-    function g(k) {
-      var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i");
-      var m = text.match(re);
-      return m ? m[1].trim() : "";
-    }
-    var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
-    var full = [hook, body, cta].filter(Boolean).join("\n\n");
-    var fullEnc = JSON.stringify(full);
-    var html = "<div class='card'>";
-    html += "<div class='card-label'>" + length + "-second face-to-camera script</div>";
-    if (hook) html += "<div style='margin-bottom:1rem'><span class='badge badge-ig'>Hook</span><div class='hook-line' style='margin-top:8px'>\"" + hook + "\"</div></div>";
-    if (body) html += "<div style='margin-bottom:1rem'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
-    if (cta) html += "<div style='margin-bottom:1rem'><span class='badge badge-both'>CTA</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
-    if (visual) html += "<div style='margin-bottom:1rem'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + fullEnc + ")'>Copy script</button><button class='btn accent' onclick='generateScript()'>Regenerate</button></div></div>";
-    out.innerHTML = html;
+    renderScript(text, length, platform, out);
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+async function generateScript() {
+  var idea = document.getElementById("script-idea") ? document.getElementById("script-idea").value.trim() : "";
+  var length = document.getElementById("script-length").value;
+  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
+  var out = document.getElementById("script-out");
+  if (!idea) { out.innerHTML = "<div class='loading'>Paste your idea in the box above first.</div>"; return; }
+  out.innerHTML = "<div class='loading'>Writing your script...</div>";
+  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
+  var msg = VOICE + getVoiceContext() + "\n\nTurn this idea into a " + length + "-second face-to-camera video script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences - must stop the scroll]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nWrite in her voice. Make it feel lived, not scripted.";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 900);
+    renderScript(text, length, platform, out);
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+function renderScript(text, length, platform, out) {
+  function g(k) {
+    var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i");
+    var m = text.match(re);
+    return m ? m[1].trim() : "";
+  }
+  var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
+  var full = [hook, body, cta].filter(Boolean).join("\n\n");
+  var fullEnc = JSON.stringify(full);
+  var platLabel = platform === "instagram" ? "Instagram Reel" : "TikTok";
+  var platBadge = platform === "instagram" ? "badge-ig" : "badge-tt";
+  var html = "<div class='card'>";
+  html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px'>";
+  html += "<div class='card-label' style='margin-bottom:0'>" + length + "-second script</div>";
+  html += "<span class='badge " + platBadge + "' style='margin-bottom:0'>" + platLabel + "</span></div>";
+  if (hook) html += "<div style='margin-bottom:1rem'><span class='badge badge-ig'>Hook</span><div class='hook-line' style='margin-top:8px'>\"" + hook + "\"</div></div>";
+  if (body) html += "<div style='margin-bottom:1rem'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
+  if (cta) html += "<div style='margin-bottom:1rem'><span class='badge badge-both'>CTA</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
+  if (visual) html += "<div style='margin-bottom:1rem'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
+  html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + fullEnc + ")'>Copy script</button>";
+  html += "<button class='btn accent' onclick='savePost(\"\",\"Script: " + platLabel + "\",\"Script\")' data-post=" + JSON.stringify("SCRIPT (" + platLabel + "):\n\n" + full) + " data-hook='' data-plat='Script' onclick='saveFromBtn(this)'>Save script</button>";
+  html += "<button class='btn' onclick='generateScript()'>Regenerate</button></div>";
+  html += "<div class='chat-wrap'><div class='chat-label'>Refine this script</div>";
+  html += "<div style='margin-bottom:10px'>";
+  html += "<button class='chip' onclick='sendScriptChat(\"Make the hook more provocative\")'>Sharper hook</button>";
+  html += "<button class='chip' onclick='sendScriptChat(\"Make it shorter and punchier\")'>Shorter</button>";
+  html += "<button class='chip' onclick='sendScriptChat(\"Make it more personal and vulnerable\")'>More personal</button>";
+  html += "<button class='chip' onclick='sendScriptChat(\"Rewrite for TikTok - faster pace\")'>TikTok pace</button>";
+  html += "<button class='chip' onclick='sendScriptChat(\"Rewrite for Instagram Reel - more emotional\")'>Reel pace</button>";
+  html += "</div>";
+  html += "<div class='chat-messages' id='script-chat-msgs'></div>";
+  html += "<div class='chat-input-row'><input class='chat-input' id='script-chat-in' type='text' placeholder='Refine or adjust...' onkeydown='if(event.key===\"Enter\")sendScriptChat()'/><button class='chat-send' onclick='sendScriptChat()'>Send</button></div>";
+  html += "</div></div>";
+  out.innerHTML = html;
+  window._scriptChatHistory = [{ role: "user", content: "Here is a video script: " + full }, { role: "assistant", content: "Script created. How would you like to refine it?" }];
+}
+
+async function sendScriptChat(prefill) {
+  var input = document.getElementById("script-chat-in");
+  var msg = prefill || (input ? input.value.trim() : "");
+  if (!msg) return;
+  if (input) input.value = "";
+  var msgs = document.getElementById("script-chat-msgs");
+  if (!msgs) return;
+  var userDiv = document.createElement("div");
+  userDiv.className = "chat-msg user";
+  userDiv.textContent = msg;
+  msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div");
+  aiDiv.className = "chat-msg ai";
+  aiDiv.textContent = "Rewriting...";
+  msgs.appendChild(aiDiv);
+  if (!window._scriptChatHistory) window._scriptChatHistory = [];
+  window._scriptChatHistory.push({ role: "user", content: msg });
+  try {
+    var reply = await callClaude(window._scriptChatHistory, 800, VOICE + " You are helping refine a video script. Be concise. Output the revised script directly.");
+    window._scriptChatHistory.push({ role: "assistant", content: reply });
+    aiDiv.textContent = reply;
+    var saveBtn = document.createElement("button");
+    saveBtn.className = "btn accent";
+    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
+    saveBtn.textContent = "Save this version";
+    var snap = reply;
+    saveBtn.onclick = function() { savePost("", snap, "Script"); };
+    aiDiv.insertAdjacentElement("afterend", saveBtn);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    aiDiv.textContent = "Something went wrong - try again.";
+  }
 }
 
 async function generateAudio() {
