@@ -382,53 +382,68 @@ function renderPlanner() {
   }
   if (empty) empty.style.display = "none";
 
-  // Calendar grid
-  var cal = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:1.5rem'>";
+  // Big calendar grid — each day is a column with idea pills inside
+  var cal = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:1.5rem'>";
   for (var d = 0; d < 7; d++) {
-    var dayItems = items.filter(function(it) { return it.day === DAYS[d]; });
+    var dayName = DAYS[d];
+    var dayItems = items.map(function(it, idx) { return {it: it, idx: idx}; }).filter(function(o) { return o.it.day === dayName; });
     var isActive = dayItems.length > 0;
-    cal += "<div style='background:" + (isActive ? "var(--teal-light)" : "var(--bg)") + ";border:1px solid " + (isActive ? "var(--teal)" : "var(--border)") + ";border-radius:var(--radius-sm);padding:8px;min-height:80px'>";
-    cal += "<div style='font-size:10px;font-weight:600;color:" + (isActive ? "var(--teal-dark)" : "var(--text-faint)") + ";text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px'>" + DAYS[d].substring(0,3) + "</div>";
+    cal += "<div style='background:" + (isActive ? "var(--teal-light)" : "var(--bg)") + ";border:1px solid " + (isActive ? "var(--teal)" : "var(--border)") + ";border-radius:var(--radius-sm);padding:10px;min-height:120px'>";
+    cal += "<div style='font-size:10px;font-weight:700;color:" + (isActive ? "var(--teal-dark)" : "var(--text-faint)") + ";text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px'>" + dayName.substring(0,3) + "</div>";
+    if (dayItems.length === 0) {
+      cal += "<div style='font-size:10px;color:var(--text-faint);font-style:italic'>Empty</div>";
+    }
     for (var k = 0; k < dayItems.length; k++) {
-      var it = dayItems[k];
-      var fmt = it.format || "TBD";
-      var fmtColor = fmt === "Talking head" ? "var(--pink-dark)" : fmt === "Reaction clip" ? "var(--teal-dark)" : fmt === "Carousel" ? "var(--purple-dark)" : "var(--amber-dark)";
-      cal += "<div style='font-size:10px;background:white;border-radius:4px;padding:3px 6px;margin-bottom:3px;color:" + fmtColor + ";font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis'>" + fmt + "</div>";
+      var it = dayItems[k].it;
+      var idx = dayItems[k].idx;
+      var fmt = it.format || "No format";
+      var fmtColors = {"Talking head": "#72243E", "Reaction clip": "#085041", "Carousel": "#3C3489", "Text overlay": "#633806", "Raw TikTok": "#085041", "Story series": "#3C3489"};
+      var fmtBgs = {"Talking head": "#FBEAF0", "Reaction clip": "#E1F5EE", "Carousel": "#EEEDFE", "Text overlay": "#FAEEDA", "Raw TikTok": "#E1F5EE", "Story series": "#EEEDFE"};
+      var col = fmtColors[fmt] || "#6b6b6b";
+      var bg = fmtBgs[fmt] || "#f5f5f5";
+      var preview = it.idea ? it.idea.substring(0, 40) + (it.idea.length > 40 ? "..." : "") : "No caption yet";
+      cal += "<div style='background:" + bg + ";border-radius:5px;padding:5px 7px;margin-bottom:5px;cursor:pointer' onclick='scrollToCard(" + idx + ")'>";
+      cal += "<div style='font-size:10px;font-weight:600;color:" + col + ";margin-bottom:2px'>" + fmt + "</div>";
       if (it.time) cal += "<div style='font-size:9px;color:var(--text-faint);margin-bottom:2px'>" + it.time + "</div>";
+      cal += "<div style='font-size:10px;color:var(--text-muted);line-height:1.4;font-style:italic'>" + preview + "</div>";
+      cal += "</div>";
     }
     cal += "</div>";
   }
   cal += "</div>";
   calEl.innerHTML = cal;
 
-  // Cards list
-  var cards = "";
+  // Compact cards below
+  var cards = "<div style='font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px'>Edit ideas</div>";
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     var fmtOpts = FORMATS.map(function(f) { return "<option value='" + f + "'" + (item.format === f ? " selected" : "") + ">" + f + "</option>"; }).join("");
     var platOpts = PLATFORMS.map(function(p) { return "<option value='" + p + "'" + (item.platform === p ? " selected" : "") + ">" + p + "</option>"; }).join("");
     var dayOpts = DAYS.map(function(d) { return "<option value='" + d + "'" + (item.day === d ? " selected" : "") + ">" + d + "</option>"; }).join("");
     var timeOpts = TIMES.map(function(t) { return "<option value='" + t + "'" + (item.time === t ? " selected" : "") + ">" + t + "</option>"; }).join("");
-    var num = i + 1;
-    cards += "<div class='card' id='pcard-" + i + "' style='margin-bottom:10px'>";
-    cards += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px'>";
-    cards += "<span style='font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em'>Idea " + num + "</span>";
-    cards += "<button style='background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-faint);padding:2px 6px' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
+    cards += "<div class='card' id='pcard-" + i + "' style='margin-bottom:8px;padding:12px'>";
+    cards += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'>";
+    cards += "<span style='font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase'>" + (item.day || "Unscheduled") + " " + (item.time || "") + " &mdash; " + (item.format || "No format") + "</span>";
+    cards += "<button style='background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-faint)' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
     cards += "</div>";
-    cards += "<div style='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px'>";
-    cards += "<select class='planner-select' style='flex:1;min-width:100px' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select>";
-    cards += "<select class='planner-select' style='flex:1;min-width:90px' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select>";
-    cards += "<select class='planner-select' style='flex:1;min-width:110px' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select>";
-    cards += "<select class='planner-select' style='flex:1;min-width:90px' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
+    cards += "<div style='display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px'>";
+    cards += "<select class='planner-select' style='flex:1;min-width:90px' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value);renderPlanner()'><option value=''>Day...</option>" + dayOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:80px' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value);renderPlanner()'><option value=''>Time...</option>" + timeOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:100px' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value);renderPlanner()'><option value=''>Format...</option>" + fmtOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:80px' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
     cards += "</div>";
-    cards += "<textarea style='width:100%;min-height:70px;resize:vertical;font-size:13px;line-height:1.6;padding:8px 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);font-family:DM Sans,sans-serif' placeholder='Paste your clean caption here...' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)'>" + (item.idea || "") + "</textarea>";
+    cards += "<textarea style='width:100%;min-height:60px;resize:vertical;font-size:13px;line-height:1.6;padding:7px 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);font-family:DM Sans,sans-serif' placeholder='Paste your caption here...' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value);renderPlanner()'>" + (item.idea || "") + "</textarea>";
     cards += "<div style='display:flex;gap:8px;margin-top:8px'>";
     cards += "<button class='btn accent' onclick='plannerToScript(" + i + ")'>Write script</button>";
-    cards += "<button class='btn' onclick='updatePlannerItem(" + i + ",&quot;idea&quot;,document.querySelector(&quot;#pcard-" + i + " textarea&quot;).value)'>Save</button>";
     cards += "</div>";
     cards += "</div>";
   }
   cardsEl.innerHTML = cards;
+}
+
+function scrollToCard(i) {
+  var el = document.getElementById("pcard-" + i);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function addPlannerSlot(idea) {
