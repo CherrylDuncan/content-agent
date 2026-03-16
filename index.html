@@ -204,14 +204,16 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
     <div class="page" id="page-planner">
       <div class="page-title">Weekly planner</div>
-      <div class="page-sub">Plan your 7 posts for the week. Assign formats, platforms and days before anything goes into Later.</div>
-      <div style="display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap">
+      <div class="page-sub">Your content week at a glance. Add ideas, assign formats and days, then copy to Later.</div>
+      <div style="display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center">
         <button class="btn accent" onclick="addPlannerSlot()">+ Add idea</button>
         <button class="btn" onclick="clearPlanner()">Clear week</button>
         <button class="btn" onclick="copyPlannerToClipboard()">Copy all for Later</button>
+        <span id="planner-count" style="font-size:13px;color:var(--text-muted);margin-left:4px"></span>
       </div>
-      <div id="planner-week"></div>
-      <div id="planner-empty" style="text-align:center;padding:3rem;color:var(--text-faint);font-size:14px;font-style:italic">No ideas planned yet. Generate posts, save your favourites, then add them here.</div>
+      <div id="planner-calendar"></div>
+      <div id="planner-cards" style="margin-top:1.5rem"></div>
+      <div id="planner-empty" style="text-align:center;padding:3rem;color:var(--text-faint);font-size:14px;font-style:italic">No ideas planned yet. Generate posts and hit + Planner, or click + Add idea above.</div>
     </div>
 
     <div class="page" id="page-audio">
@@ -364,28 +366,42 @@ function savePlanner(items) {
 
 function renderPlanner() {
   var items = loadPlanner();
-  var out = document.getElementById("planner-week");
+  var calEl = document.getElementById("planner-calendar");
+  var cardsEl = document.getElementById("planner-cards");
   var empty = document.getElementById("planner-empty");
-  if (!out) return;
+  var countEl = document.getElementById("planner-count");
+  if (!calEl) return;
+
+  if (countEl) countEl.textContent = items.length ? items.length + " of 7 ideas planned" : "";
+
   if (!items.length) {
-    out.innerHTML = "";
+    calEl.innerHTML = "";
+    cardsEl.innerHTML = "";
     if (empty) empty.style.display = "block";
     return;
   }
   if (empty) empty.style.display = "none";
 
-  // Week overview grid
-  var grid = "<div class='week-grid'>";
+  // Calendar grid
+  var cal = "<div style='display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:1.5rem'>";
   for (var d = 0; d < 7; d++) {
-    grid += "<div class='week-col'><div class='week-col-label'>" + DAYS[d].substring(0,3) + "</div>";
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].day === DAYS[d]) grid += "<div class='week-dot'></div>";
+    var dayItems = items.filter(function(it) { return it.day === DAYS[d]; });
+    var isActive = dayItems.length > 0;
+    cal += "<div style='background:" + (isActive ? "var(--teal-light)" : "var(--bg)") + ";border:1px solid " + (isActive ? "var(--teal)" : "var(--border)") + ";border-radius:var(--radius-sm);padding:8px;min-height:80px'>";
+    cal += "<div style='font-size:10px;font-weight:600;color:" + (isActive ? "var(--teal-dark)" : "var(--text-faint)") + ";text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px'>" + DAYS[d].substring(0,3) + "</div>";
+    for (var k = 0; k < dayItems.length; k++) {
+      var it = dayItems[k];
+      var fmt = it.format || "TBD";
+      var fmtColor = fmt === "Talking head" ? "var(--pink-dark)" : fmt === "Reaction clip" ? "var(--teal-dark)" : fmt === "Carousel" ? "var(--purple-dark)" : "var(--amber-dark)";
+      cal += "<div style='font-size:10px;background:white;border-radius:4px;padding:3px 6px;margin-bottom:3px;color:" + fmtColor + ";font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis'>" + fmt + "</div>";
+      if (it.time) cal += "<div style='font-size:9px;color:var(--text-faint);margin-bottom:2px'>" + it.time + "</div>";
     }
-    grid += "</div>";
+    cal += "</div>";
   }
-  grid += "</div>";
+  cal += "</div>";
+  calEl.innerHTML = cal;
 
-  // Cards
+  // Cards list
   var cards = "";
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
@@ -393,23 +409,26 @@ function renderPlanner() {
     var platOpts = PLATFORMS.map(function(p) { return "<option value='" + p + "'" + (item.platform === p ? " selected" : "") + ">" + p + "</option>"; }).join("");
     var dayOpts = DAYS.map(function(d) { return "<option value='" + d + "'" + (item.day === d ? " selected" : "") + ">" + d + "</option>"; }).join("");
     var timeOpts = TIMES.map(function(t) { return "<option value='" + t + "'" + (item.time === t ? " selected" : "") + ">" + t + "</option>"; }).join("");
-    var assigned = item.day && item.format ? " assigned" : "";
-    cards += "<div class='planner-card" + assigned + "' id='pcard-" + i + "'>";
-    cards += "<button class='planner-del' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
-    cards += "<div class='planner-row' style='flex-wrap:wrap'>";
-    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select>";
-    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select>";
-    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select>";
-    cards += "<select class='planner-select' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
+    var num = i + 1;
+    cards += "<div class='card' id='pcard-" + i + "' style='margin-bottom:10px'>";
+    cards += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px'>";
+    cards += "<span style='font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em'>Idea " + num + "</span>";
+    cards += "<button style='background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-faint);padding:2px 6px' onclick='deletePlannerItem(" + i + ")'>&#10005;</button>";
     cards += "</div>";
-    cards += "<textarea class='planner-idea' style='width:100%;min-height:80px;resize:vertical;font-size:13px;line-height:1.6;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg)' placeholder='Paste your caption or idea here...' onchange='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)'>" + (item.idea || "").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</textarea>";
-    cards += "<div class='btn-actions' style='margin-top:8px'>";
+    cards += "<div style='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px'>";
+    cards += "<select class='planner-select' style='flex:1;min-width:100px' onchange='updatePlannerItem(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:90px' onchange='updatePlannerItem(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:110px' onchange='updatePlannerItem(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select>";
+    cards += "<select class='planner-select' style='flex:1;min-width:90px' onchange='updatePlannerItem(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select>";
+    cards += "</div>";
+    cards += "<textarea style='width:100%;min-height:70px;resize:vertical;font-size:13px;line-height:1.6;padding:8px 10px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);font-family:DM Sans,sans-serif' placeholder='Paste your clean caption here...' onblur='updatePlannerItem(" + i + ",&quot;idea&quot;,this.value)'>" + (item.idea || "") + "</textarea>";
+    cards += "<div style='display:flex;gap:8px;margin-top:8px'>";
     cards += "<button class='btn accent' onclick='plannerToScript(" + i + ")'>Write script</button>";
-    cards += "<button class='btn' onclick='savePlannerItem(" + i + ")'>Save idea</button>";
+    cards += "<button class='btn' onclick='updatePlannerItem(" + i + ",&quot;idea&quot;,document.querySelector(&quot;#pcard-" + i + " textarea&quot;).value)'>Save</button>";
     cards += "</div>";
     cards += "</div>";
   }
-  out.innerHTML = grid + cards;
+  cardsEl.innerHTML = cards;
 }
 
 function addPlannerSlot(idea) {
