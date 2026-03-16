@@ -342,7 +342,9 @@ function saveKey() {
   if (!val) return;
   localStorage.setItem("tww_key", val);
   document.getElementById("saved-notice").style.display = "block";
-  
+  updateKeyStatus();
+}
+
 // ── WEEKLY PLANNER ──────────────────────────────────────────────────
 
 var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
@@ -461,9 +463,6 @@ function copyPlannerToClipboard() {
   navigator.clipboard.writeText(text).then(function() {
     alert("Week plan copied! Paste into Later or your notes.");
   });
-}
-
-updateKeyStatus();
 }
 
 function updateKeyStatus() {
