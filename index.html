@@ -640,52 +640,31 @@ var TIMES = ["7:00 am","10:00 am","12:30 pm","3:30 pm","6:30 pm","9:00 pm"];
 
 async function loadPlanner() {
   if (sbReady()) {
-    var r = await _sb.from("tww_plan").select("*").order("slot", { ascending: true });
-    var rows = r.data || [];
-    var items = [];
-    for (var i = 0; i < 7; i++) {
-      var found = rows.find(function(rr) { return rr.slot === i; });
-      items.push(found || { slot: i, day: DAYS[i], time: "", format: "", platform: "Both", idea: "" });
-    }
-    return items;
-  } else {
-    try { return JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { return []; }
+    try {
+      var r = await _sb.from("tww_settings").select("value").eq("key","tww_plan_json").single();
+      if (r.data && r.data.value) return JSON.parse(r.data.value);
+    } catch(e) {}
   }
+  try { return JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { return []; }
 }
 
 async function savePlanner(items) {
+  localStorage.setItem("tww_plan", JSON.stringify(items));
   if (sbReady()) {
-    for (var i = 0; i < items.length; i++) {
-      await _sb.from("tww_plan").upsert({ slot: i, day: items[i].day||"", time: items[i].time||"", format: items[i].format||"", platform: items[i].platform||"Both", idea: items[i].idea||"", updated_at: new Date().toISOString() });
-    }
-  } else {
-    localStorage.setItem("tww_plan", JSON.stringify(items));
+    try {
+      await _sb.from("tww_settings").upsert({ key: "tww_plan_json", value: JSON.stringify(items), updated_at: new Date().toISOString() });
+    } catch(e) { console.log("Planner save error:", e); }
   }
 }
 
 async function savePlannerCell(i, key, val) {
-  if (sbReady()) {
-    // Load existing row first so we don't lose other fields
-    var existing = { slot: i, day: DAYS[i], time: "", format: "", platform: "Both", idea: "", updated_at: new Date().toISOString() };
-    try {
-      var r = await _sb.from("tww_plan").select("*").eq("slot", i).single();
-      if (r.data) existing = Object.assign(existing, r.data);
-    } catch(e) {}
-    existing[key] = val;
-    existing.updated_at = new Date().toISOString();
-    await _sb.from("tww_plan").upsert(existing);
-  } else {
-    var items = [];
-    try { items = JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) {}
-    while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-    items[i][key] = val;
-    localStorage.setItem("tww_plan", JSON.stringify(items));
-  }
+  var items = await loadPlanner();
+  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
+  items[i][key] = val;
+  await savePlanner(items);
   var countEl = document.getElementById("planner-count");
   if (countEl && key === "idea") {
-    var rows = document.querySelectorAll("#planner-table tbody tr");
-    var filled = 0;
-    rows.forEach(function(row) { var ta = row.querySelector("textarea"); if (ta && ta.value.trim()) filled++; });
+    var filled = items.filter(function(r) { return r.idea; }).length;
     countEl.textContent = filled + " of 7 ideas filled in";
   }
 }
