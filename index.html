@@ -770,74 +770,45 @@ async function produceWeek() {
   var items = await loadInbox();
   if (!items.length) return;
   var btn = document.getElementById("produce-btn");
-  if (btn) btn.textContent = "Stella is planning your week...";
-  if (btn) btn.disabled = true;
+  if (btn) { btn.textContent = "Stella is planning your week..."; btn.disabled = true; }
 
   var voiceCtx = await getVoiceContext();
+  var ideasText = items.map(function(it, idx) {
+    return (idx+1) + ". " + (it.type === "reaction" ? "[REACTION CLIP] " : "") + it.idea;
+  }).join("\n");
 
-  // Build the prompt
-  var ideasText = items.map(function(it, i) {
-    return (i+1) + ". " + (it.type === "reaction" ? "[REACTION CLIP] " : "") + it.idea;
-  }).join("
-");
-
-  var prompt = VOICE + voiceCtx + "
-
-You are planning a week of content for The Whole Woman. Here are " + items.length + " ideas the creator has picked:
-
-" + ideasText + "
-
-For each idea:
-1. Assign the BEST format from: Talking Head (TikTok), B-Roll TikTok, B-Roll Instagram, Carousel (Instagram only), Reaction Clip (TikTok)
-   - Rule: include exactly 1 Carousel per week (IG)
-   - Rule: Reaction Clip only for ideas marked [REACTION CLIP]
-   - Rule: mix formats across the week for variety
-   - Rule: Talking head for your most personal/vulnerable ideas
-   - Rule: B-Roll for punchy one-truth statements
-2. Write the content for that format:
-   - Talking Head: write a full script (HOOK, BODY, CTA)
-   - B-Roll TikTok: write 4-6 text overlays (short punchy lines, one per screen)
-   - B-Roll Instagram: write a caption (3-5 sentences, no hashtags)
-   - Carousel: write slide-by-slide copy (SLIDE 1 through SLIDE 6, each 1-2 lines)
-   - Reaction Clip: write her commentary script (what she says over the clip)
-3. Suggest a posting day
-
-For EACH idea output EXACTLY:
-IDEA: [the idea]
-FORMAT: [format name]
-DAY: [day of week]
-CONTENT:
-[the full content for that format]
----
-
-Write everything in her voice. Make it feel lived, not scripted.";
+  var prompt = VOICE + voiceCtx;
+  prompt += "\n\nYou are planning a week of content for The Whole Woman. Here are " + items.length + " ideas the creator has picked:\n\n" + ideasText;
+  prompt += "\n\nFor each idea:\n1. Assign the BEST format: Talking Head (TikTok), B-Roll TikTok, B-Roll Instagram, Carousel (Instagram only), Reaction Clip (TikTok)\n";
+  prompt += "   Rules: 1 Carousel per week max. Reaction Clip only for [REACTION CLIP] ideas. Mix formats. Talking head for personal ideas. B-Roll for punchy statements.\n";
+  prompt += "2. Write the content: Talking Head = HOOK + BODY + CTA script. B-Roll TikTok = 4-6 text overlays. B-Roll Instagram = 3-5 sentence caption. Carousel = SLIDE 1 to SLIDE 6. Reaction Clip = commentary script.\n";
+  prompt += "3. Suggest a posting day.\n";
+  prompt += "\nFor EACH idea output EXACTLY this format:\nIDEA: [idea]\nFORMAT: [format]\nDAY: [day]\nCONTENT:\n[content]\n---\n\nWrite in her voice. Real, lived, not scripted.";
 
   try {
     var text = await callClaude([{ role: "user", content: prompt }], 4000);
-    var blocks = text.split("
----").map(function(s) { return s.trim(); }).filter(Boolean);
+    var blocks = text.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
     var produced = [];
     for (var i = 0; i < blocks.length; i++) {
       var block = blocks[i];
-      function g(k) {
-        var re = new RegExp(k + ":\s*([\s\S]+?)(?=\n[A-Z]+:|$)", "i");
-        var m = block.match(re); return m ? m[1].trim() : "";
-      }
+      var ideaM = block.match(/IDEA:\s*([\s\S]+?)(?=\nFORMAT:|$)/i);
+      var formatM = block.match(/FORMAT:\s*(.+)/i);
+      var dayM = block.match(/DAY:\s*(.+)/i);
+      var contentM = block.match(/CONTENT:\s*([\s\S]+)/i);
       produced.push({
-        idea: g("IDEA"),
-        format: g("FORMAT"),
-        day: g("DAY"),
-        content: g("CONTENT")
+        idea: ideaM ? ideaM[1].trim() : "",
+        format: formatM ? formatM[1].trim() : "",
+        day: dayM ? dayM[1].trim() : "",
+        content: contentM ? contentM[1].trim() : ""
       });
     }
     await saveProduced(produced);
-    await saveInbox([]); // clear inbox
+    await saveInbox([]);
     renderProduced(produced);
     document.getElementById("planner-step1").style.display = "none";
     document.getElementById("planner-step2").style.display = "block";
   } catch(e) {
-    if (btn) btn.textContent = "✦ Stella, plan my week →";
-    if (btn) btn.disabled = false;
+    if (btn) { btn.textContent = "\u2726 Stella, plan my week \u2192"; btn.disabled = false; }
     alert("Something went wrong: " + e.message);
   }
 }
@@ -875,8 +846,7 @@ function renderProduced(produced) {
     html += "<span class='format-tag " + fc + "'>" + (p.format || "Content") + platformLabel(p.format) + "</span>";
     html += "<span style='font-size:12px;color:var(--text-faint)'>" + (p.day || "") + "</span></div>";
     html += "<div style='font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic'>" + (p.idea || "") + "</div>";
-    html += "<div class='produced-section'><div class='produced-content'>" + (p.content || "").replace(/
-/g, "<br>") + "</div></div>";
+    html += "<div class='produced-section'><div class='produced-content'>" + (p.content || "").replace(/\n/g, "<br>") + "</div></div>";
     html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.content || "") + ")'>Copy</button></div>";
     html += "</div>";
   }
@@ -897,21 +867,12 @@ async function resetPlanner() {
 async function copyPlannerToClipboard() {
   var produced = await loadProduced();
   if (!produced || !produced.length) { alert("No week plan yet."); return; }
-  var text = "WEEKLY CONTENT PLAN — THE WHOLE WOMAN
-
-";
+  var text = "WEEKLY CONTENT PLAN - THE WHOLE WOMAN\n\n";
   for (var i = 0; i < produced.length; i++) {
     var p = produced[i];
-    text += p.day + " · " + p.format + "
-";
-    text += "Idea: " + p.idea + "
-
-";
-    text += p.content + "
-
----
-
-";
+    text += (p.day || "") + " - " + (p.format || "") + "\n";
+    text += "Idea: " + (p.idea || "") + "\n\n";
+    text += (p.content || "") + "\n\n---\n\n";
   }
   navigator.clipboard.writeText(text).then(function() { alert("Week plan copied! Paste into Later or your notes."); });
 }
