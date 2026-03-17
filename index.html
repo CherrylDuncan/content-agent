@@ -548,7 +548,7 @@ async function loadSavedPosts() {
     html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
     if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
     html += "<div class='post-text'>" + p.post + "</div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn accent' onclick='addToInbox(" + JSON.stringify(p.post) + ")'>+ This week</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
     html += "</div>";
   }
   out.innerHTML = html;
@@ -1089,6 +1089,7 @@ async function runTest() {
     if (sharpen) {
       html += "<button class='btn' onclick='cpText(this," + JSON.stringify(sharpen) + ")'>Copy hook</button>";
       html += "<button class='btn accent' data-post=" + JSON.stringify(sharpen) + " data-hook='' data-plat='Idea tester' onclick='saveFromBtn(this)'>Save hook</button>";
+    html += "<button class='btn accent' onclick='addToInbox(" + JSON.stringify(sharpen) + ")'>+ This week</button>";
     }
     html += "</div>";
     html += "<div class='chat-wrap'><div class='chat-label'>Refine this idea</div>";
@@ -1123,6 +1124,13 @@ async function sendChat(prefill) {
     saveBtn.textContent = "Save this";
     var snap = reply;
     saveBtn.onclick = function() { savePost("", snap, "Idea tester"); };
+    var weekBtn = document.createElement("button");
+    weekBtn.className = "btn accent";
+    weekBtn.style.cssText = "margin-top:4px;font-size:11px;padding:3px 10px;display:block";
+    weekBtn.textContent = "+ This week";
+    var snapW = reply;
+    weekBtn.onclick = function() { addToInbox(snapW); };
+    aiDiv.insertAdjacentElement("afterend", weekBtn);
     aiDiv.insertAdjacentElement("afterend", saveBtn);
     msgs.scrollTop = msgs.scrollHeight;
   } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
