@@ -665,9 +665,15 @@ async function savePlanner(items) {
 
 async function savePlannerCell(i, key, val) {
   if (sbReady()) {
-    var update = { slot: i, updated_at: new Date().toISOString() };
-    update[key] = val;
-    await _sb.from("tww_plan").upsert(update);
+    // Load existing row first so we don't lose other fields
+    var existing = { slot: i, day: DAYS[i], time: "", format: "", platform: "Both", idea: "", updated_at: new Date().toISOString() };
+    try {
+      var r = await _sb.from("tww_plan").select("*").eq("slot", i).single();
+      if (r.data) existing = Object.assign(existing, r.data);
+    } catch(e) {}
+    existing[key] = val;
+    existing.updated_at = new Date().toISOString();
+    await _sb.from("tww_plan").upsert(existing);
   } else {
     var items = [];
     try { items = JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) {}
