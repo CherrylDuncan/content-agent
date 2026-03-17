@@ -85,6 +85,24 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
 .key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
 .planner-select { font-family:"DM Sans",sans-serif;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:6px;padding:5px 8px;outline:none; }
+
+/* Production planner */
+.inbox-idea { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start; }
+.inbox-idea.reaction { border-left:3px solid var(--purple-dark); }
+.inbox-num { width:24px;height:24px;border-radius:50%;background:var(--pink-light);color:var(--pink-dark);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px; }
+.inbox-text { flex:1;font-size:14px;line-height:1.6;color:var(--text); }
+.inbox-remove { background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-faint);padding:0 4px;flex-shrink:0; }
+.inbox-remove:hover { color:var(--pink); }
+.produced-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem; }
+.produced-card .format-tag { font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px; }
+.format-talking { background:var(--pink-light);color:var(--pink-dark); }
+.format-broll { background:var(--teal-light);color:var(--teal-dark); }
+.format-carousel { background:var(--purple-light);color:var(--purple-dark); }
+.format-reaction { background:var(--amber-light);color:var(--amber-dark); }
+.produced-section { margin-bottom:12px; }
+.produced-section-label { font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px; }
+.produced-content { font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap; }
+
 /* Supabase setup banner */
 .sb-banner { background: var(--amber-light); border: 1px solid #e6c97a; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 14px; color: var(--amber-dark); display: none; }
 .sb-banner a { color: var(--amber-dark); font-weight: 500; }
@@ -200,15 +218,34 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     <!-- ── WEEKLY PLANNER ── -->
     <div class="page" id="page-planner">
       <div class="page-title">Weekly planner</div>
-      <div class="page-sub">Your 7 posts for the week. Fill in each row, then copy to Later on Monday.</div>
-      <div style="display:flex;gap:10px;margin-bottom:1.5rem;align-items:center;flex-wrap:wrap">
-        <button class="btn accent" onclick="savePlannerFromTable()">Save week</button>
-        <button class="btn" onclick="clearPlanner()">Clear week</button>
-        <button class="btn" onclick="copyPlannerToClipboard()">Copy all for Later</button>
-        <span id="planner-count" style="font-size:13px;color:var(--text-muted)"></span>
-        <span id="planner-saved-msg" style="font-size:13px;color:var(--teal);display:none">Saved!</span>
+      <div class="page-sub">Pick your ideas, Stella assigns formats and writes everything.</div>
+
+      <!-- STEP 1: Idea inbox -->
+      <div id="planner-step1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em">Step 1 — Your picked ideas</div>
+          <span id="planner-inbox-count" style="font-size:12px;color:var(--text-faint)">0 of 7 ideas</span>
+        </div>
+        <div id="planner-inbox" style="margin-bottom:1rem"></div>
+        <!-- Add reaction clip manually -->
+        <div class="card" style="background:var(--purple-light);border-color:var(--purple-dark);margin-bottom:1.5rem">
+          <div class="card-label" style="color:var(--purple-dark)">Add a reaction clip idea</div>
+          <p style="font-size:13px;color:var(--purple-dark);margin-bottom:10px;line-height:1.6">Got a movie or show moment that connects to your philosophy? Add it here.</p>
+          <textarea id="reaction-input" placeholder="e.g. Bridget Jones — the scene where she thinks she needs to change to be loved..." style="min-height:70px;margin-bottom:10px;border-color:var(--purple-dark)"></textarea>
+          <button class="btn" style="border-color:var(--purple-dark);color:var(--purple-dark)" onclick="addReactionClip()">Add reaction clip &rarr;</button>
+        </div>
+        <button class="btn-primary" id="produce-btn" onclick="produceWeek()" style="display:none">✦ Stella, plan my week &rarr;</button>
       </div>
-      <div id="planner-table"></div>
+
+      <!-- STEP 2: Produced week -->
+      <div id="planner-step2" style="display:none">
+        <div style="display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center">
+          <button class="btn accent" onclick="copyPlannerToClipboard()">Copy all for Later</button>
+          <button class="btn" onclick="resetPlanner()">Start new week</button>
+          <span id="planner-saved-msg" style="font-size:13px;color:var(--teal);display:none">Saved!</span>
+        </div>
+        <div id="planner-produced"></div>
+      </div>
     </div>
 
     <!-- ── HOOKS + AUDIO ── -->
@@ -638,22 +675,255 @@ var FORMATS = ["Talking head","Reaction clip","Carousel","Text overlay","Raw Tik
 var PLATFORMS = ["Both","TikTok only","Instagram only"];
 var TIMES = ["7:00 am","10:00 am","12:30 pm","3:30 pm","6:30 pm","9:00 pm"];
 
-async function loadPlanner() {
+// Inbox = ideas picked by user, not yet produced
+async function loadInbox() {
   if (sbReady()) {
     try {
-      var r = await _sb.from("tww_settings").select("value").eq("key","tww_plan_json").single();
+      var r = await _sb.from("tww_settings").select("value").eq("key","tww_inbox").single();
       if (r.data && r.data.value) return JSON.parse(r.data.value);
     } catch(e) {}
   }
+  try { return JSON.parse(localStorage.getItem("tww_inbox") || "[]"); } catch(e) { return []; }
+}
+
+async function saveInbox(items) {
+  localStorage.setItem("tww_inbox", JSON.stringify(items));
+  if (sbReady()) {
+    try { await _sb.from("tww_settings").upsert({ key: "tww_inbox", value: JSON.stringify(items), updated_at: new Date().toISOString() }); } catch(e) {}
+  }
+}
+
+async function loadProduced() {
+  if (sbReady()) {
+    try {
+      var r = await _sb.from("tww_settings").select("value").eq("key","tww_produced").single();
+      if (r.data && r.data.value) return JSON.parse(r.data.value);
+    } catch(e) {}
+  }
+  try { return JSON.parse(localStorage.getItem("tww_produced") || "null"); } catch(e) { return null; }
+}
+
+async function saveProduced(data) {
+  localStorage.setItem("tww_produced", JSON.stringify(data));
+  if (sbReady()) {
+    try { await _sb.from("tww_settings").upsert({ key: "tww_produced", value: JSON.stringify(data), updated_at: new Date().toISOString() }); } catch(e) {}
+  }
+}
+
+async function addToInbox(idea) {
+  var items = await loadInbox();
+  if (items.length >= 7) { alert("You already have 7 ideas for this week. Start a new week first!"); return; }
+  if (items.find(function(i) { return i.idea === idea; })) { alert("That idea is already in your week!"); return; }
+  items.push({ idea: idea, type: "generated", date: new Date().toLocaleDateString() });
+  await saveInbox(items);
+  // Show feedback
+  var msg = document.createElement("div");
+  msg.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--teal);color:white;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999";
+  msg.textContent = "Added to this week! (" + items.length + "/7)";
+  document.body.appendChild(msg);
+  setTimeout(function() { document.body.removeChild(msg); }, 2000);
+}
+
+async function addReactionClip() {
+  var input = document.getElementById("reaction-input").value.trim();
+  if (!input) return;
+  var items = await loadInbox();
+  if (items.length >= 7) { alert("You already have 7 ideas for this week!"); return; }
+  items.push({ idea: input, type: "reaction", date: new Date().toLocaleDateString() });
+  await saveInbox(items);
+  document.getElementById("reaction-input").value = "";
+  renderPlannerInbox(items);
+}
+
+async function removeFromInbox(idx) {
+  var items = await loadInbox();
+  items.splice(idx, 1);
+  await saveInbox(items);
+  renderPlannerInbox(items);
+}
+
+function renderPlannerInbox(items) {
+  var el = document.getElementById("planner-inbox");
+  var countEl = document.getElementById("planner-inbox-count");
+  var produceBtn = document.getElementById("produce-btn");
+  if (!el) return;
+  if (countEl) countEl.textContent = items.length + " of 7 ideas";
+  if (produceBtn) produceBtn.style.display = items.length > 0 ? "block" : "none";
+  if (!items.length) {
+    el.innerHTML = "<div style='font-size:14px;color:var(--text-faint);padding:1rem;text-align:center;border:1px dashed var(--border);border-radius:var(--radius)'>No ideas picked yet. Generate posts and hit "Add to this week" on the ones you love.</div>";
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var isReaction = item.type === "reaction";
+    html += "<div class='inbox-idea" + (isReaction ? " reaction" : "") + "'>";
+    html += "<div class='inbox-num'>" + (i+1) + "</div>";
+    html += "<div class='inbox-text'>" + (isReaction ? "🎬 Reaction clip: " : "") + item.idea + "</div>";
+    html += "<button class='inbox-remove' onclick='removeFromInbox(" + i + ")'>×</button>";
+    html += "</div>";
+  }
+  el.innerHTML = html;
+}
+
+async function produceWeek() {
+  var items = await loadInbox();
+  if (!items.length) return;
+  var btn = document.getElementById("produce-btn");
+  if (btn) btn.textContent = "Stella is planning your week...";
+  if (btn) btn.disabled = true;
+
+  var voiceCtx = await getVoiceContext();
+
+  // Build the prompt
+  var ideasText = items.map(function(it, i) {
+    return (i+1) + ". " + (it.type === "reaction" ? "[REACTION CLIP] " : "") + it.idea;
+  }).join("
+");
+
+  var prompt = VOICE + voiceCtx + "
+
+You are planning a week of content for The Whole Woman. Here are " + items.length + " ideas the creator has picked:
+
+" + ideasText + "
+
+For each idea:
+1. Assign the BEST format from: Talking Head (TikTok), B-Roll TikTok, B-Roll Instagram, Carousel (Instagram only), Reaction Clip (TikTok)
+   - Rule: include exactly 1 Carousel per week (IG)
+   - Rule: Reaction Clip only for ideas marked [REACTION CLIP]
+   - Rule: mix formats across the week for variety
+   - Rule: Talking head for your most personal/vulnerable ideas
+   - Rule: B-Roll for punchy one-truth statements
+2. Write the content for that format:
+   - Talking Head: write a full script (HOOK, BODY, CTA)
+   - B-Roll TikTok: write 4-6 text overlays (short punchy lines, one per screen)
+   - B-Roll Instagram: write a caption (3-5 sentences, no hashtags)
+   - Carousel: write slide-by-slide copy (SLIDE 1 through SLIDE 6, each 1-2 lines)
+   - Reaction Clip: write her commentary script (what she says over the clip)
+3. Suggest a posting day
+
+For EACH idea output EXACTLY:
+IDEA: [the idea]
+FORMAT: [format name]
+DAY: [day of week]
+CONTENT:
+[the full content for that format]
+---
+
+Write everything in her voice. Make it feel lived, not scripted.";
+
+  try {
+    var text = await callClaude([{ role: "user", content: prompt }], 4000);
+    var blocks = text.split("
+---").map(function(s) { return s.trim(); }).filter(Boolean);
+    var produced = [];
+    for (var i = 0; i < blocks.length; i++) {
+      var block = blocks[i];
+      function g(k) {
+        var re = new RegExp(k + ":\s*([\s\S]+?)(?=\n[A-Z]+:|$)", "i");
+        var m = block.match(re); return m ? m[1].trim() : "";
+      }
+      produced.push({
+        idea: g("IDEA"),
+        format: g("FORMAT"),
+        day: g("DAY"),
+        content: g("CONTENT")
+      });
+    }
+    await saveProduced(produced);
+    await saveInbox([]); // clear inbox
+    renderProduced(produced);
+    document.getElementById("planner-step1").style.display = "none";
+    document.getElementById("planner-step2").style.display = "block";
+  } catch(e) {
+    if (btn) btn.textContent = "✦ Stella, plan my week →";
+    if (btn) btn.disabled = false;
+    alert("Something went wrong: " + e.message);
+  }
+}
+
+function formatClass(format) {
+  if (!format) return "format-broll";
+  var f = format.toLowerCase();
+  if (f.indexOf("talking") >= 0) return "format-talking";
+  if (f.indexOf("carousel") >= 0) return "format-carousel";
+  if (f.indexOf("reaction") >= 0) return "format-reaction";
+  return "format-broll";
+}
+
+function platformLabel(format) {
+  if (!format) return "";
+  var f = format.toLowerCase();
+  if (f.indexOf("instagram") >= 0 || f.indexOf("carousel") >= 0) return " · Instagram";
+  if (f.indexOf("tiktok") >= 0 || f.indexOf("talking") >= 0 || f.indexOf("reaction") >= 0 || f.indexOf("b-roll tiktok") >= 0) return " · TikTok";
+  return "";
+}
+
+function renderProduced(produced) {
+  var el = document.getElementById("planner-produced");
+  if (!el) return;
+  if (!produced || !produced.length) {
+    el.innerHTML = "<div class='loading'>No week produced yet.</div>";
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < produced.length; i++) {
+    var p = produced[i];
+    var fc = formatClass(p.format);
+    html += "<div class='produced-card'>";
+    html += "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px'>";
+    html += "<span class='format-tag " + fc + "'>" + (p.format || "Content") + platformLabel(p.format) + "</span>";
+    html += "<span style='font-size:12px;color:var(--text-faint)'>" + (p.day || "") + "</span></div>";
+    html += "<div style='font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic'>" + (p.idea || "") + "</div>";
+    html += "<div class='produced-section'><div class='produced-content'>" + (p.content || "").replace(/
+/g, "<br>") + "</div></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.content || "") + ")'>Copy</button></div>";
+    html += "</div>";
+  }
+  el.innerHTML = html;
+}
+
+async function resetPlanner() {
+  if (!confirm("Start a fresh week? This will clear the current plan.")) return;
+  await saveProduced(null);
+  await saveInbox([]);
+  document.getElementById("planner-step1").style.display = "block";
+  document.getElementById("planner-step2").style.display = "none";
+  var btn = document.getElementById("produce-btn");
+  if (btn) { btn.textContent = "✦ Stella, plan my week →"; btn.disabled = false; btn.style.display = "none"; }
+  renderPlannerInbox([]);
+}
+
+async function copyPlannerToClipboard() {
+  var produced = await loadProduced();
+  if (!produced || !produced.length) { alert("No week plan yet."); return; }
+  var text = "WEEKLY CONTENT PLAN — THE WHOLE WOMAN
+
+";
+  for (var i = 0; i < produced.length; i++) {
+    var p = produced[i];
+    text += p.day + " · " + p.format + "
+";
+    text += "Idea: " + p.idea + "
+
+";
+    text += p.content + "
+
+---
+
+";
+  }
+  navigator.clipboard.writeText(text).then(function() { alert("Week plan copied! Paste into Later or your notes."); });
+}
+
+async function loadPlanner() {
   try { return JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { return []; }
 }
 
 async function savePlanner(items) {
   localStorage.setItem("tww_plan", JSON.stringify(items));
   if (sbReady()) {
-    try {
-      await _sb.from("tww_settings").upsert({ key: "tww_plan_json", value: JSON.stringify(items), updated_at: new Date().toISOString() });
-    } catch(e) { console.log("Planner save error:", e); }
+    try { await _sb.from("tww_settings").upsert({ key: "tww_plan_json", value: JSON.stringify(items), updated_at: new Date().toISOString() }); } catch(e) {}
   }
 }
 
@@ -662,109 +932,35 @@ async function savePlannerCell(i, key, val) {
   while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
   items[i][key] = val;
   await savePlanner(items);
-  var countEl = document.getElementById("planner-count");
-  if (countEl && key === "idea") {
-    var filled = items.filter(function(r) { return r.idea; }).length;
-    countEl.textContent = filled + " of 7 ideas filled in";
-  }
-}
-
-async function renderPlanner() {
-  var items = await loadPlanner();
-  var el = document.getElementById("planner-table");
-  var countEl = document.getElementById("planner-count");
-  if (!el) return;
-  var filled = items.filter(function(r) { return r.idea; }).length;
-  if (countEl) countEl.textContent = filled + " of 7 ideas filled in";
-
-  var html = "<div style='overflow-x:auto'><table style='width:100%;border-collapse:collapse;font-size:13px'>";
-  html += "<thead><tr>";
-  ["Day","Time","Format","Platform","Caption / idea",""].forEach(function(h) {
-    html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>" + h + "</th>";
-  });
-  html += "</tr></thead><tbody>";
-
-  for (var i = 0; i < 7; i++) {
-    var item = items[i] || { day: DAYS[i], time: "", format: "", platform: "Both", idea: "" };
-    var bg = item.idea ? "var(--surface)" : "var(--bg)";
-    var dayOpts = DAYS.map(function(d) { return "<option value='" + d + "'" + (item.day === d ? " selected" : "") + ">" + d + "</option>"; }).join("");
-    var timeOpts = TIMES.map(function(t) { return "<option value='" + t + "'" + (item.time === t ? " selected" : "") + ">" + t + "</option>"; }).join("");
-    var fmtOpts = FORMATS.map(function(f) { return "<option value='" + f + "'" + (item.format === f ? " selected" : "") + ">" + f + "</option>"; }).join("");
-    var platOpts = PLATFORMS.map(function(p) { return "<option value='" + p + "'" + (item.platform === p ? " selected" : "") + ">" + p + "</option>"; }).join("");
-    html += "<tr style='background:" + bg + ";border-bottom:1px solid var(--border)'>";
-    html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:90px' onchange='savePlannerCell(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select></td>";
-    html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:80px' onchange='savePlannerCell(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select></td>";
-    html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:110px' onchange='savePlannerCell(" + i + ",&quot;format&quot;,this.value)'><option value=''>Format...</option>" + fmtOpts + "</select></td>";
-    html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:80px' onchange='savePlannerCell(" + i + ",&quot;platform&quot;,this.value)'><option value=''>Platform...</option>" + platOpts + "</select></td>";
-    html += "<td style='padding:8px 10px;width:99%'><textarea style='width:100%;min-height:52px;resize:vertical;font-size:12px;line-height:1.5;padding:6px 8px;border:1px solid var(--border-strong);border-radius:5px;background:var(--surface);font-family:DM Sans,sans-serif' placeholder='Paste caption or idea...' onblur='savePlannerCell(" + i + ",&quot;idea&quot;,this.value)'>" + (item.idea || "") + "</textarea></td>";
-    html += "<td style='padding:8px 10px;white-space:nowrap'><button class='btn accent' style='font-size:11px;padding:4px 10px' onclick='plannerRowToScript(" + i + ")'>Script</button></td>";
-    html += "</tr>";
-  }
-  html += "</tbody></table></div>";
-  el.innerHTML = html;
 }
 
 async function savePlannerFromTable() {
-  var rows = document.querySelectorAll("#planner-table tbody tr");
-  var items = await loadPlanner();
-  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-  for (var i = 0; i < rows.length; i++) {
-    var selects = rows[i].querySelectorAll("select");
-    var ta = rows[i].querySelector("textarea");
-    if (selects[0]) items[i].day = selects[0].value;
-    if (selects[1]) items[i].time = selects[1].value;
-    if (selects[2]) items[i].format = selects[2].value;
-    if (selects[3]) items[i].platform = selects[3].value;
-    if (ta) items[i].idea = ta.value;
-  }
-  await savePlanner(items);
   var msg = document.getElementById("planner-saved-msg");
   if (msg) { msg.style.display = "inline"; setTimeout(function() { msg.style.display = "none"; }, 2000); }
 }
 
+async function renderPlanner() {
+  // Load and render inbox
+  var inbox = await loadInbox();
+  renderPlannerInbox(inbox);
+  // Check if there's a produced week
+  var produced = await loadProduced();
+  if (produced && produced.length) {
+    document.getElementById("planner-step1").style.display = "none";
+    document.getElementById("planner-step2").style.display = "block";
+    renderProduced(produced);
+  } else {
+    document.getElementById("planner-step1").style.display = "block";
+    document.getElementById("planner-step2").style.display = "none";
+  }
+}
+
 async function clearPlanner() {
-  if (!confirm("Clear the whole week plan?")) return;
-  var fresh = [];
-  for (var i = 0; i < 7; i++) fresh.push({ day: DAYS[i], time: "", format: "", platform: "Both", idea: "" });
-  await savePlanner(fresh);
-  renderPlanner();
+  await resetPlanner();
 }
 
-async function plannerRowToScript(i) {
-  var items = await loadPlanner();
-  var item = items[i] || {};
-  if (!item.idea) return;
-  goTo("script");
-  setTimeout(function() {
-    var el = document.getElementById("script-idea");
-    if (el) el.value = item.idea;
-  }, 100);
-}
-
-async function addPlannerSlot(idea) {
-  var items = await loadPlanner();
-  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-  for (var i = 0; i < items.length; i++) {
-    if (!items[i].idea) { items[i].idea = idea || ""; break; }
-  }
-  await savePlanner(items);
-  goTo("planner");
-  setTimeout(renderPlanner, 100);
-}
-
-async function copyPlannerToClipboard() {
-  var items = await loadPlanner();
-  if (!items.length) { alert("No ideas in your planner yet."); return; }
-  var sorted = items.slice().sort(function(a,b) { return DAYS.indexOf(a.day) - DAYS.indexOf(b.day); });
-  var text = "WEEKLY CONTENT PLAN\n\n";
-  for (var i = 0; i < sorted.length; i++) {
-    var it = sorted[i];
-    text += (it.day || "Unscheduled") + " " + (it.time || "") + "\n";
-    text += "Format: " + (it.format || "TBD") + " | Platform: " + (it.platform || "Both") + "\n";
-    text += (it.idea || "No idea yet") + "\n\n";
-  }
-  navigator.clipboard.writeText(text).then(function() { alert("Week plan copied! Paste into Later or your notes."); });
-}
+async function plannerRowToScript(i) {}
+async function addPlannerSlot(idea) { await addToInbox(idea); }
 
 // ═══════════════════════════════════════════════════════
 // UI / NAV
@@ -886,7 +1082,7 @@ async function generatePosts() {
       html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
       if (hook) html += "<div class='hook-line'>\"" + hook + "\"</div>";
       html += "<div class='post-text'>" + post + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addPlannerSlot(this.getAttribute(&quot;data-post&quot;))'>+ Planner</button></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addToInbox(this.getAttribute(&quot;data-post&quot;))'>+ This week</button></div>";
       html += "</div>";
     }
     out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
