@@ -400,12 +400,6 @@ function sbReady() { return _sb !== null; }
 // ── Settings (API key stored in Supabase when available, else localStorage) ──
 
 async function getKey() {
-  if (sbReady()) {
-    try {
-      var r = await _sb.from("tww_settings").select("value").eq("key","tww_anthropic_key").single();
-      if (r.data && r.data.value) return r.data.value;
-    } catch(e) {}
-  }
   return localStorage.getItem("tww_key") || "";
 }
 
@@ -1144,12 +1138,14 @@ async function extractTranscript() {
   var snippet = transcript.substring(0, 6000);
   var msg = "Here is a coaching call transcript. The coach is labelled as: " + coachName + ". Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, speaker labels, filler words like um and uh. Output only the coach words as flowing natural text, preserving their exact phrasing and vocabulary. Do not summarise - keep their actual words. Output nothing else.\n\nTranscript:\n" + snippet;
   try {
+    window._lastExtracted = null;
     var extracted = await callClaude([{ role: "user", content: msg }], 2000);
+    window._lastExtracted = extracted;
     var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
     out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
       "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted - your words only</div>" +
       "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
-      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile</button>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(window._lastExtracted)'>Save to my voice profile</button>" +
       "</div>";
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
