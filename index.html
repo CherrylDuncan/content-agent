@@ -6,6 +6,7 @@
 <title>The Whole Woman - Content Agent</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
   --pink: #D4537E; --pink-light: #FBEAF0; --pink-dark: #72243E;
@@ -83,19 +84,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .key-wrap { position: relative; margin-top: 8px; }
 .key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
 .key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
-.planner-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:10px;position:relative; }
-.planner-card.assigned { border-left:3px solid var(--teal); }
-.planner-row { display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px; }
 .planner-select { font-family:"DM Sans",sans-serif;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:6px;padding:5px 8px;outline:none; }
-.planner-day { font-size:11px;font-weight:500;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px; }
-.planner-idea { font-size:13px;line-height:1.6;color:var(--text);background:var(--bg);border-radius:6px;padding:8px 10px;margin-bottom:8px;min-height:44px;border:1px solid var(--border); }
-.planner-idea[contenteditable]:empty:before { content:attr(data-placeholder);color:var(--text-faint); }
-.planner-del { position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-faint);padding:2px 6px; }
-.planner-del:hover { color:var(--pink); }
-.week-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:1.5rem; }
-.week-col { background:var(--bg);border-radius:var(--radius-sm);padding:8px;min-height:60px; }
-.week-col-label { font-size:10px;font-weight:500;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;text-align:center; }
-.week-dot { width:8px;height:8px;border-radius:50%;background:var(--teal);margin:2px auto; }
+/* Supabase setup banner */
+.sb-banner { background: var(--amber-light); border: 1px solid #e6c97a; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 14px; color: var(--amber-dark); display: none; }
+.sb-banner a { color: var(--amber-dark); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -126,6 +118,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   </nav>
   <main>
 
+    <!-- ── GENERATE ── -->
     <div class="page active" id="page-generate">
       <div class="page-title">Generate posts</div>
       <div class="page-sub">Create captions for Instagram and TikTok in your voice.</div>
@@ -150,6 +143,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="gen-out"></div>
     </div>
 
+    <!-- ── IDEA TESTER ── -->
     <div class="page" id="page-test">
       <div class="page-title">Idea tester</div>
       <div class="page-sub">Paste a rough idea or draft. Get an honest score and sharper version.</div>
@@ -166,6 +160,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="test-out"></div>
     </div>
 
+    <!-- ── VIDEO SCRIPTS ── -->
     <div class="page" id="page-script">
       <div class="page-title">Video scripts</div>
       <div class="page-sub">Turn any saved idea into a platform-specific script. TikTok is punchy and fast. Instagram Reels can breathe more.</div>
@@ -202,6 +197,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       </div>
     </div>
 
+    <!-- ── WEEKLY PLANNER ── -->
     <div class="page" id="page-planner">
       <div class="page-title">Weekly planner</div>
       <div class="page-sub">Your 7 posts for the week. Fill in each row, then copy to Later on Monday.</div>
@@ -215,6 +211,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="planner-table"></div>
     </div>
 
+    <!-- ── HOOKS + AUDIO ── -->
     <div class="page" id="page-audio">
       <div class="page-title">Hooks + audio tips</div>
       <div class="page-sub">Hook formulas and sound strategy for face-to-camera content.</div>
@@ -222,6 +219,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="audio-out"></div>
     </div>
 
+    <!-- ── REPLY TEMPLATES ── -->
     <div class="page" id="page-reply">
       <div class="page-title">Reply templates</div>
       <div class="page-sub">Paste a comment and get three reply options.</div>
@@ -230,6 +228,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="reply-out"></div>
     </div>
 
+    <!-- ── POST SCHEDULE ── -->
     <div class="page" id="page-schedule">
       <div class="page-title">Posting rhythm</div>
       <div class="page-sub">Your recommended daily posting schedule.</div>
@@ -248,12 +247,14 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       </div>
     </div>
 
+    <!-- ── SAVED POSTS ── -->
     <div class="page" id="page-saved">
       <div class="page-title">Saved posts</div>
       <div class="page-sub">Your personal library of content that resonates.</div>
       <div id="saved-out"></div>
     </div>
 
+    <!-- ── MY VOICE ── -->
     <div class="page" id="page-voice">
       <div class="page-title">My voice</div>
       <div class="page-sub">Build your voice profile so every post sounds like you, not like AI.</div>
@@ -283,6 +284,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="voice-saved-list" style="margin-top:1.5rem"></div>
     </div>
 
+    <!-- ── MANIFESTO ── -->
     <div class="page" id="page-manifesto">
       <div class="page-title">My manifesto</div>
       <div class="page-sub">Your philosophy, in full.</div>
@@ -304,15 +306,63 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       </div>
     </div>
 
+    <!-- ── SETUP ── -->
     <div class="page" id="page-setup">
       <div class="page-title">API setup</div>
-      <div class="page-sub">You need a free Anthropic API key to power this app.</div>
-      <div class="card">
+      <div class="page-sub">Connect your keys once. Your data is stored in the cloud — not your browser — so it survives cache clears and works on any device.</div>
+
+      <!-- Anthropic key -->
+      <div class="card" style="margin-bottom:1rem">
+        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">1. Anthropic API key</div>
         <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Anthropic account</div><div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up.</div></div></div>
         <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Get your API key</div><div class="step-body">Go to API Keys, click Create Key, copy it.</div></div></div>
-        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your key below</div><div class="step-body">Saved only in your browser.</div>
-          <div class="key-wrap"><input type="password" id="api-key-input" placeholder="sk-ant-api03-..." /><button class="key-btn" onclick="saveKey()">Save</button></div>
-          <div id="saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Key saved. You are ready to generate.</div>
+        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your key below</div>
+          <div class="key-wrap"><input type="password" id="api-key-input" placeholder="sk-ant-api03-..." /><button class="key-btn" onclick="saveAnthropicKey()">Save</button></div>
+          <div id="saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Anthropic key saved.</div>
+        </div></div>
+      </div>
+
+      <!-- Supabase -->
+      <div class="card">
+        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">2. Supabase — cloud storage (keeps your data safe)</div>
+        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Supabase account</div><div class="step-body">Go to <a href="https://supabase.com" target="_blank">supabase.com</a> → New project. Free tier is plenty.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Create the database tables</div><div class="step-body">In your project go to <strong>SQL Editor</strong> and run the SQL below.</div></div></div>
+        <pre style="background:var(--bg);border-radius:var(--radius-sm);padding:12px;font-size:11px;line-height:1.6;overflow-x:auto;margin-bottom:1rem;border:1px solid var(--border)">create table if not exists tww_saved (
+  id bigint generated always as identity primary key,
+  hook text, post text, platform text,
+  date text, created_at timestamptz default now()
+);
+create table if not exists tww_voice (
+  id bigint generated always as identity primary key,
+  text text, words int, date text, source text,
+  created_at timestamptz default now()
+);
+create table if not exists tww_plan (
+  id bigint generated always as identity primary key,
+  slot int unique, day text, time text,
+  format text, platform text, idea text,
+  updated_at timestamptz default now()
+);
+create table if not exists tww_settings (
+  key text primary key, value text,
+  updated_at timestamptz default now()
+);
+-- Allow public access (no auth needed for single-user app)
+alter table tww_saved enable row level security;
+alter table tww_voice enable row level security;
+alter table tww_plan enable row level security;
+alter table tww_settings enable row level security;
+create policy "public all" on tww_saved for all using (true) with check (true);
+create policy "public all" on tww_voice for all using (true) with check (true);
+create policy "public all" on tww_plan for all using (true) with check (true);
+create policy "public all" on tww_settings for all using (true) with check (true);</pre>
+        <div class="step-row"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your Project URL and anon key</div><div class="step-body">Settings → API → copy Project URL and anon/public key.</div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-top:10px;margin-bottom:4px">Project URL</label>
+          <input type="text" id="sb-url-input" placeholder="https://xxxx.supabase.co" style="margin-bottom:8px" />
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Anon / public key</label>
+          <div class="key-wrap"><input type="password" id="sb-key-input" placeholder="eyJhbGci..." /><button class="key-btn" onclick="saveSupabaseKeys()">Save</button></div>
+          <div id="sb-saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Supabase connected! Your data is now cloud-safe.</div>
+          <div id="sb-error-notice" style="font-size:12px;color:#c0392b;margin-top:6px;display:none"></div>
         </div></div>
       </div>
     </div>
@@ -321,50 +371,327 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 </div>
 <script>
 
-var VOICE = "You are a content strategist writing for a woman with a bold countercultural philosophy about relationships. When women partner with a man who already has children, society sets them up to fail: to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This healed her disorganised attachment. She does not try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Like a wise friend who says what women think but do not say out loud. Never preachy. Never generic.";
+// ═══════════════════════════════════════════════════════
+// STORAGE LAYER — Supabase with localStorage fallback
+// ═══════════════════════════════════════════════════════
 
-var ANGLES = {
-  grief: "the silent grief of joining an existing family",
-  freedom: "freedom and sovereignty through keeping your own life",
-  attachment: "how this lifestyle healed disorganised attachment",
-  space: "keeping your own home even when committed",
-  travel: "traveling solo while in a relationship",
-  myth: "dismantling the holy family myth that sets women up to fail",
-  approval: "not needing approval to belong",
-  random: "any angle from her core philosophy"
-};
+var _sb = null; // Supabase client
 
-function getKey() {
+function getSbCreds() {
+  return {
+    url: localStorage.getItem("tww_sb_url") || "",
+    key: localStorage.getItem("tww_sb_key") || ""
+  };
+}
+
+function initSupabase() {
+  var creds = getSbCreds();
+  if (creds.url && creds.key) {
+    try {
+      _sb = supabase.createClient(creds.url, creds.key);
+      return true;
+    } catch(e) { _sb = null; return false; }
+  }
+  return false;
+}
+
+function sbReady() { return _sb !== null; }
+
+// ── Settings (API key stored in Supabase when available, else localStorage) ──
+
+async function getKey() {
+  if (sbReady()) {
+    try {
+      var r = await _sb.from("tww_settings").select("value").eq("key","tww_anthropic_key").single();
+      if (r.data && r.data.value) return r.data.value;
+    } catch(e) {}
+  }
   return localStorage.getItem("tww_key") || "";
 }
 
-function saveKey() {
+async function saveAnthropicKey() {
   var val = document.getElementById("api-key-input").value.trim();
   if (!val) return;
-  localStorage.setItem("tww_key", val);
+  localStorage.setItem("tww_key", val); // always keep local copy
+  if (sbReady()) {
+    await _sb.from("tww_settings").upsert({ key: "tww_anthropic_key", value: val, updated_at: new Date().toISOString() });
+  }
   document.getElementById("saved-notice").style.display = "block";
   updateKeyStatus();
 }
 
-// ── WEEKLY PLANNER ──────────────────────────────────────────────────
+// legacy alias
+function saveKey() { saveAnthropicKey(); }
+
+async function saveSupabaseKeys() {
+  var url = document.getElementById("sb-url-input").value.trim();
+  var key = document.getElementById("sb-key-input").value.trim();
+  if (!url || !key) return;
+  localStorage.setItem("tww_sb_url", url);
+  localStorage.setItem("tww_sb_key", key);
+  initSupabase();
+  // test connection
+  try {
+    var r = await _sb.from("tww_settings").upsert({ key: "tww_connected", value: "1", updated_at: new Date().toISOString() });
+    if (r.error) throw r.error;
+    document.getElementById("sb-saved-notice").style.display = "block";
+    document.getElementById("sb-error-notice").style.display = "none";
+    // migrate any existing localStorage data to Supabase
+    await migrateFromLocalStorage();
+    updateKeyStatus();
+  } catch(e) {
+    document.getElementById("sb-error-notice").textContent = "Could not connect: " + (e.message || e);
+    document.getElementById("sb-error-notice").style.display = "block";
+  }
+}
+
+async function migrateFromLocalStorage() {
+  // Migrate saved posts
+  try {
+    var saved = JSON.parse(localStorage.getItem("tww_saved") || "[]");
+    for (var i = 0; i < saved.length; i++) {
+      await _sb.from("tww_saved").insert({ hook: saved[i].hook||"", post: saved[i].post||"", platform: saved[i].platform||"", date: saved[i].date||"" });
+    }
+    if (saved.length) localStorage.removeItem("tww_saved");
+  } catch(e) {}
+  // Migrate voice
+  try {
+    var voice = JSON.parse(localStorage.getItem("tww_voice") || "[]");
+    for (var i = 0; i < voice.length; i++) {
+      await _sb.from("tww_voice").insert({ text: voice[i].text||"", words: voice[i].words||0, date: voice[i].date||"", source: voice[i].source||"manual" });
+    }
+    if (voice.length) localStorage.removeItem("tww_voice");
+  } catch(e) {}
+  // Migrate planner
+  try {
+    var plan = JSON.parse(localStorage.getItem("tww_plan") || "[]");
+    for (var i = 0; i < plan.length; i++) {
+      await _sb.from("tww_plan").upsert({ slot: i, day: plan[i].day||"", time: plan[i].time||"", format: plan[i].format||"", platform: plan[i].platform||"Both", idea: plan[i].idea||"", updated_at: new Date().toISOString() });
+    }
+    if (plan.length) localStorage.removeItem("tww_plan");
+  } catch(e) {}
+  // Migrate anthropic key
+  try {
+    var k = localStorage.getItem("tww_key");
+    if (k) {
+      await _sb.from("tww_settings").upsert({ key: "tww_anthropic_key", value: k, updated_at: new Date().toISOString() });
+    }
+  } catch(e) {}
+}
+
+// ── Saved Posts ──
+
+async function savePost(hook, post, platform) {
+  var entry = { hook: hook||"", post: post||"", platform: platform||"", date: new Date().toLocaleDateString() };
+  if (sbReady()) {
+    await _sb.from("tww_saved").insert(entry);
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.unshift(entry);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  alert("Saved! Go to Saved posts in the sidebar.");
+}
+
+async function loadSavedPosts() {
+  var out = document.getElementById("saved-out");
+  out.innerHTML = "<div class='loading'>Loading saved posts...</div>";
+  var saved = [];
+  if (sbReady()) {
+    var r = await _sb.from("tww_saved").select("*").order("created_at", { ascending: false });
+    saved = r.data || [];
+  } else {
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+  }
+  if (!saved.length) {
+    out.innerHTML = "<div class='loading'>No saved posts yet. Hit Save on any generated post.</div>";
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < saved.length; i++) {
+    var p = saved[i];
+    var rowId = sbReady() ? p.id : i;
+    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
+    html += "<div class='card'>";
+    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
+    if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
+    html += "<div class='post-text'>" + p.post + "</div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
+    html += "</div>";
+  }
+  out.innerHTML = html;
+}
+
+async function deleteSaved(rowId) {
+  if (sbReady()) {
+    await _sb.from("tww_saved").delete().eq("id", rowId);
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.splice(rowId, 1);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  loadSavedPosts();
+}
+
+function scriptFromPost(postText) {
+  goTo("script");
+  setTimeout(function() {
+    var el = document.getElementById("script-idea");
+    if (el) el.value = postText;
+  }, 100);
+}
+
+function saveFromBtn(btn) {
+  var hook = btn.getAttribute("data-hook") || "";
+  var post = btn.getAttribute("data-post") || "";
+  var plat = btn.getAttribute("data-plat") || "";
+  savePost(hook, post, plat);
+}
+
+// ── Voice Profile ──
+
+async function saveVoice() {
+  var input = document.getElementById("voice-input").value.trim();
+  if (!input) return;
+  var entry = { text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length, source: "manual" };
+  if (sbReady()) {
+    await _sb.from("tww_voice").insert(entry);
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.unshift(entry);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  document.getElementById("voice-input").value = "";
+  loadVoiceSamples();
+}
+
+async function loadVoiceSamples() {
+  var samples = [];
+  if (sbReady()) {
+    var r = await _sb.from("tww_voice").select("*").order("created_at", { ascending: false });
+    samples = r.data || [];
+  } else {
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+  }
+  var out = document.getElementById("voice-saved-list");
+  if (!samples.length) { out.innerHTML = ""; return; }
+  var totalWords = 0;
+  for (var i = 0; i < samples.length; i++) totalWords += (samples[i].words || 0);
+  var html = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-bottom:1rem'>";
+  html += "<div style='font-size:13px;color:var(--teal-dark);font-weight:500'>" + totalWords + " words of your voice saved</div>";
+  html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>The AI uses all of this when generating content for you</div></div>";
+  for (var i = 0; i < samples.length; i++) {
+    var s = samples[i];
+    var rowId = sbReady() ? s.id : i;
+    var preview = s.text ? s.text.substring(0, 200) + (s.text.length > 200 ? "..." : "") : "";
+    html += "<div class='card'>";
+    html += "<div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
+    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words - " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
+    html += "<button class='btn' style='padding:2px 10px;font-size:11px' onclick='deleteVoice(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
+    html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + preview + "</div></div>";
+  }
+  out.innerHTML = html;
+}
+
+async function deleteVoice(rowId) {
+  if (sbReady()) {
+    await _sb.from("tww_voice").delete().eq("id", rowId);
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.splice(rowId, 1);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  loadVoiceSamples();
+}
+
+async function getVoiceContext() {
+  var samples = [];
+  if (sbReady()) {
+    var r = await _sb.from("tww_voice").select("text").order("created_at", { ascending: false });
+    samples = r.data || [];
+  } else {
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+  }
+  if (!samples.length) return "";
+  var combined = "";
+  for (var i = 0; i < samples.length; i++) combined += (samples[i].text || "") + "\n\n";
+  combined = combined.substring(0, 2000);
+  return "\n\nHere are examples of her actual writing and speaking voice. Use these as your primary reference:\n" + combined;
+}
+
+async function saveExtracted(text) {
+  var entry = { text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" };
+  if (sbReady()) {
+    await _sb.from("tww_voice").insert(entry);
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.unshift(entry);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  document.getElementById("transcript-out").innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>Saved to your voice profile!</div>";
+  loadVoiceSamples();
+}
+
+// ── Weekly Planner ──
 
 var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 var FORMATS = ["Talking head","Reaction clip","Carousel","Text overlay","Raw TikTok","Story series"];
 var PLATFORMS = ["Both","TikTok only","Instagram only"];
 var TIMES = ["7:00 am","10:00 am","12:30 pm","3:30 pm","6:30 pm","9:00 pm"];
 
-function loadPlanner() {
-  var items = [];
-  try { items = JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { items = []; }
-  return items;
+async function loadPlanner() {
+  if (sbReady()) {
+    var r = await _sb.from("tww_plan").select("*").order("slot", { ascending: true });
+    var rows = r.data || [];
+    var items = [];
+    for (var i = 0; i < 7; i++) {
+      var found = rows.find(function(rr) { return rr.slot === i; });
+      items.push(found || { slot: i, day: DAYS[i], time: "", format: "", platform: "Both", idea: "" });
+    }
+    return items;
+  } else {
+    try { return JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { return []; }
+  }
 }
 
-function savePlanner(items) {
-  localStorage.setItem("tww_plan", JSON.stringify(items));
+async function savePlanner(items) {
+  if (sbReady()) {
+    for (var i = 0; i < items.length; i++) {
+      await _sb.from("tww_plan").upsert({ slot: i, day: items[i].day||"", time: items[i].time||"", format: items[i].format||"", platform: items[i].platform||"Both", idea: items[i].idea||"", updated_at: new Date().toISOString() });
+    }
+  } else {
+    localStorage.setItem("tww_plan", JSON.stringify(items));
+  }
 }
 
-function renderPlanner() {
-  var items = loadPlanner();
+async function savePlannerCell(i, key, val) {
+  if (sbReady()) {
+    var update = { slot: i, updated_at: new Date().toISOString() };
+    update[key] = val;
+    await _sb.from("tww_plan").upsert(update);
+  } else {
+    var items = [];
+    try { items = JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) {}
+    while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
+    items[i][key] = val;
+    localStorage.setItem("tww_plan", JSON.stringify(items));
+  }
+  var countEl = document.getElementById("planner-count");
+  if (countEl && key === "idea") {
+    var rows = document.querySelectorAll("#planner-table tbody tr");
+    var filled = 0;
+    rows.forEach(function(row) { var ta = row.querySelector("textarea"); if (ta && ta.value.trim()) filled++; });
+    countEl.textContent = filled + " of 7 ideas filled in";
+  }
+}
+
+async function renderPlanner() {
+  var items = await loadPlanner();
   var el = document.getElementById("planner-table");
   var countEl = document.getElementById("planner-count");
   if (!el) return;
@@ -373,12 +700,9 @@ function renderPlanner() {
 
   var html = "<div style='overflow-x:auto'><table style='width:100%;border-collapse:collapse;font-size:13px'>";
   html += "<thead><tr>";
-  html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>Day</th>";
-  html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>Time</th>";
-  html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>Format</th>";
-  html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>Platform</th>";
-  html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600'>Caption / idea</th>";
-  html += "<th style='padding:8px 10px;border-bottom:2px solid var(--border)'></th>";
+  ["Day","Time","Format","Platform","Caption / idea",""].forEach(function(h) {
+    html += "<th style='text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--text-faint);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;white-space:nowrap'>" + h + "</th>";
+  });
   html += "</tr></thead><tbody>";
 
   for (var i = 0; i < 7; i++) {
@@ -388,10 +712,6 @@ function renderPlanner() {
     var timeOpts = TIMES.map(function(t) { return "<option value='" + t + "'" + (item.time === t ? " selected" : "") + ">" + t + "</option>"; }).join("");
     var fmtOpts = FORMATS.map(function(f) { return "<option value='" + f + "'" + (item.format === f ? " selected" : "") + ">" + f + "</option>"; }).join("");
     var platOpts = PLATFORMS.map(function(p) { return "<option value='" + p + "'" + (item.platform === p ? " selected" : "") + ">" + p + "</option>"; }).join("");
-    var hasFmt = item.format;
-    var fmtColors = {"Talking head":"#72243E","Reaction clip":"#085041","Carousel":"#3C3489","Text overlay":"#633806","Raw TikTok":"#085041","Story series":"#3C3489"};
-    var fmtBgs = {"Talking head":"#FBEAF0","Reaction clip":"#E1F5EE","Carousel":"#EEEDFE","Text overlay":"#FAEEDA","Raw TikTok":"#E1F5EE","Story series":"#EEEDFE"};
-
     html += "<tr style='background:" + bg + ";border-bottom:1px solid var(--border)'>";
     html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:90px' onchange='savePlannerCell(" + i + ",&quot;day&quot;,this.value)'><option value=''>Day...</option>" + dayOpts + "</select></td>";
     html += "<td style='padding:8px 10px;white-space:nowrap'><select class='planner-select' style='min-width:80px' onchange='savePlannerCell(" + i + ",&quot;time&quot;,this.value)'><option value=''>Time...</option>" + timeOpts + "</select></td>";
@@ -405,9 +725,9 @@ function renderPlanner() {
   el.innerHTML = html;
 }
 
-function savePlannerFromTable() {
+async function savePlannerFromTable() {
   var rows = document.querySelectorAll("#planner-table tbody tr");
-  var items = loadPlanner();
+  var items = await loadPlanner();
   while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
   for (var i = 0; i < rows.length; i++) {
     var selects = rows[i].querySelectorAll("select");
@@ -418,25 +738,21 @@ function savePlannerFromTable() {
     if (selects[3]) items[i].platform = selects[3].value;
     if (ta) items[i].idea = ta.value;
   }
-  savePlanner(items);
+  await savePlanner(items);
   var msg = document.getElementById("planner-saved-msg");
   if (msg) { msg.style.display = "inline"; setTimeout(function() { msg.style.display = "none"; }, 2000); }
 }
 
-function savePlannerCell(i, key, val) {
-  var items = loadPlanner();
-  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-  items[i][key] = val;
-  savePlanner(items);
-  var countEl = document.getElementById("planner-count");
-  if (countEl) {
-    var filled = items.filter(function(r) { return r.idea; }).length;
-    countEl.textContent = filled + " of 7 ideas filled in";
-  }
+async function clearPlanner() {
+  if (!confirm("Clear the whole week plan?")) return;
+  var fresh = [];
+  for (var i = 0; i < 7; i++) fresh.push({ day: DAYS[i], time: "", format: "", platform: "Both", idea: "" });
+  await savePlanner(fresh);
+  renderPlanner();
 }
 
-function plannerRowToScript(i) {
-  var items = loadPlanner();
+async function plannerRowToScript(i) {
+  var items = await loadPlanner();
   var item = items[i] || {};
   if (!item.idea) return;
   goTo("script");
@@ -446,66 +762,21 @@ function plannerRowToScript(i) {
   }, 100);
 }
 
-function addPlannerSlot(idea) {
-  var items = loadPlanner();
+async function addPlannerSlot(idea) {
+  var items = await loadPlanner();
   while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-  // Find first empty idea slot
-  var found = false;
   for (var i = 0; i < items.length; i++) {
-    if (!items[i].idea) { items[i].idea = idea || ""; found = true; break; }
+    if (!items[i].idea) { items[i].idea = idea || ""; break; }
   }
-  savePlanner(items);
+  await savePlanner(items);
   goTo("planner");
-  if (found) setTimeout(renderPlanner, 100);
+  setTimeout(renderPlanner, 100);
 }
 
-function updatePlannerItem(i, key, val) {
-  var items = loadPlanner();
-  if (items[i]) { items[i][key] = val; savePlanner(items); renderPlanner(); }
-}
-
-function deletePlannerItem(i) {
-  var items = loadPlanner();
-  items.splice(i, 1);
-  savePlanner(items);
-  renderPlanner();
-}
-
-function savePlannerItem(i) {
-  var items = loadPlanner();
-  if (!items[i]) return;
-  var card = document.getElementById("pcard-" + i);
-  if (card) {
-    var ta = card.querySelector("textarea");
-    if (ta) { items[i].idea = ta.value; savePlanner(items); }
-  }
-  alert("Idea saved to your planner.");
-}
-
-function clearPlanner() {
-  if (!confirm("Clear the whole week plan?")) return;
-  var fresh = [];
-  for (var i = 0; i < 7; i++) fresh.push({ day: DAYS[i], time: "", format: "", platform: "Both", idea: "" });
-  savePlanner(fresh);
-  renderPlanner();
-}
-
-function plannerToScript(i) {
-  var items = loadPlanner();
-  if (!items[i] || !items[i].idea) return;
-  goTo("script");
-  setTimeout(function() {
-    var el = document.getElementById("script-idea");
-    if (el) el.value = items[i].idea;
-  }, 100);
-}
-
-function copyPlannerToClipboard() {
-  var items = loadPlanner();
+async function copyPlannerToClipboard() {
+  var items = await loadPlanner();
   if (!items.length) { alert("No ideas in your planner yet."); return; }
-  var sorted = items.slice().sort(function(a,b) {
-    return DAYS.indexOf(a.day) - DAYS.indexOf(b.day);
-  });
+  var sorted = items.slice().sort(function(a,b) { return DAYS.indexOf(a.day) - DAYS.indexOf(b.day); });
   var text = "WEEKLY CONTENT PLAN\n\n";
   for (var i = 0; i < sorted.length; i++) {
     var it = sorted[i];
@@ -513,18 +784,21 @@ function copyPlannerToClipboard() {
     text += "Format: " + (it.format || "TBD") + " | Platform: " + (it.platform || "Both") + "\n";
     text += (it.idea || "No idea yet") + "\n\n";
   }
-  navigator.clipboard.writeText(text).then(function() {
-    alert("Week plan copied! Paste into Later or your notes.");
-  });
+  navigator.clipboard.writeText(text).then(function() { alert("Week plan copied! Paste into Later or your notes."); });
 }
 
-function updateKeyStatus() {
-  var key = getKey();
+// ═══════════════════════════════════════════════════════
+// UI / NAV
+// ═══════════════════════════════════════════════════════
+
+async function updateKeyStatus() {
+  var key = await getKey();
   var dot = document.getElementById("api-dot");
   var label = document.getElementById("api-label");
+  var sbOk = sbReady();
   if (key) {
     dot.className = "dot connected";
-    label.textContent = "Connected";
+    label.textContent = sbOk ? "Connected (cloud)" : "Connected (local)";
   } else {
     dot.className = "dot";
     label.textContent = "Add API key";
@@ -540,8 +814,10 @@ function goTo(page) {
   var navEl = document.querySelector("[data-page='" + page + "']");
   if (navEl) navEl.classList.add("active");
   if (page === "setup") {
-    var k = getKey();
-    if (k) document.getElementById("api-key-input").value = k;
+    getKey().then(function(k) { if (k) document.getElementById("api-key-input").value = k; });
+    var creds = getSbCreds();
+    if (creds.url) document.getElementById("sb-url-input").value = creds.url;
+    if (creds.key) document.getElementById("sb-key-input").value = creds.key;
   }
   if (page === "saved") loadSavedPosts();
   if (page === "voice") loadVoiceSamples();
@@ -550,62 +826,12 @@ function goTo(page) {
 
 function cp(btn, text) {
   navigator.clipboard.writeText(text).then(function() {
-    var orig = btn.textContent;
-    btn.textContent = "Copied!";
+    var orig = btn.textContent; btn.textContent = "Copied!";
     setTimeout(function() { btn.textContent = orig; }, 2000);
   });
 }
 
-function saveFromBtn(btn) {
-  var hook = btn.getAttribute("data-hook") || "";
-  var post = btn.getAttribute("data-post") || "";
-  var plat = btn.getAttribute("data-plat") || "";
-  savePost(hook, post, plat);
-}
-
-function savePost(hook, post, platform) {
-  var saved = [];
-  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) { saved = []; }
-  saved.unshift({ hook: hook, post: post, platform: platform, date: new Date().toLocaleDateString() });
-  localStorage.setItem("tww_saved", JSON.stringify(saved));
-  alert("Saved! Go to Saved posts in the sidebar.");
-}
-
-function loadSavedPosts() {
-  var saved = [];
-  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) { saved = []; }
-  var out = document.getElementById("saved-out");
-  if (!saved.length) {
-    out.innerHTML = "<div class='loading'>No saved posts yet. Hit Save on any generated post.</div>";
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < saved.length; i++) {
-    var p = saved[i];
-    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
-    html += "<div class='card'>";
-    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
-    if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
-    html += "<div class='post-text'>" + p.post + "</div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cpSaved(" + i + ")'>Copy</button><button class='btn accent' onclick='scriptFromSaved(" + i + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + i + ")'>Remove</button></div>";
-    html += "</div>";
-  }
-  out.innerHTML = html;
-}
-
-function cpSaved(i) {
-  var saved = [];
-  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
-  if (saved[i]) cp(event.target, saved[i].post);
-}
-
-function deleteSaved(i) {
-  var saved = [];
-  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) { saved = []; }
-  saved.splice(i, 1);
-  localStorage.setItem("tww_saved", JSON.stringify(saved));
-  loadSavedPosts();
-}
+function cpText(btn, text) { cp(btn, text); }
 
 function switchVoiceTab(n) {
   document.getElementById("vpanel-extract").style.display = n === 0 ? "block" : "none";
@@ -614,59 +840,25 @@ function switchVoiceTab(n) {
   document.getElementById("vtab-manual").className = n === 1 ? "voice-tab active" : "voice-tab";
 }
 
-function saveVoice() {
-  var input = document.getElementById("voice-input").value.trim();
-  if (!input) return;
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  samples.unshift({ text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length, source: "manual" });
-  localStorage.setItem("tww_voice", JSON.stringify(samples));
-  document.getElementById("voice-input").value = "";
-  loadVoiceSamples();
-}
+// ═══════════════════════════════════════════════════════
+// AI / CLAUDE
+// ═══════════════════════════════════════════════════════
 
-function loadVoiceSamples() {
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  var out = document.getElementById("voice-saved-list");
-  if (!samples.length) { out.innerHTML = ""; return; }
-  var totalWords = 0;
-  for (var i = 0; i < samples.length; i++) totalWords += (samples[i].words || 0);
-  var html = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-bottom:1rem'>";
-  html += "<div style='font-size:13px;color:var(--teal-dark);font-weight:500'>" + totalWords + " words of your voice saved</div>";
-  html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>The AI uses all of this when generating content for you</div></div>";
-  for (var i = 0; i < samples.length; i++) {
-    var s = samples[i];
-    var preview = s.text ? s.text.substring(0, 200) + (s.text.length > 200 ? "..." : "") : "";
-    html += "<div class='card'>";
-    html += "<div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
-    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words - " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
-    html += "<button class='btn' style='padding:2px 10px;font-size:11px' onclick='deleteVoice(" + i + ")'>Remove</button></div>";
-    html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + preview + "</div></div>";
-  }
-  out.innerHTML = html;
-}
+var VOICE = "You are a content strategist writing for a woman with a bold countercultural philosophy about relationships. When women partner with a man who already has children, society sets them up to fail: to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This healed her disorganised attachment. She does not try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Like a wise friend who says what women think but do not say out loud. Never preachy. Never generic.";
 
-function deleteVoice(i) {
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  samples.splice(i, 1);
-  localStorage.setItem("tww_voice", JSON.stringify(samples));
-  loadVoiceSamples();
-}
-
-function getVoiceContext() {
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { return ""; }
-  if (!samples.length) return "";
-  var combined = "";
-  for (var i = 0; i < samples.length; i++) combined += (samples[i].text || "") + "\n\n";
-  combined = combined.substring(0, 2000);
-  return "\n\nHere are examples of her actual writing and speaking voice. Use these as your primary reference:\n" + combined;
-}
+var ANGLES = {
+  grief: "the silent grief of joining an existing family",
+  freedom: "freedom and sovereignty through keeping your own life",
+  attachment: "how this lifestyle healed disorganised attachment",
+  space: "keeping your own home even when committed",
+  travel: "traveling solo while in a relationship",
+  myth: "dismantling the holy family myth that sets women up to fail",
+  approval: "not needing approval to belong",
+  random: "any angle from her core philosophy"
+};
 
 async function callClaude(messages, maxTokens, systemPrompt) {
-  var key = getKey();
+  var key = await getKey();
   if (!key) { goTo("setup"); throw new Error("No API key. Please add your key in Settings."); }
   var body = { model: "claude-sonnet-4-20250514", max_tokens: maxTokens || 1000, messages: messages };
   if (systemPrompt) body.system = systemPrompt;
@@ -695,7 +887,8 @@ async function generatePosts() {
   out.innerHTML = "<div class='loading'>Writing posts in your voice...</div>";
   var n = platform === "both" ? 4 : 2;
   var platformLabel = platform === "both" ? "Instagram and TikTok (mix them evenly)" : platform;
-  var msg = VOICE + getVoiceContext() + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, shareable.";
+  var voiceCtx = await getVoiceContext();
+  var msg = VOICE + voiceCtx + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, shareable.";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 1200);
     var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
@@ -710,14 +903,11 @@ async function generatePosts() {
       var post = postMatch ? postMatch[1].trim() : block;
       var isIG = plat.toLowerCase().indexOf("instagram") >= 0;
       var platName = isIG ? "Instagram" : "TikTok";
-      var hookEnc = JSON.stringify(hook);
-      var postEnc = JSON.stringify(post);
-      var platEnc = JSON.stringify(platName);
       html += "<div class='card'>";
       html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
       if (hook) html += "<div class='hook-line'>\"" + hook + "\"</div>";
       html += "<div class='post-text'>" + post + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + postEnc + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addPlannerSlot(this.getAttribute(&quot;data-post&quot;))'>+ Planner</button></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addPlannerSlot(this.getAttribute(&quot;data-post&quot;))'>+ Planner</button></div>";
       html += "</div>";
     }
     out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
@@ -742,15 +932,12 @@ async function runTest() {
     chatHistory = [{ role: "user", content: msg }, { role: "assistant", content: text }];
     function g(k) {
       var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---|$)", "i");
-      var m = text.match(re);
-      return m ? m[1].trim() : "";
+      var m = text.match(re); return m ? m[1].trim() : "";
     }
     var score = parseInt(g("SCORE")) || 7;
     var verdict = g("VERDICT") || "Solid";
-    var works = g("WHY_WORKS");
-    var wont = g("WHY_WONT");
-    var sharpen = g("SHARPEN");
-    var format = g("FORMAT");
+    var works = g("WHY_WORKS"); var wont = g("WHY_WONT");
+    var sharpen = g("SHARPEN"); var format = g("FORMAT");
     var pct = score * 10;
     var col = score >= 8 ? "#1D9E75" : score >= 6 ? "#BA7517" : "#D85A30";
     var html = "<div class='card'>";
@@ -764,32 +951,20 @@ async function runTest() {
     if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px'>" + format + "</p>";
     html += "<div class='btn-actions' style='margin-top:1rem'>";
     if (sharpen) {
-      html += "<button class='btn' data-post=" + JSON.stringify(sharpen) + " onclick='cpText(this,this.getAttribute(\"data-post\"))'>Copy hook</button>";
-      html += "<button class='btn accent' data-post=" + JSON.stringify(sharpen) + " onclick='saveFromBtn(this)' data-hook='' data-plat='Idea tester'>Save hook</button>";
+      html += "<button class='btn' onclick='cpText(this," + JSON.stringify(sharpen) + ")'>Copy hook</button>";
+      html += "<button class='btn accent' data-post=" + JSON.stringify(sharpen) + " data-hook='' data-plat='Idea tester' onclick='saveFromBtn(this)'>Save hook</button>";
     }
     html += "</div>";
     html += "<div class='chat-wrap'><div class='chat-label'>Refine this idea</div>";
     html += "<div style='margin-bottom:10px'>";
-    html += "<button class='chip' onclick='sendChat(\"Make it shorter\")'>Make it shorter</button>";
-    html += "<button class='chip' onclick='sendChat(\"More provocative\")'>More provocative</button>";
-    html += "<button class='chip' onclick='sendChat(\"Rewrite for TikTok\")'>Rewrite for TikTok</button>";
-    html += "<button class='chip' onclick='sendChat(\"Give me 3 variations\")'>3 variations</button>";
-    html += "<button class='chip' onclick='sendChat(\"More personal\")'>More personal</button>";
-    html += "<button class='chip' onclick='sendChat(\"Turn this into a video script\")'>Make it a script</button>";
-    html += "</div>";
-    html += "<div class='chat-messages' id='chat-msgs'></div>";
+    ["Make it shorter","More provocative","Rewrite for TikTok","Give me 3 variations","More personal","Turn this into a video script"].forEach(function(c) {
+      html += "<button class='chip' onclick='sendChat(\"" + c + "\")'>" + c + "</button>";
+    });
+    html += "</div><div class='chat-messages' id='chat-msgs'></div>";
     html += "<div class='chat-input-row'><input class='chat-input' id='chat-in' type='text' placeholder='Ask anything...' onkeydown='if(event.key===\"Enter\")sendChat()'/><button class='chat-send' onclick='sendChat()'>Send</button></div>";
     html += "</div></div>";
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
-}
-
-function cpText(btn, text) {
-  navigator.clipboard.writeText(text).then(function() {
-    var orig = btn.textContent;
-    btn.textContent = "Copied!";
-    setTimeout(function() { btn.textContent = orig; }, 2000);
-  });
 }
 
 async function sendChat(prefill) {
@@ -799,14 +974,8 @@ async function sendChat(prefill) {
   if (input) input.value = "";
   var msgs = document.getElementById("chat-msgs");
   if (!msgs) return;
-  var userDiv = document.createElement("div");
-  userDiv.className = "chat-msg user";
-  userDiv.textContent = msg;
-  msgs.appendChild(userDiv);
-  var aiDiv = document.createElement("div");
-  aiDiv.className = "chat-msg ai";
-  aiDiv.textContent = "Thinking...";
-  msgs.appendChild(aiDiv);
+  var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Thinking..."; msgs.appendChild(aiDiv);
   chatHistory.push({ role: "user", content: msg });
   try {
     var reply = await callClaude(chatHistory, 800, VOICE + " You are helping refine a social media post idea. Be concise and practical.");
@@ -820,35 +989,7 @@ async function sendChat(prefill) {
     saveBtn.onclick = function() { savePost("", snap, "Idea tester"); };
     aiDiv.insertAdjacentElement("afterend", saveBtn);
     msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) {
-    aiDiv.textContent = "Something went wrong - try again.";
-  }
-}
-
-function scriptFromSaved(i) {
-  var saved = [];
-  try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
-  if (!saved[i]) return;
-  var post = saved[i].post || saved[i].hook || "";
-  goTo("script");
-  setTimeout(function() {
-    var el = document.getElementById("script-idea");
-    if (el) el.value = post;
-  }, 100);
-}
-
-async function generateScriptFromAngle() {
-  var angle = document.getElementById("script-angle").value;
-  var length = document.getElementById("script-length").value;
-  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
-  var out = document.getElementById("script-out");
-  out.innerHTML = "<div class='loading'>Writing your script...</div>";
-  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
-  var msg = VOICE + getVoiceContext() + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook stop the scroll. Write in her voice.";
-  try {
-    var text = await callClaude([{ role: "user", content: msg }], 900);
-    renderScript(text, length, platform, out);
-  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+  } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
 }
 
 async function generateScript() {
@@ -859,7 +1000,23 @@ async function generateScript() {
   if (!idea) { out.innerHTML = "<div class='loading'>Paste your idea in the box above first.</div>"; return; }
   out.innerHTML = "<div class='loading'>Writing your script...</div>";
   var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
-  var msg = VOICE + getVoiceContext() + "\n\nTurn this idea into a " + length + "-second face-to-camera video script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences - must stop the scroll]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nWrite in her voice. Make it feel lived, not scripted.";
+  var voiceCtx = await getVoiceContext();
+  var msg = VOICE + voiceCtx + "\n\nTurn this idea into a " + length + "-second face-to-camera video script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences - must stop the scroll]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nWrite in her voice. Make it feel lived, not scripted.";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 900);
+    renderScript(text, length, platform, out);
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+async function generateScriptFromAngle() {
+  var angle = document.getElementById("script-angle").value;
+  var length = document.getElementById("script-length").value;
+  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
+  var out = document.getElementById("script-out");
+  out.innerHTML = "<div class='loading'>Writing your script...</div>";
+  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
+  var voiceCtx = await getVoiceContext();
+  var msg = VOICE + voiceCtx + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook stop the scroll. Write in her voice.";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 900);
     renderScript(text, length, platform, out);
@@ -869,12 +1026,10 @@ async function generateScript() {
 function renderScript(text, length, platform, out) {
   function g(k) {
     var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i");
-    var m = text.match(re);
-    return m ? m[1].trim() : "";
+    var m = text.match(re); return m ? m[1].trim() : "";
   }
   var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
   var full = [hook, body, cta].filter(Boolean).join("\n\n");
-  var fullEnc = JSON.stringify(full);
   var platLabel = platform === "instagram" ? "Instagram Reel" : "TikTok";
   var platBadge = platform === "instagram" ? "badge-ig" : "badge-tt";
   var html = "<div class='card'>";
@@ -885,20 +1040,16 @@ function renderScript(text, length, platform, out) {
   if (body) html += "<div style='margin-bottom:1rem'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
   if (cta) html += "<div style='margin-bottom:1rem'><span class='badge badge-both'>CTA</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
   if (visual) html += "<div style='margin-bottom:1rem'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
-  html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + fullEnc + ")'>Copy script</button>";
-  html += "<button class='btn accent' onclick='savePost(\"\",\"Script: " + platLabel + "\",\"Script\")' data-post=" + JSON.stringify("SCRIPT (" + platLabel + "):\n\n" + full) + " data-hook='' data-plat='Script' onclick='saveFromBtn(this)'>Save script</button>";
+  html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(full) + ")'>Copy script</button>";
+  html += "<button class='btn accent' data-post=" + JSON.stringify("SCRIPT (" + platLabel + "):\n\n" + full) + " data-hook='' data-plat='Script' onclick='saveFromBtn(this)'>Save script</button>";
   html += "<button class='btn' onclick='generateScript()'>Regenerate</button></div>";
-  html += "<div class='chat-wrap'><div class='chat-label'>Refine this script</div>";
-  html += "<div style='margin-bottom:10px'>";
-  html += "<button class='chip' onclick='sendScriptChat(\"Make the hook more provocative\")'>Sharper hook</button>";
-  html += "<button class='chip' onclick='sendScriptChat(\"Make it shorter and punchier\")'>Shorter</button>";
-  html += "<button class='chip' onclick='sendScriptChat(\"Make it more personal and vulnerable\")'>More personal</button>";
-  html += "<button class='chip' onclick='sendScriptChat(\"Rewrite for TikTok - faster pace\")'>TikTok pace</button>";
-  html += "<button class='chip' onclick='sendScriptChat(\"Rewrite for Instagram Reel - more emotional\")'>Reel pace</button>";
-  html += "</div>";
-  html += "<div class='chat-messages' id='script-chat-msgs'></div>";
-  html += "<div class='chat-input-row'><input class='chat-input' id='script-chat-in' type='text' placeholder='Refine or adjust...' onkeydown='if(event.key===\"Enter\")sendScriptChat()'/><button class='chat-send' onclick='sendScriptChat()'>Send</button></div>";
-  html += "</div></div>";
+  html += "<div class='chat-wrap'><div class='chat-label'>Refine this script</div><div style='margin-bottom:10px'>";
+  ["Sharper hook","Shorter","More personal","TikTok pace","Reel pace"].forEach(function(c, idx) {
+    var prompts = ["Make the hook more provocative","Make it shorter and punchier","Make it more personal and vulnerable","Rewrite for TikTok - faster pace","Rewrite for Instagram Reel - more emotional"];
+    html += "<button class='chip' onclick='sendScriptChat(\"" + prompts[idx] + "\")'>" + c + "</button>";
+  });
+  html += "</div><div class='chat-messages' id='script-chat-msgs'></div>";
+  html += "<div class='chat-input-row'><input class='chat-input' id='script-chat-in' type='text' placeholder='Refine or adjust...' onkeydown='if(event.key===\"Enter\")sendScriptChat()'/><button class='chat-send' onclick='sendScriptChat()'>Send</button></div></div></div>";
   out.innerHTML = html;
   window._scriptChatHistory = [{ role: "user", content: "Here is a video script: " + full }, { role: "assistant", content: "Script created. How would you like to refine it?" }];
 }
@@ -910,14 +1061,8 @@ async function sendScriptChat(prefill) {
   if (input) input.value = "";
   var msgs = document.getElementById("script-chat-msgs");
   if (!msgs) return;
-  var userDiv = document.createElement("div");
-  userDiv.className = "chat-msg user";
-  userDiv.textContent = msg;
-  msgs.appendChild(userDiv);
-  var aiDiv = document.createElement("div");
-  aiDiv.className = "chat-msg ai";
-  aiDiv.textContent = "Rewriting...";
-  msgs.appendChild(aiDiv);
+  var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Rewriting..."; msgs.appendChild(aiDiv);
   if (!window._scriptChatHistory) window._scriptChatHistory = [];
   window._scriptChatHistory.push({ role: "user", content: msg });
   try {
@@ -932,9 +1077,7 @@ async function sendScriptChat(prefill) {
     saveBtn.onclick = function() { savePost("", snap, "Script"); };
     aiDiv.insertAdjacentElement("afterend", saveBtn);
     msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) {
-    aiDiv.textContent = "Something went wrong - try again.";
-  }
+  } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
 }
 
 async function generateAudio() {
@@ -944,8 +1087,7 @@ async function generateAudio() {
   try {
     var text = await callClaude([{ role: "user", content: msg }], 1000);
     var parts = text.split("===");
-    var hooksRaw = parts[0] || "";
-    var audioRaw = parts[1] || "";
+    var hooksRaw = parts[0] || ""; var audioRaw = parts[1] || "";
     var hookBlocks = hooksRaw.split(/\nFORMULA:/i).filter(function(s) { return s.trim() && !s.match(/^1\.|^HOOK/i); });
     var html = "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px'>Hook formulas</div>";
     for (var i = 0; i < hookBlocks.length; i++) {
@@ -982,14 +1124,11 @@ async function generateReplies() {
     var html = "<div style='font-size:13px;color:var(--text-muted);font-style:italic;padding:10px 14px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--pink);margin-bottom:1rem'>\"" + comment + "\"</div>";
     for (var i = 0; i < blocks.length; i++) {
       var block = blocks[i];
-      var tMatch = block.match(/TYPE:\s*(.+)/i);
-      var rMatch = block.match(/REPLY:\s*([\s\S]+)/i);
-      var type = tMatch ? tMatch[1].trim() : "Warm";
-      var reply = rMatch ? rMatch[1].trim() : block;
-      var replyEnc = JSON.stringify(reply);
+      var tMatch = block.match(/TYPE:\s*(.+)/i); var rMatch = block.match(/REPLY:\s*([\s\S]+)/i);
+      var type = tMatch ? tMatch[1].trim() : "Warm"; var reply = rMatch ? rMatch[1].trim() : block;
       var bc = type.toLowerCase() === "warm" ? "badge-ig" : type.toLowerCase() === "bold" ? "badge-tt" : "badge-both";
       html += "<div class='card'><span class='badge " + bc + "'>" + type + "</span><div class='post-text' style='font-size:14px'>" + reply + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + replyEnc + ")'>Copy</button></div></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(reply) + ")'>Copy</button></div></div>";
     }
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
@@ -1007,25 +1146,18 @@ async function extractTranscript() {
   try {
     var extracted = await callClaude([{ role: "user", content: msg }], 2000);
     var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
-    var extractedEnc = JSON.stringify(extracted);
     out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
       "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted - your words only</div>" +
       "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
-      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + extractedEnc + ")'>Save to my voice profile</button>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(" + JSON.stringify(extracted) + ")'>Save to my voice profile</button>" +
       "</div>";
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-function saveExtracted(text) {
-  var samples = [];
-  try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) { samples = []; }
-  samples.unshift({ text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" });
-  localStorage.setItem("tww_voice", JSON.stringify(samples));
-  document.getElementById("transcript-out").innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>Saved to your voice profile!</div>";
-  loadVoiceSamples();
-}
-
+// ── Boot ──
+initSupabase();
 updateKeyStatus();
+
 </script>
 </body>
 </html>
