@@ -750,7 +750,7 @@ function renderPlannerInbox(items) {
   if (countEl) countEl.textContent = items.length + " of 7 ideas";
   if (produceBtn) produceBtn.style.display = items.length > 0 ? "block" : "none";
   if (!items.length) {
-    el.innerHTML = "<div style='font-size:14px;color:var(--text-faint);padding:1rem;text-align:center;border:1px dashed var(--border);border-radius:var(--radius)'>No ideas picked yet. Generate posts and hit "Add to this week" on the ones you love.</div>";
+    el.innerHTML = "<div style='font-size:14px;color:var(--text-faint);padding:1rem;text-align:center;border:1px dashed var(--border);border-radius:var(--radius)'>No ideas picked yet. Generate posts and hit &lsquo;+ This week&rsquo; on the ones you love.</div>";
     return;
   }
   var html = "";
