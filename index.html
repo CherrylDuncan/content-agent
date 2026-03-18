@@ -32,7 +32,7 @@ nav { width: 200px; min-width: 200px; background: var(--surface); border-right: 
 .nav-item:hover { color: var(--text); background: var(--bg); }
 .nav-item.active { color: var(--pink-dark); background: var(--pink-light); border-left-color: var(--pink); font-weight: 500; }
 .nav-section { padding: 1rem 1.25rem 0.25rem; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
-main { flex: 1; padding: 2rem; max-width: 780px; }
+main { flex: 1; padding: 2rem; max-width: 820px; }
 .page { display: none; }
 .page.active { display: block; }
 .page-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 400; margin-bottom: 0.25rem; }
@@ -44,14 +44,19 @@ main { flex: 1; padding: 2rem; max-width: 780px; }
 .badge-tt { background: var(--teal-light); color: var(--teal-dark); }
 .badge-both { background: var(--purple-light); color: var(--purple-dark); }
 .badge-saved { background: var(--amber-light); color: var(--amber-dark); }
-select, textarea, input { font-family: "DM Sans", sans-serif; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; outline: none; width: 100%; }
+select, textarea, input[type=text], input[type=password] { font-family: "DM Sans", sans-serif; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; outline: none; width: 100%; }
 textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .row { display: flex; gap: 10px; margin-bottom: 1rem; }
 .row select { flex: 1; }
-.btn-primary { display: block; width: 100%; padding: 11px; font-family: "DM Sans", sans-serif; font-size: 14px; font-weight: 500; color: white; background: var(--pink-dark); border: none; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1.5rem; }
+.btn-primary { display: block; width: 100%; padding: 13px; font-family: "DM Sans", sans-serif; font-size: 15px; font-weight: 500; color: white; background: var(--pink-dark); border: none; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1.5rem; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-stella { display: block; width: 100%; padding: 18px; font-family: "Playfair Display", serif; font-size: 20px; font-weight: 400; font-style: italic; color: white; background: linear-gradient(135deg, var(--pink-dark), #3C3489); border: none; border-radius: var(--radius); cursor: pointer; margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+.btn-stella:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn { padding: 6px 14px; font-family: "DM Sans", sans-serif; font-size: 13px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn.accent { border-color: var(--pink); color: var(--pink-dark); }
-.btn-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.btn.reject { border-color: #e0e0e0; color: var(--text-faint); font-size: 12px; }
+.btn-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
 .hook-line { font-family: "Playfair Display", serif; font-size: 16px; color: var(--pink-dark); font-style: italic; margin-bottom: 8px; }
 .post-text { font-size: 15px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
 .loading { text-align: center; padding: 2.5rem; color: var(--text-faint); font-size: 14px; font-style: italic; }
@@ -65,12 +70,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .pill:hover { border-color: var(--pink); color: var(--pink-dark); }
 .chat-wrap { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
 .chat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
-.chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; max-height: 300px; overflow-y: auto; }
 .chat-msg { max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
 .chat-msg.user { background: var(--pink-light); color: var(--pink-dark); align-self: flex-end; }
 .chat-msg.ai { background: var(--bg); border: 1px solid var(--border); color: var(--text); align-self: flex-start; white-space: pre-wrap; }
 .chat-input-row { display: flex; gap: 8px; }
-.chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); }
+.chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); font-family: "DM Sans", sans-serif; }
 .chat-send { padding: 9px 16px; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: "DM Sans", sans-serif; }
 .chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); cursor: pointer; margin: 3px; font-family: "DM Sans", sans-serif; }
 .voice-tabs { display: flex; gap: 10px; margin-bottom: 1.25rem; }
@@ -84,28 +89,27 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .key-wrap { position: relative; margin-top: 8px; }
 .key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
 .key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
-.planner-select { font-family:"DM Sans",sans-serif;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:6px;padding:5px 8px;outline:none; }
 
-/* Production planner */
-.inbox-idea { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start; }
-.inbox-idea.reaction { border-left:3px solid var(--purple-dark); }
-.inbox-num { width:24px;height:24px;border-radius:50%;background:var(--pink-light);color:var(--pink-dark);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px; }
-.inbox-text { flex:1;font-size:14px;line-height:1.6;color:var(--text); }
-.inbox-remove { background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-faint);padding:0 4px;flex-shrink:0; }
-.inbox-remove:hover { color:var(--pink); }
-.produced-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem; }
-.produced-card .format-tag { font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px; }
-.format-talking { background:var(--pink-light);color:var(--pink-dark); }
-.format-broll { background:var(--teal-light);color:var(--teal-dark); }
-.format-carousel { background:var(--purple-light);color:var(--purple-dark); }
-.format-reaction { background:var(--amber-light);color:var(--amber-dark); }
-.produced-section { margin-bottom:12px; }
-.produced-section-label { font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px; }
-.produced-content { font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap; }
-
-/* Supabase setup banner */
-.sb-banner { background: var(--amber-light); border: 1px solid #e6c97a; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 14px; color: var(--amber-dark); display: none; }
-.sb-banner a { color: var(--amber-dark); font-weight: 500; }
+/* Week output cards */
+.week-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem; position: relative; }
+.week-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.format-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+.format-talking { background: var(--pink-light); color: var(--pink-dark); }
+.format-broll { background: var(--teal-light); color: var(--teal-dark); }
+.format-carousel { background: var(--purple-light); color: var(--purple-dark); }
+.format-reaction { background: var(--amber-light); color: var(--amber-dark); }
+.format-raw { background: #f0f0f0; color: #555; }
+.score-pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); }
+.week-idea { font-size: 13px; color: var(--text-muted); font-style: italic; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.content-section { margin-bottom: 1rem; }
+.content-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.content-section-body { font-size: 14px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
+.hashtags { font-size: 13px; color: var(--teal-dark); margin-top: 6px; }
+.reject-btn { font-size: 12px; color: var(--text-faint); background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; font-family: "DM Sans", sans-serif; }
+.reject-btn:hover { border-color: var(--pink); color: var(--pink-dark); }
+.week-progress { background: var(--bg); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+.progress-bar-outer { background: var(--border); border-radius: 4px; height: 6px; margin: 12px 0; overflow: hidden; }
+.progress-bar-inner { height: 6px; background: linear-gradient(90deg, var(--pink), #3C3489); border-radius: 4px; transition: width 0.5s ease; }
 </style>
 </head>
 <body>
@@ -119,10 +123,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 <div class="app">
   <nav>
     <div class="nav-section">Create</div>
-    <button class="nav-item active" onclick="goTo('generate')" data-page="generate"><span>&#10022;</span><span>Generate posts</span></button>
+    <button class="nav-item active" onclick="goTo('week')" data-page="week"><span>&#10022;</span><span>My week</span></button>
+    <button class="nav-item" onclick="goTo('generate')" data-page="generate"><span>&#9998;</span><span>Generate posts</span></button>
     <button class="nav-item" onclick="goTo('test')" data-page="test"><span>&#9678;</span><span>Idea tester</span></button>
     <button class="nav-item" onclick="goTo('script')" data-page="script"><span>&#9654;</span><span>Video scripts</span></button>
-    <button class="nav-item" onclick="goTo('planner')" data-page="planner"><span>&#9635;</span><span>Weekly planner</span></button>
     <div class="nav-section">Strategy</div>
     <button class="nav-item" onclick="goTo('audio')" data-page="audio"><span>&#9672;</span><span>Hooks + audio</span></button>
     <button class="nav-item" onclick="goTo('reply')" data-page="reply"><span>&#9671;</span><span>Reply templates</span></button>
@@ -136,8 +140,25 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   </nav>
   <main>
 
-    <!-- ── GENERATE ── -->
-    <div class="page active" id="page-generate">
+    <!-- MY WEEK -->
+    <div class="page active" id="page-week">
+      <div class="page-title">My week</div>
+      <div class="page-sub">Stella generates, scores and writes your full week of content. You review, refine and film.</div>
+      <button class="btn-stella" id="stella-btn" onclick="stellaGenerateWeek()">&#10022; Stella, give me this week</button>
+      <div id="week-progress" style="display:none" class="week-progress">
+        <div style="font-size:14px;color:var(--text-muted)" id="progress-label">Stella is thinking...</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar" style="width:5%"></div></div>
+        <div style="font-size:12px;color:var(--text-faint);margin-top:8px" id="progress-sub"></div>
+      </div>
+      <div id="week-out"></div>
+      <div id="week-actions" style="display:none;gap:10px;margin-top:1rem;flex-wrap:wrap">
+        <button class="btn accent" onclick="copyWeekToClipboard()">Copy all for Later</button>
+        <button class="btn" onclick="startNewWeek()">Start new week</button>
+      </div>
+    </div>
+
+    <!-- GENERATE POSTS -->
+    <div class="page" id="page-generate">
       <div class="page-title">Generate posts</div>
       <div class="page-sub">Create captions for Instagram and TikTok in your voice.</div>
       <div class="row">
@@ -161,7 +182,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="gen-out"></div>
     </div>
 
-    <!-- ── IDEA TESTER ── -->
+    <!-- IDEA TESTER -->
     <div class="page" id="page-test">
       <div class="page-title">Idea tester</div>
       <div class="page-sub">Paste a rough idea or draft. Get an honest score and sharper version.</div>
@@ -178,77 +199,23 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="test-out"></div>
     </div>
 
-    <!-- ── VIDEO SCRIPTS ── -->
+    <!-- VIDEO SCRIPTS -->
     <div class="page" id="page-script">
       <div class="page-title">Video scripts</div>
-      <div class="page-sub">Turn any saved idea into a platform-specific script. TikTok is punchy and fast. Instagram Reels can breathe more.</div>
+      <div class="page-sub">Turn any idea into a platform-specific script.</div>
       <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1.25rem">
         <div class="card-label" style="color:var(--pink-dark)">Paste your idea or saved caption</div>
         <textarea id="script-idea" placeholder="Paste your idea, hook, or caption here..." style="min-height:80px;margin-bottom:10px"></textarea>
         <div class="row" style="margin-bottom:0">
-          <select id="script-platform">
-            <option value="tiktok">TikTok</option>
-            <option value="instagram">Instagram Reel</option>
-          </select>
-          <select id="script-length">
-            <option value="30">30 sec (quick hook)</option>
-            <option value="60">60 sec</option>
-            <option value="90">90 sec</option>
-            <option value="180">3 min (TikTok long form)</option>
-          </select>
+          <select id="script-platform"><option value="tiktok">TikTok</option><option value="instagram">Instagram Reel</option></select>
+          <select id="script-length"><option value="30">30 sec</option><option value="60">60 sec</option><option value="90">90 sec</option><option value="180">3 min</option></select>
         </div>
       </div>
       <button class="btn-primary" onclick="generateScript()">Write my script &rarr;</button>
       <div id="script-out"></div>
-      <div style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem">
-        <div class="card-label">Or generate from an angle</div>
-        <select id="script-angle" style="margin-bottom:10px">
-          <option value="grief">The silent grief</option>
-          <option value="freedom">Keeping your own life</option>
-          <option value="attachment">Healing disorganised attachment</option>
-          <option value="space">Keeping your own place</option>
-          <option value="travel">Traveling solo in a relationship</option>
-          <option value="myth">The holy family myth</option>
-          <option value="approval">Not needing approval to belong</option>
-        </select>
-        <button class="btn" onclick="generateScriptFromAngle()" style="width:100%;padding:10px">Generate from angle &rarr;</button>
-      </div>
     </div>
 
-    <!-- ── WEEKLY PLANNER ── -->
-    <div class="page" id="page-planner">
-      <div class="page-title">Weekly planner</div>
-      <div class="page-sub">Pick your ideas, Stella assigns formats and writes everything.</div>
-
-      <!-- STEP 1: Idea inbox -->
-      <div id="planner-step1">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-          <div style="font-size:13px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em">Step 1 — Your picked ideas</div>
-          <span id="planner-inbox-count" style="font-size:12px;color:var(--text-faint)">0 of 7 ideas</span>
-        </div>
-        <div id="planner-inbox" style="margin-bottom:1rem"></div>
-        <!-- Add reaction clip manually -->
-        <div class="card" style="background:var(--purple-light);border-color:var(--purple-dark);margin-bottom:1.5rem">
-          <div class="card-label" style="color:var(--purple-dark)">Add a reaction clip idea</div>
-          <p style="font-size:13px;color:var(--purple-dark);margin-bottom:10px;line-height:1.6">Got a movie or show moment that connects to your philosophy? Add it here.</p>
-          <textarea id="reaction-input" placeholder="e.g. Bridget Jones — the scene where she thinks she needs to change to be loved..." style="min-height:70px;margin-bottom:10px;border-color:var(--purple-dark)"></textarea>
-          <button class="btn" style="border-color:var(--purple-dark);color:var(--purple-dark)" onclick="addReactionClip()">Add reaction clip &rarr;</button>
-        </div>
-        <button class="btn-primary" id="produce-btn" onclick="produceWeek()" style="display:none">✦ Stella, plan my week &rarr;</button>
-      </div>
-
-      <!-- STEP 2: Produced week -->
-      <div id="planner-step2" style="display:none">
-        <div style="display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center">
-          <button class="btn accent" onclick="copyPlannerToClipboard()">Copy all for Later</button>
-          <button class="btn" onclick="resetPlanner()">Start new week</button>
-          <span id="planner-saved-msg" style="font-size:13px;color:var(--teal);display:none">Saved!</span>
-        </div>
-        <div id="planner-produced"></div>
-      </div>
-    </div>
-
-    <!-- ── HOOKS + AUDIO ── -->
+    <!-- HOOKS + AUDIO -->
     <div class="page" id="page-audio">
       <div class="page-title">Hooks + audio tips</div>
       <div class="page-sub">Hook formulas and sound strategy for face-to-camera content.</div>
@@ -256,7 +223,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="audio-out"></div>
     </div>
 
-    <!-- ── REPLY TEMPLATES ── -->
+    <!-- REPLY TEMPLATES -->
     <div class="page" id="page-reply">
       <div class="page-title">Reply templates</div>
       <div class="page-sub">Paste a comment and get three reply options.</div>
@@ -265,33 +232,33 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="reply-out"></div>
     </div>
 
-    <!-- ── POST SCHEDULE ── -->
+    <!-- POST SCHEDULE -->
     <div class="page" id="page-schedule">
       <div class="page-title">Posting rhythm</div>
       <div class="page-sub">Your recommended daily posting schedule.</div>
       <div class="card">
-        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">7:00 am</div><div><div style="font-size:14px;font-weight:500">Morning provocation</div><div style="font-size:13px;color:var(--text-muted)">Bold 1-liner or hot take</div></div></div>
-        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">11:00 am</div><div><div style="font-size:14px;font-weight:500">Story or personal truth</div><div style="font-size:13px;color:var(--text-muted)">A real moment from your life</div></div></div>
-        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">1:00 pm</div><div><div style="font-size:14px;font-weight:500">Reframe or myth-bust</div><div style="font-size:13px;color:var(--text-muted)">Challenge a belief, drives saves and shares</div></div></div>
-        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:52px">5:00 pm</div><div><div style="font-size:14px;font-weight:500">Affirmation or permission slip</div><div style="font-size:13px;color:var(--text-muted)">Something women screenshot</div></div></div>
-        <div style="display:flex;gap:14px;padding:10px 0"><div style="font-size:13px;color:var(--text-faint);min-width:52px">8:00 pm</div><div><div style="font-size:14px;font-weight:500">Question or conversation starter</div><div style="font-size:13px;color:var(--text-muted)">Invites replies, boosts algorithm</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">7:00 am</div><div><div style="font-size:14px;font-weight:500">Morning provocation</div><div style="font-size:13px;color:var(--text-muted)">Bold 1-liner or hot take. Text overlay or quick talking head.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">10:00 am</div><div><div style="font-size:14px;font-weight:500">Talking head — main piece</div><div style="font-size:13px;color:var(--text-muted)">Your fully filmed and edited hero content.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">1:00 pm</div><div><div style="font-size:14px;font-weight:500">Reaction clip</div><div style="font-size:13px;color:var(--text-muted)">Movie or viral clip with your commentary. 30 seconds.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">5:00 pm</div><div><div style="font-size:14px;font-weight:500">Raw story-style</div><div style="font-size:13px;color:var(--text-muted)">You on your phone. One thought. 15-30 seconds. No editing.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0"><div style="font-size:13px;color:var(--text-faint);min-width:60px">8:00 pm</div><div><div style="font-size:14px;font-weight:500">Text overlay or repurpose</div><div style="font-size:13px;color:var(--text-muted)">Best caption as text on screen with trending audio.</div></div></div>
       </div>
       <div class="card">
         <div class="card-label">Scheduling tools</div>
-        <p style="font-size:14px;color:var(--text-muted);margin-bottom:1rem">Generate posts here, paste into a scheduler with the times above.</p>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:1rem">Generate content in Stella, schedule in Later. Later sends you a push notification to post natively from your phone.</p>
         <a href="https://buffer.com" target="_blank" class="btn" style="margin-right:8px;text-decoration:none">Buffer &rarr;</a>
         <a href="https://later.com" target="_blank" class="btn" style="text-decoration:none">Later &rarr;</a>
       </div>
     </div>
 
-    <!-- ── SAVED POSTS ── -->
+    <!-- SAVED POSTS -->
     <div class="page" id="page-saved">
       <div class="page-title">Saved posts</div>
       <div class="page-sub">Your personal library of content that resonates.</div>
       <div id="saved-out"></div>
     </div>
 
-    <!-- ── MY VOICE ── -->
+    <!-- MY VOICE -->
     <div class="page" id="page-voice">
       <div class="page-title">My voice</div>
       <div class="page-sub">Build your voice profile so every post sounds like you, not like AI.</div>
@@ -302,7 +269,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="vpanel-extract">
         <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1rem">
           <div class="card-label" style="color:var(--pink-dark)">How this works</div>
-          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript, client lines and all. The AI extracts only your words and saves them to your voice profile.</p>
+          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript, client lines and all. Stella extracts only your words and saves them to your voice profile.</p>
         </div>
         <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">Your name as it appears in the transcript</label>
         <input type="text" id="coach-name" placeholder="e.g. Cherryl, Coach, C:" style="margin-bottom:10px" />
@@ -313,7 +280,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="vpanel-manual" style="display:none">
         <div class="card" style="margin-bottom:1rem">
           <div class="card-label">What to paste in</div>
-          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions, book proposals, voice notes, rough notes. Anything in your natural voice.</p>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions, book proposals, voice notes, rough notes, your briefing document. Anything in your natural voice.</p>
         </div>
         <textarea id="voice-input" placeholder="Paste your content here..." style="min-height:160px"></textarea>
         <button class="btn-primary" onclick="saveVoice()">Save to my voice profile &rarr;</button>
@@ -321,7 +288,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <div id="voice-saved-list" style="margin-top:1.5rem"></div>
     </div>
 
-    <!-- ── MANIFESTO ── -->
+    <!-- MANIFESTO -->
     <div class="page" id="page-manifesto">
       <div class="page-title">My manifesto</div>
       <div class="page-sub">Your philosophy, in full.</div>
@@ -343,12 +310,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       </div>
     </div>
 
-    <!-- ── SETUP ── -->
+    <!-- SETUP -->
     <div class="page" id="page-setup">
       <div class="page-title">API setup</div>
-      <div class="page-sub">Connect your keys once. Your data is stored in the cloud — not your browser — so it survives cache clears and works on any device.</div>
-
-      <!-- Anthropic key -->
+      <div class="page-sub">Connect your keys once. Your data lives in the cloud — safe from cache clears forever.</div>
       <div class="card" style="margin-bottom:1rem">
         <div style="font-size:14px;font-weight:500;margin-bottom:1rem">1. Anthropic API key</div>
         <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Anthropic account</div><div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up.</div></div></div>
@@ -358,42 +323,11 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
           <div id="saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Anthropic key saved.</div>
         </div></div>
       </div>
-
-      <!-- Supabase -->
       <div class="card">
-        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">2. Supabase — cloud storage (keeps your data safe)</div>
-        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Supabase account</div><div class="step-body">Go to <a href="https://supabase.com" target="_blank">supabase.com</a> → New project. Free tier is plenty.</div></div></div>
-        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Create the database tables</div><div class="step-body">In your project go to <strong>SQL Editor</strong> and run the SQL below.</div></div></div>
-        <pre style="background:var(--bg);border-radius:var(--radius-sm);padding:12px;font-size:11px;line-height:1.6;overflow-x:auto;margin-bottom:1rem;border:1px solid var(--border)">create table if not exists tww_saved (
-  id bigint generated always as identity primary key,
-  hook text, post text, platform text,
-  date text, created_at timestamptz default now()
-);
-create table if not exists tww_voice (
-  id bigint generated always as identity primary key,
-  text text, words int, date text, source text,
-  created_at timestamptz default now()
-);
-create table if not exists tww_plan (
-  id bigint generated always as identity primary key,
-  slot int unique, day text, time text,
-  format text, platform text, idea text,
-  updated_at timestamptz default now()
-);
-create table if not exists tww_settings (
-  key text primary key, value text,
-  updated_at timestamptz default now()
-);
--- Allow public access (no auth needed for single-user app)
-alter table tww_saved enable row level security;
-alter table tww_voice enable row level security;
-alter table tww_plan enable row level security;
-alter table tww_settings enable row level security;
-create policy "public all" on tww_saved for all using (true) with check (true);
-create policy "public all" on tww_voice for all using (true) with check (true);
-create policy "public all" on tww_plan for all using (true) with check (true);
-create policy "public all" on tww_settings for all using (true) with check (true);</pre>
-        <div class="step-row"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your Project URL and anon key</div><div class="step-body">Settings → API → copy Project URL and anon/public key.</div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">2. Supabase — cloud storage</div>
+        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Supabase account</div><div class="step-body">Go to <a href="https://supabase.com" target="_blank">supabase.com</a> and create a project.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Run the setup SQL</div><div class="step-body">In SQL Editor run the SQL from your original setup.</div></div></div>
+        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your Project URL and anon key</div>
           <label style="font-size:12px;color:var(--text-muted);display:block;margin-top:10px;margin-bottom:4px">Project URL</label>
           <input type="text" id="sb-url-input" placeholder="https://xxxx.supabase.co" style="margin-bottom:8px" />
           <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Anon / public key</label>
@@ -407,52 +341,74 @@ create policy "public all" on tww_settings for all using (true) with check (true
   </main>
 </div>
 <script>
-
 // ═══════════════════════════════════════════════════════
-// STORAGE LAYER — Supabase with localStorage fallback
+// STELLA — THE WHOLE WOMAN CONTENT AGENT
 // ═══════════════════════════════════════════════════════
 
-var _sb = null; // Supabase client
+// ── STELLA'S SOUL ──────────────────────────────────────
+
+var SOUL = "You are Stella, content strategist and ghostwriter for Cherryl Duncan, creator of The Whole Woman.\n\nCherryl is a South African woman in her 40s living in Munich. She is in a relationship with a man who has two children from a previous marriage. He left his wife for her. They live in separate apartments 7 minutes apart in the city, plus a shared lake retreat on weekends. This architecture is deliberate.\n\nHer philosophy: she keeps her own space, her own life, her own rhythms. She approves of everything in the family dynamic and tries to harmonise nothing. When things get too intense she takes a walk, books a massage, has lunch alone. She assigns herself no role with the kids. She assigned herself no expectations. The result: his son calls her when he can't reach his dad. His son babysits her dog for pay. They like her but are slightly afraid of her.\n\nShe got a dog as an act of territorial expansion — not just because she wanted one, but to take up more space in a dynamic that kept trying to shrink her.\n\nShe used to be either avoidant (when the man was more attached) or fully co-dependent (when the man was avoidant — fixing his family, his ex wife, his dynamics, hoping he would finally see her). This relationship broke the pattern. She fell deeply in love, was in her 40s, couldn't face another failure, and instead of leaving the man she left the idea she had been carrying about what love was supposed to look like.\n\nHis ex wife denies her existence. His daughter had liked Cherryl the most before developing an eating disorder that she uses to control her father's guilt. His son challenges her politics wanting her approval. There was a long argument about who sits in the front seat of the car — her solution was to either take her own car or get in the back and find the whole thing quietly hilarious.\n\nThe pain of the ex wife, the children, the father's guilt all had names and categories. Cherryl's pain — the woman who came after — had no category. The Whole Woman exists to name that pain and offer a different way.\n\nWhen she read him the manifesto he wept. For the first time he saw her pain. He is now proud of how hard she works on her business. He flew her parents from South Africa for Christmas to meet his kids. She found it a strain and found it incredibly cute. She finally felt like she belonged.\n\nShe does not yet fully understand how lonely she feels on public holidays when he plans things with his kids. But she will one day. She says this without bitterness.\n\nHer audience: women 35-55 in or considering relationships with men who already have children. Feeling invisible. Quietly asking: is there another way?\n\nHer tone: warm, direct, wise, occasionally provocative and funny. The brilliant friend who says what women think but won't say. Never preachy. Never generic. Never a life coach with a framework. Never AI-sounding.\n\nNever: hollow affirmations, 'you've got this', 'your feelings are valid', making the kids the villain, making the ex wife the villain. The truth is always more interesting than the villain narrative.";
+
+var ANGLES = {
+  grief: "the silent grief of joining an existing family — the pain that has no category",
+  freedom: "keeping your own life as the thing that saves the relationship",
+  attachment: "how this lifestyle healed disorganised attachment — from co-dependent fixer to whole woman",
+  space: "keeping your own apartment, your own rhythms, your own world",
+  role: "not assigning yourself a role with his kids — and why that is the only thing that works",
+  flip: "flipping the question — instead of do the kids like you, do YOU like them",
+  car: "the absurdity of the front seat fight and what it taught her",
+  dog: "getting a dog as an act of territorial expansion",
+  holidays: "the loneliness of public holidays when he is with his family",
+  christmas: "finally belonging — when he flew her parents from South Africa",
+  run: "what she would tell a woman just starting this — run — and then the real answer",
+  guilt: "his guilt is not your problem to solve",
+  manifesto: "reading him the manifesto — when he finally saw her pain"
+};
+
+var FORMAT_RULES = "WEEKLY FORMAT RULES:\n- Exactly 1 Carousel (Instagram only) per week\n- At least 2 Talking Head (TikTok) pieces — these drive follows\n- At least 1 B-Roll TikTok — punchy, text overlay\n- At least 1 B-Roll Instagram — same idea, polished caption\n- 1 Raw TikTok — one thought, no production\n- Reaction Clip if a strong pop culture hook exists\n- Never more than 2 of the same format in one week";
+
+// ── SUPABASE ───────────────────────────────────────────
+
+var _sb = null;
 
 function getSbCreds() {
-  return {
-    url: localStorage.getItem("tww_sb_url") || "",
-    key: localStorage.getItem("tww_sb_key") || ""
-  };
+  return { url: localStorage.getItem("tww_sb_url") || "", key: localStorage.getItem("tww_sb_key") || "" };
 }
 
 function initSupabase() {
-  var creds = getSbCreds();
-  if (creds.url && creds.key) {
-    try {
-      _sb = supabase.createClient(creds.url, creds.key);
-      return true;
-    } catch(e) { _sb = null; return false; }
+  var c = getSbCreds();
+  if (c.url && c.key) {
+    try { _sb = supabase.createClient(c.url, c.key); return true; } catch(e) { _sb = null; }
   }
   return false;
 }
 
 function sbReady() { return _sb !== null; }
 
-// ── Settings (API key stored in Supabase when available, else localStorage) ──
-
-async function getKey() {
-  return localStorage.getItem("tww_key") || "";
+async function sbGet(key) {
+  if (!sbReady()) return null;
+  try {
+    var r = await _sb.from("tww_settings").select("value").eq("key", key).single();
+    return (r.data && r.data.value) ? JSON.parse(r.data.value) : null;
+  } catch(e) { return null; }
 }
 
-async function saveAnthropicKey() {
+async function sbSet(key, value) {
+  if (!sbReady()) return;
+  try { await _sb.from("tww_settings").upsert({ key: key, value: JSON.stringify(value), updated_at: new Date().toISOString() }); } catch(e) {}
+}
+
+// ── KEYS ───────────────────────────────────────────────
+
+function getKey() { return localStorage.getItem("tww_key") || ""; }
+
+function saveAnthropicKey() {
   var val = document.getElementById("api-key-input").value.trim();
   if (!val) return;
-  localStorage.setItem("tww_key", val); // always keep local copy
-  if (sbReady()) {
-    await _sb.from("tww_settings").upsert({ key: "tww_anthropic_key", value: val, updated_at: new Date().toISOString() });
-  }
+  localStorage.setItem("tww_key", val);
   document.getElementById("saved-notice").style.display = "block";
   updateKeyStatus();
 }
-
-// legacy alias
-function saveKey() { saveAnthropicKey(); }
 
 async function saveSupabaseKeys() {
   var url = document.getElementById("sb-url-input").value.trim();
@@ -461,14 +417,11 @@ async function saveSupabaseKeys() {
   localStorage.setItem("tww_sb_url", url);
   localStorage.setItem("tww_sb_key", key);
   initSupabase();
-  // test connection
   try {
-    var r = await _sb.from("tww_settings").upsert({ key: "tww_connected", value: "1", updated_at: new Date().toISOString() });
+    var r = await _sb.from("tww_settings").upsert({ key: "tww_connected", value: JSON.stringify("1"), updated_at: new Date().toISOString() });
     if (r.error) throw r.error;
     document.getElementById("sb-saved-notice").style.display = "block";
     document.getElementById("sb-error-notice").style.display = "none";
-    // migrate any existing localStorage data to Supabase
-    await migrateFromLocalStorage();
     updateKeyStatus();
   } catch(e) {
     document.getElementById("sb-error-notice").textContent = "Could not connect: " + (e.message || e);
@@ -476,119 +429,43 @@ async function saveSupabaseKeys() {
   }
 }
 
-async function migrateFromLocalStorage() {
-  // Migrate saved posts
-  try {
-    var saved = JSON.parse(localStorage.getItem("tww_saved") || "[]");
-    for (var i = 0; i < saved.length; i++) {
-      await _sb.from("tww_saved").insert({ hook: saved[i].hook||"", post: saved[i].post||"", platform: saved[i].platform||"", date: saved[i].date||"" });
-    }
-    if (saved.length) localStorage.removeItem("tww_saved");
-  } catch(e) {}
-  // Migrate voice
-  try {
-    var voice = JSON.parse(localStorage.getItem("tww_voice") || "[]");
-    for (var i = 0; i < voice.length; i++) {
-      await _sb.from("tww_voice").insert({ text: voice[i].text||"", words: voice[i].words||0, date: voice[i].date||"", source: voice[i].source||"manual" });
-    }
-    if (voice.length) localStorage.removeItem("tww_voice");
-  } catch(e) {}
-  // Migrate planner
-  try {
-    var plan = JSON.parse(localStorage.getItem("tww_plan") || "[]");
-    for (var i = 0; i < plan.length; i++) {
-      await _sb.from("tww_plan").upsert({ slot: i, day: plan[i].day||"", time: plan[i].time||"", format: plan[i].format||"", platform: plan[i].platform||"Both", idea: plan[i].idea||"", updated_at: new Date().toISOString() });
-    }
-    if (plan.length) localStorage.removeItem("tww_plan");
-  } catch(e) {}
-  // Migrate anthropic key
-  try {
-    var k = localStorage.getItem("tww_key");
-    if (k) {
-      await _sb.from("tww_settings").upsert({ key: "tww_anthropic_key", value: k, updated_at: new Date().toISOString() });
-    }
-  } catch(e) {}
-}
-
-// ── Saved Posts ──
-
-async function savePost(hook, post, platform) {
-  var entry = { hook: hook||"", post: post||"", platform: platform||"", date: new Date().toLocaleDateString() };
-  if (sbReady()) {
-    await _sb.from("tww_saved").insert(entry);
+async function updateKeyStatus() {
+  var key = getKey();
+  var dot = document.getElementById("api-dot");
+  var label = document.getElementById("api-label");
+  if (key) {
+    dot.className = "dot connected";
+    label.textContent = sbReady() ? "Connected (cloud)" : "Connected";
   } else {
-    var saved = [];
-    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
-    saved.unshift(entry);
-    localStorage.setItem("tww_saved", JSON.stringify(saved));
+    dot.className = "dot";
+    label.textContent = "Add API key";
   }
-  alert("Saved! Go to Saved posts in the sidebar.");
 }
 
-async function loadSavedPosts() {
-  var out = document.getElementById("saved-out");
-  out.innerHTML = "<div class='loading'>Loading saved posts...</div>";
-  var saved = [];
+// ── VOICE ──────────────────────────────────────────────
+
+async function getVoiceContext() {
+  var samples = [];
   if (sbReady()) {
-    var r = await _sb.from("tww_saved").select("*").order("created_at", { ascending: false });
-    saved = r.data || [];
-  } else {
-    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    try {
+      var r = await _sb.from("tww_voice").select("text").order("created_at", { ascending: false });
+      samples = r.data || [];
+    } catch(e) {}
   }
-  if (!saved.length) {
-    out.innerHTML = "<div class='loading'>No saved posts yet. Hit Save on any generated post.</div>";
-    return;
+  if (!samples.length) {
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
   }
-  var html = "";
-  for (var i = 0; i < saved.length; i++) {
-    var p = saved[i];
-    var rowId = sbReady() ? p.id : i;
-    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
-    html += "<div class='card'>";
-    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
-    if (p.hook) html += "<div class='hook-line'>\"" + p.hook + "\"</div>";
-    html += "<div class='post-text'>" + p.post + "</div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn accent' onclick='addToInbox(" + JSON.stringify(p.post) + ")'>+ This week</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
-    html += "</div>";
-  }
-  out.innerHTML = html;
+  if (!samples.length) return "";
+  var combined = samples.map(function(s) { return s.text || ""; }).join("\n\n").substring(0, 3000);
+  return "\n\nVOICE REFERENCE — Cherryl's actual words and writing. Use as primary tone reference:\n" + combined;
 }
-
-async function deleteSaved(rowId) {
-  if (sbReady()) {
-    await _sb.from("tww_saved").delete().eq("id", rowId);
-  } else {
-    var saved = [];
-    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
-    saved.splice(rowId, 1);
-    localStorage.setItem("tww_saved", JSON.stringify(saved));
-  }
-  loadSavedPosts();
-}
-
-function scriptFromPost(postText) {
-  goTo("script");
-  setTimeout(function() {
-    var el = document.getElementById("script-idea");
-    if (el) el.value = postText;
-  }, 100);
-}
-
-function saveFromBtn(btn) {
-  var hook = btn.getAttribute("data-hook") || "";
-  var post = btn.getAttribute("data-post") || "";
-  var plat = btn.getAttribute("data-plat") || "";
-  savePost(hook, post, plat);
-}
-
-// ── Voice Profile ──
 
 async function saveVoice() {
   var input = document.getElementById("voice-input").value.trim();
   if (!input) return;
   var entry = { text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length, source: "manual" };
   if (sbReady()) {
-    await _sb.from("tww_voice").insert(entry);
+    try { await _sb.from("tww_voice").insert(entry); } catch(e) {}
   } else {
     var samples = [];
     try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
@@ -602,34 +479,34 @@ async function saveVoice() {
 async function loadVoiceSamples() {
   var samples = [];
   if (sbReady()) {
-    var r = await _sb.from("tww_voice").select("*").order("created_at", { ascending: false });
-    samples = r.data || [];
-  } else {
+    try {
+      var r = await _sb.from("tww_voice").select("*").order("created_at", { ascending: false });
+      samples = r.data || [];
+    } catch(e) {}
+  }
+  if (!samples.length) {
     try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
   }
   var out = document.getElementById("voice-saved-list");
   if (!samples.length) { out.innerHTML = ""; return; }
-  var totalWords = 0;
-  for (var i = 0; i < samples.length; i++) totalWords += (samples[i].words || 0);
+  var totalWords = samples.reduce(function(a, s) { return a + (s.words || 0); }, 0);
   var html = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-bottom:1rem'>";
   html += "<div style='font-size:13px;color:var(--teal-dark);font-weight:500'>" + totalWords + " words of your voice saved</div>";
-  html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>The AI uses all of this when generating content for you</div></div>";
-  for (var i = 0; i < samples.length; i++) {
-    var s = samples[i];
+  html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>Stella uses all of this when generating content for you</div></div>";
+  samples.forEach(function(s, i) {
     var rowId = sbReady() ? s.id : i;
-    var preview = s.text ? s.text.substring(0, 200) + (s.text.length > 200 ? "..." : "") : "";
-    html += "<div class='card'>";
-    html += "<div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
-    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words - " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
+    var preview = (s.text || "").substring(0, 200) + ((s.text || "").length > 200 ? "..." : "");
+    html += "<div class='card'><div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
+    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words &mdash; " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
     html += "<button class='btn' style='padding:2px 10px;font-size:11px' onclick='deleteVoice(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
     html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + preview + "</div></div>";
-  }
+  });
   out.innerHTML = html;
 }
 
 async function deleteVoice(rowId) {
   if (sbReady()) {
-    await _sb.from("tww_voice").delete().eq("id", rowId);
+    try { await _sb.from("tww_voice").delete().eq("id", rowId); } catch(e) {}
   } else {
     var samples = [];
     try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
@@ -639,25 +516,30 @@ async function deleteVoice(rowId) {
   loadVoiceSamples();
 }
 
-async function getVoiceContext() {
-  var samples = [];
-  if (sbReady()) {
-    var r = await _sb.from("tww_voice").select("text").order("created_at", { ascending: false });
-    samples = r.data || [];
-  } else {
-    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
-  }
-  if (!samples.length) return "";
-  var combined = "";
-  for (var i = 0; i < samples.length; i++) combined += (samples[i].text || "") + "\n\n";
-  combined = combined.substring(0, 2000);
-  return "\n\nHere are examples of her actual writing and speaking voice. Use these as your primary reference:\n" + combined;
+async function extractTranscript() {
+  var transcript = document.getElementById("transcript-input").value.trim();
+  var coachName = document.getElementById("coach-name").value.trim() || "the coach";
+  if (!transcript) return;
+  var out = document.getElementById("transcript-out");
+  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
+  var msg = "Here is a coaching call transcript. The coach is labelled as: " + coachName + ". Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, speaker labels, filler words. Output only the coach words as flowing natural text, preserving their exact phrasing. Do not summarise. Output nothing else.\n\nTranscript:\n" + transcript.substring(0, 6000);
+  try {
+    var extracted = await callClaude([{ role: "user", content: msg }], 2000);
+    window._lastExtracted = extracted;
+    var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
+    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
+      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted &mdash; your words only</div>" +
+      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(window._lastExtracted)'>Save to my voice profile</button>" +
+      "</div>";
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
 async function saveExtracted(text) {
+  if (!text) return;
   var entry = { text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" };
   if (sbReady()) {
-    await _sb.from("tww_voice").insert(entry);
+    try { await _sb.from("tww_voice").insert(entry); } catch(e) {}
   } else {
     var samples = [];
     try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
@@ -668,344 +550,80 @@ async function saveExtracted(text) {
   loadVoiceSamples();
 }
 
-// ── Weekly Planner ──
+// ── SAVED POSTS ────────────────────────────────────────
 
-var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-var FORMATS = ["Talking head","Reaction clip","Carousel","Text overlay","Raw TikTok","Story series"];
-var PLATFORMS = ["Both","TikTok only","Instagram only"];
-var TIMES = ["7:00 am","10:00 am","12:30 pm","3:30 pm","6:30 pm","9:00 pm"];
+async function savePost(hook, post, platform) {
+  var entry = { hook: hook || "", post: post || "", platform: platform || "", date: new Date().toLocaleDateString() };
+  if (sbReady()) {
+    try { await _sb.from("tww_saved").insert(entry); } catch(e) {}
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.unshift(entry);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  showToast("Saved to your library!");
+}
 
-// Inbox = ideas picked by user, not yet produced
-async function loadInbox() {
+function saveFromBtn(btn) {
+  savePost(btn.getAttribute("data-hook") || "", btn.getAttribute("data-post") || "", btn.getAttribute("data-plat") || "");
+}
+
+async function loadSavedPosts() {
+  var out = document.getElementById("saved-out");
+  out.innerHTML = "<div class='loading'>Loading...</div>";
+  var saved = [];
   if (sbReady()) {
     try {
-      var r = await _sb.from("tww_settings").select("value").eq("key","tww_inbox").single();
-      if (r.data && r.data.value) return JSON.parse(r.data.value);
+      var r = await _sb.from("tww_saved").select("*").order("created_at", { ascending: false });
+      saved = r.data || [];
     } catch(e) {}
   }
-  try { return JSON.parse(localStorage.getItem("tww_inbox") || "[]"); } catch(e) { return []; }
-}
-
-async function saveInbox(items) {
-  localStorage.setItem("tww_inbox", JSON.stringify(items));
-  if (sbReady()) {
-    try { await _sb.from("tww_settings").upsert({ key: "tww_inbox", value: JSON.stringify(items), updated_at: new Date().toISOString() }); } catch(e) {}
+  if (!saved.length) {
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
   }
-}
-
-async function loadProduced() {
-  if (sbReady()) {
-    try {
-      var r = await _sb.from("tww_settings").select("value").eq("key","tww_produced").single();
-      if (r.data && r.data.value) return JSON.parse(r.data.value);
-    } catch(e) {}
-  }
-  try { return JSON.parse(localStorage.getItem("tww_produced") || "null"); } catch(e) { return null; }
-}
-
-async function saveProduced(data) {
-  localStorage.setItem("tww_produced", JSON.stringify(data));
-  if (sbReady()) {
-    try { await _sb.from("tww_settings").upsert({ key: "tww_produced", value: JSON.stringify(data), updated_at: new Date().toISOString() }); } catch(e) {}
-  }
-}
-
-async function addToInbox(idea) {
-  var items = await loadInbox();
-  if (items.length >= 7) { alert("You already have 7 ideas for this week. Start a new week first!"); return; }
-  if (items.find(function(i) { return i.idea === idea; })) { alert("That idea is already in your week!"); return; }
-  items.push({ idea: idea, type: "generated", date: new Date().toLocaleDateString() });
-  await saveInbox(items);
-  // Show feedback
-  var msg = document.createElement("div");
-  msg.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--teal);color:white;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999";
-  msg.textContent = "Added to this week! (" + items.length + "/7)";
-  document.body.appendChild(msg);
-  setTimeout(function() { document.body.removeChild(msg); }, 2000);
-}
-
-async function addReactionClip() {
-  var input = document.getElementById("reaction-input").value.trim();
-  if (!input) return;
-  var items = await loadInbox();
-  if (items.length >= 7) { alert("You already have 7 ideas for this week!"); return; }
-  items.push({ idea: input, type: "reaction", date: new Date().toLocaleDateString() });
-  await saveInbox(items);
-  document.getElementById("reaction-input").value = "";
-  renderPlannerInbox(items);
-}
-
-async function removeFromInbox(idx) {
-  var items = await loadInbox();
-  items.splice(idx, 1);
-  await saveInbox(items);
-  renderPlannerInbox(items);
-}
-
-function renderPlannerInbox(items) {
-  var el = document.getElementById("planner-inbox");
-  var countEl = document.getElementById("planner-inbox-count");
-  var produceBtn = document.getElementById("produce-btn");
-  if (!el) return;
-  if (countEl) countEl.textContent = items.length + " of 7 ideas";
-  if (produceBtn) produceBtn.style.display = items.length > 0 ? "block" : "none";
-  if (!items.length) {
-    el.innerHTML = "<div style='font-size:14px;color:var(--text-faint);padding:1rem;text-align:center;border:1px dashed var(--border);border-radius:var(--radius)'>No ideas picked yet. Generate posts and hit &lsquo;+ This week&rsquo; on the ones you love.</div>";
-    return;
-  }
+  if (!saved.length) { out.innerHTML = "<div class='loading'>No saved posts yet.</div>"; return; }
   var html = "";
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    var isReaction = item.type === "reaction";
-    html += "<div class='inbox-idea" + (isReaction ? " reaction" : "") + "'>";
-    html += "<div class='inbox-num'>" + (i+1) + "</div>";
-    html += "<div class='inbox-text'>" + (isReaction ? "🎬 Reaction clip: " : "") + item.idea + "</div>";
-    html += "<button class='inbox-remove' onclick='removeFromInbox(" + i + ")'>×</button>";
+  saved.forEach(function(p, i) {
+    var rowId = sbReady() ? p.id : i;
+    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
+    html += "<div class='card'>";
+    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
+    if (p.hook) html += "<div class='hook-line'>&ldquo;" + p.hook + "&rdquo;</div>";
+    html += "<div class='post-text'>" + p.post + "</div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
     html += "</div>";
-  }
-  el.innerHTML = html;
-}
-
-async function produceWeek() {
-  var items = await loadInbox();
-  if (!items.length) return;
-  var btn = document.getElementById("produce-btn");
-  if (btn) { btn.textContent = "Stella is planning your week..."; btn.disabled = true; }
-
-  var voiceCtx = await getVoiceContext();
-  var ideasText = items.map(function(it, idx) {
-    return (idx+1) + ". " + (it.type === "reaction" ? "[REACTION CLIP] " : "") + it.idea;
-  }).join("\n");
-
-  var prompt = VOICE + voiceCtx;
-  prompt += "\n\nYou are planning a week of content for The Whole Woman. Here are " + items.length + " ideas the creator has picked:\n\n" + ideasText;
-  prompt += "\n\nFor each idea:\n1. Assign the BEST format: Talking Head (TikTok), B-Roll TikTok, B-Roll Instagram, Carousel (Instagram only), Reaction Clip (TikTok)\n";
-  prompt += "   Rules: 1 Carousel per week max. Reaction Clip only for [REACTION CLIP] ideas. Mix formats. Talking head for personal ideas. B-Roll for punchy statements.\n";
-  prompt += "2. Write the content: Talking Head = HOOK + BODY + CTA script. B-Roll TikTok = 4-6 text overlays. B-Roll Instagram = 3-5 sentence caption. Carousel = SLIDE 1 to SLIDE 6. Reaction Clip = commentary script.\n";
-  prompt += "3. Suggest a posting day.\n";
-  prompt += "\nFor EACH idea output EXACTLY this format:\nIDEA: [idea]\nFORMAT: [format]\nDAY: [day]\nCONTENT:\n[content]\n---\n\nWrite in her voice. Real, lived, not scripted.";
-
-  try {
-    var text = await callClaude([{ role: "user", content: prompt }], 4000);
-    var blocks = text.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
-    var produced = [];
-    for (var i = 0; i < blocks.length; i++) {
-      var block = blocks[i];
-      var ideaM = block.match(/IDEA:\s*([\s\S]+?)(?=\nFORMAT:|$)/i);
-      var formatM = block.match(/FORMAT:\s*(.+)/i);
-      var dayM = block.match(/DAY:\s*(.+)/i);
-      var contentM = block.match(/CONTENT:\s*([\s\S]+)/i);
-      produced.push({
-        idea: ideaM ? ideaM[1].trim() : "",
-        format: formatM ? formatM[1].trim() : "",
-        day: dayM ? dayM[1].trim() : "",
-        content: contentM ? contentM[1].trim() : ""
-      });
-    }
-    await saveProduced(produced);
-    await saveInbox([]);
-    renderProduced(produced);
-    document.getElementById("planner-step1").style.display = "none";
-    document.getElementById("planner-step2").style.display = "block";
-  } catch(e) {
-    if (btn) { btn.textContent = "\u2726 Stella, plan my week \u2192"; btn.disabled = false; }
-    alert("Something went wrong: " + e.message);
-  }
-}
-
-function formatClass(format) {
-  if (!format) return "format-broll";
-  var f = format.toLowerCase();
-  if (f.indexOf("talking") >= 0) return "format-talking";
-  if (f.indexOf("carousel") >= 0) return "format-carousel";
-  if (f.indexOf("reaction") >= 0) return "format-reaction";
-  return "format-broll";
-}
-
-function platformLabel(format) {
-  if (!format) return "";
-  var f = format.toLowerCase();
-  if (f.indexOf("instagram") >= 0 || f.indexOf("carousel") >= 0) return " · Instagram";
-  if (f.indexOf("tiktok") >= 0 || f.indexOf("talking") >= 0 || f.indexOf("reaction") >= 0 || f.indexOf("b-roll tiktok") >= 0) return " · TikTok";
-  return "";
-}
-
-function renderProduced(produced) {
-  var el = document.getElementById("planner-produced");
-  if (!el) return;
-  if (!produced || !produced.length) {
-    el.innerHTML = "<div class='loading'>No week produced yet.</div>";
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < produced.length; i++) {
-    var p = produced[i];
-    var fc = formatClass(p.format);
-    html += "<div class='produced-card'>";
-    html += "<div style='display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px'>";
-    html += "<span class='format-tag " + fc + "'>" + (p.format || "Content") + platformLabel(p.format) + "</span>";
-    html += "<span style='font-size:12px;color:var(--text-faint)'>" + (p.day || "") + "</span></div>";
-    html += "<div style='font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic'>" + (p.idea || "") + "</div>";
-    html += "<div class='produced-section'><div class='produced-content'>" + (p.content || "").replace(/\n/g, "<br>") + "</div></div>";
-    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.content || "") + ")'>Copy</button></div>";
-    html += "</div>";
-  }
-  el.innerHTML = html;
-}
-
-async function resetPlanner() {
-  if (!confirm("Start a fresh week? This will clear the current plan.")) return;
-  await saveProduced(null);
-  await saveInbox([]);
-  document.getElementById("planner-step1").style.display = "block";
-  document.getElementById("planner-step2").style.display = "none";
-  var btn = document.getElementById("produce-btn");
-  if (btn) { btn.textContent = "✦ Stella, plan my week →"; btn.disabled = false; btn.style.display = "none"; }
-  renderPlannerInbox([]);
-}
-
-async function copyPlannerToClipboard() {
-  var produced = await loadProduced();
-  if (!produced || !produced.length) { alert("No week plan yet."); return; }
-  var text = "WEEKLY CONTENT PLAN - THE WHOLE WOMAN\n\n";
-  for (var i = 0; i < produced.length; i++) {
-    var p = produced[i];
-    text += (p.day || "") + " - " + (p.format || "") + "\n";
-    text += "Idea: " + (p.idea || "") + "\n\n";
-    text += (p.content || "") + "\n\n---\n\n";
-  }
-  navigator.clipboard.writeText(text).then(function() { alert("Week plan copied! Paste into Later or your notes."); });
-}
-
-async function loadPlanner() {
-  try { return JSON.parse(localStorage.getItem("tww_plan") || "[]"); } catch(e) { return []; }
-}
-
-async function savePlanner(items) {
-  localStorage.setItem("tww_plan", JSON.stringify(items));
-  if (sbReady()) {
-    try { await _sb.from("tww_settings").upsert({ key: "tww_plan_json", value: JSON.stringify(items), updated_at: new Date().toISOString() }); } catch(e) {}
-  }
-}
-
-async function savePlannerCell(i, key, val) {
-  var items = await loadPlanner();
-  while (items.length < 7) items.push({ day: DAYS[items.length], time: "", format: "", platform: "Both", idea: "" });
-  items[i][key] = val;
-  await savePlanner(items);
-}
-
-async function savePlannerFromTable() {
-  var msg = document.getElementById("planner-saved-msg");
-  if (msg) { msg.style.display = "inline"; setTimeout(function() { msg.style.display = "none"; }, 2000); }
-}
-
-async function renderPlanner() {
-  // Load and render inbox
-  var inbox = await loadInbox();
-  renderPlannerInbox(inbox);
-  // Check if there's a produced week
-  var produced = await loadProduced();
-  if (produced && produced.length) {
-    document.getElementById("planner-step1").style.display = "none";
-    document.getElementById("planner-step2").style.display = "block";
-    renderProduced(produced);
-  } else {
-    document.getElementById("planner-step1").style.display = "block";
-    document.getElementById("planner-step2").style.display = "none";
-  }
-}
-
-async function clearPlanner() {
-  await resetPlanner();
-}
-
-async function plannerRowToScript(i) {}
-async function addPlannerSlot(idea) { await addToInbox(idea); }
-
-// ═══════════════════════════════════════════════════════
-// UI / NAV
-// ═══════════════════════════════════════════════════════
-
-async function updateKeyStatus() {
-  var key = await getKey();
-  var dot = document.getElementById("api-dot");
-  var label = document.getElementById("api-label");
-  var sbOk = sbReady();
-  if (key) {
-    dot.className = "dot connected";
-    label.textContent = sbOk ? "Connected (cloud)" : "Connected (local)";
-  } else {
-    dot.className = "dot";
-    label.textContent = "Add API key";
-  }
-}
-
-function goTo(page) {
-  var all = document.querySelectorAll(".page");
-  for (var i = 0; i < all.length; i++) all[i].classList.remove("active");
-  var navs = document.querySelectorAll(".nav-item");
-  for (var i = 0; i < navs.length; i++) navs[i].classList.remove("active");
-  document.getElementById("page-" + page).classList.add("active");
-  var navEl = document.querySelector("[data-page='" + page + "']");
-  if (navEl) navEl.classList.add("active");
-  if (page === "setup") {
-    getKey().then(function(k) { if (k) document.getElementById("api-key-input").value = k; });
-    var creds = getSbCreds();
-    if (creds.url) document.getElementById("sb-url-input").value = creds.url;
-    if (creds.key) document.getElementById("sb-key-input").value = creds.key;
-  }
-  if (page === "saved") loadSavedPosts();
-  if (page === "voice") loadVoiceSamples();
-  if (page === "planner") renderPlanner();
-}
-
-function cp(btn, text) {
-  navigator.clipboard.writeText(text).then(function() {
-    var orig = btn.textContent; btn.textContent = "Copied!";
-    setTimeout(function() { btn.textContent = orig; }, 2000);
   });
+  out.innerHTML = html;
 }
 
-function cpText(btn, text) { cp(btn, text); }
-
-function switchVoiceTab(n) {
-  document.getElementById("vpanel-extract").style.display = n === 0 ? "block" : "none";
-  document.getElementById("vpanel-manual").style.display = n === 1 ? "block" : "none";
-  document.getElementById("vtab-extract").className = n === 0 ? "voice-tab active" : "voice-tab";
-  document.getElementById("vtab-manual").className = n === 1 ? "voice-tab active" : "voice-tab";
+async function deleteSaved(rowId) {
+  if (sbReady()) {
+    try { await _sb.from("tww_saved").delete().eq("id", rowId); } catch(e) {}
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.splice(rowId, 1);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  loadSavedPosts();
 }
 
-// ═══════════════════════════════════════════════════════
-// AI / CLAUDE
-// ═══════════════════════════════════════════════════════
+function scriptFromPost(postText) {
+  goTo("script");
+  setTimeout(function() { var el = document.getElementById("script-idea"); if (el) el.value = postText; }, 100);
+}
 
-var VOICE = "You are a content strategist writing for a woman with a bold countercultural philosophy about relationships. When women partner with a man who already has children, society sets them up to fail: to shrink, morph, and silently grieve. Her answer is radical self-ownership: keeping her own space, her own life, her own schedule. Almost single but with a relationship of depth. This healed her disorganised attachment. She does not try to win the kids over. She travels alone. She opts out of dynamics that existed before her. Her tone: warm, direct, wise, occasionally provocative. Like a wise friend who says what women think but do not say out loud. Never preachy. Never generic.";
-
-var ANGLES = {
-  grief: "the silent grief of joining an existing family",
-  freedom: "freedom and sovereignty through keeping your own life",
-  attachment: "how this lifestyle healed disorganised attachment",
-  space: "keeping your own home even when committed",
-  travel: "traveling solo while in a relationship",
-  myth: "dismantling the holy family myth that sets women up to fail",
-  approval: "not needing approval to belong",
-  random: "any angle from her core philosophy"
-};
+// ── CLAUDE API ─────────────────────────────────────────
 
 async function callClaude(messages, maxTokens, systemPrompt) {
-  var key = await getKey();
+  var key = getKey();
   if (!key) { goTo("setup"); throw new Error("No API key. Please add your key in Settings."); }
   var body = { model: "claude-sonnet-4-20250514", max_tokens: maxTokens || 1000, messages: messages };
   if (systemPrompt) body.system = systemPrompt;
   var res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": key,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
-    },
+    headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
     body: JSON.stringify(body)
   });
   if (!res.ok) {
@@ -1016,60 +634,398 @@ async function callClaude(messages, maxTokens, systemPrompt) {
   return data.content.map(function(b) { return b.text || ""; }).join("");
 }
 
+// ═══════════════════════════════════════════════════════
+// STELLA — GIVE ME THIS WEEK
+// ═══════════════════════════════════════════════════════
+
+var _weekData = [];
+var _weekChats = {};
+
+function setProgress(pct, label, sub) {
+  document.getElementById("progress-bar").style.width = pct + "%";
+  if (label) document.getElementById("progress-label").textContent = label;
+  if (sub !== undefined) document.getElementById("progress-sub").textContent = sub || "";
+}
+
+async function stellaGenerateWeek() {
+  var btn = document.getElementById("stella-btn");
+  btn.disabled = true;
+  btn.textContent = "Stella is working...";
+  document.getElementById("week-progress").style.display = "block";
+  document.getElementById("week-out").innerHTML = "";
+  document.getElementById("week-actions").style.display = "none";
+
+  setProgress(5, "Stella is thinking about your week...", "Generating ideas across all your angles");
+
+  var voiceCtx = await getVoiceContext();
+
+  // STEP 1: Generate and score 14 ideas
+  var scorePrompt = SOUL + voiceCtx;
+  scorePrompt += "\n\nGenerate 14 content ideas for The Whole Woman across these angles: " + Object.values(ANGLES).join("; ");
+  scorePrompt += "\n\nFor each idea, score it 1-10 on: scroll-stopping power, emotional resonance, originality, fit with Cherryl's real life details.";
+  scorePrompt += "\n\nOnly include ideas that feel specific and real — not generic relationship advice.";
+  scorePrompt += "\n\nFor each idea output EXACTLY:\nIDEA: [one punchy hook line, max 12 words]\nANGLE: [which angle]\nSCORE: [1-10]\nWHY: [one sentence why it will work]\n---";
+
+  setProgress(15, "Generating and scoring ideas...", "Stella is testing 14 ideas against your philosophy");
+
+  var scored = [];
+  try {
+    var scoreText = await callClaude([{ role: "user", content: scorePrompt }], 2000);
+    var blocks = scoreText.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
+    blocks.forEach(function(block) {
+      var ideaM = block.match(/IDEA:\s*(.+)/i);
+      var angleM = block.match(/ANGLE:\s*(.+)/i);
+      var scoreM = block.match(/SCORE:\s*(\d+)/i);
+      var whyM = block.match(/WHY:\s*(.+)/i);
+      if (ideaM && scoreM) {
+        scored.push({
+          idea: ideaM[1].trim(),
+          angle: angleM ? angleM[1].trim() : "",
+          score: parseInt(scoreM[1]),
+          why: whyM ? whyM[1].trim() : ""
+        });
+      }
+    });
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = "\u2726 Stella, give me this week";
+    document.getElementById("week-progress").style.display = "none";
+    document.getElementById("week-out").innerHTML = "<div class='loading'>" + e.message + "</div>";
+    return;
+  }
+
+  // Filter to 8+ only, take best 7
+  var passing = scored.filter(function(s) { return s.score >= 8; });
+  passing.sort(function(a, b) { return b.score - a.score; });
+  var selected = passing.slice(0, 7);
+
+  // If we don't have 7 passing, take the best we have
+  if (selected.length < 7) {
+    scored.sort(function(a, b) { return b.score - a.score; });
+    selected = scored.slice(0, 7);
+  }
+
+  setProgress(35, "Selected " + selected.length + " winning ideas...", "Assigning formats and writing content");
+
+  // STEP 2: Assign formats and write all content in one call
+  var producePrompt = SOUL + voiceCtx;
+  producePrompt += "\n\n" + FORMAT_RULES;
+  producePrompt += "\n\nHere are " + selected.length + " ideas for this week. For each one, assign the best format and write the complete content.\n\n";
+  selected.forEach(function(s, i) {
+    producePrompt += (i + 1) + ". " + s.idea + " (score: " + s.score + ")\n";
+  });
+  producePrompt += "\n\nFor EACH idea write the complete production-ready content. Output EXACTLY:\n";
+  producePrompt += "IDEA: [the idea]\n";
+  producePrompt += "FORMAT: [Talking Head TikTok / B-Roll TikTok / B-Roll Instagram / Carousel Instagram / Reaction Clip TikTok / Raw TikTok]\n";
+  producePrompt += "PLATFORM: [TikTok / Instagram / Both]\n";
+  producePrompt += "DAY: [Monday through Sunday]\n";
+  producePrompt += "SCORE: [score]\n";
+  producePrompt += "HOOK: [the opening line — must stop the scroll]\n";
+  producePrompt += "CONTENT:\n[Full content based on format:\n- Talking Head: HOOK LINE + BODY (what she says) + CTA\n- B-Roll TikTok: 5 text overlay lines, one per screen, max 6 words each\n- B-Roll Instagram: caption 3-5 sentences no hashtags\n- Carousel: SLIDE 1 through SLIDE 7, each 1-2 punchy lines\n- Reaction Clip: your commentary script — what she says over the clip\n- Raw TikTok: one thought, 2-3 sentences, film and post immediately]\n";
+  producePrompt += "CAPTION: [posting caption — 1-3 lines max]\n";
+  producePrompt += "HASHTAGS: [3 hashtags for TikTok only, leave empty for Instagram]\n";
+  producePrompt += "---\n\nWrite everything in Cherryl's voice. Specific. Real. No generic advice.";
+
+  setProgress(50, "Writing your week...", "Scripts, overlays, carousel slides, captions");
+
+  try {
+    var produceText = await callClaude([{ role: "user", content: producePrompt }], 5000);
+    setProgress(85, "Almost done...", "Formatting your content");
+
+    var pieces = produceText.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
+    _weekData = [];
+
+    pieces.forEach(function(piece) {
+      function g(k) {
+        var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|$)", "i");
+        var m = piece.match(re);
+        return m ? m[1].trim() : "";
+      }
+      _weekData.push({
+        idea: g("IDEA"),
+        format: g("FORMAT"),
+        platform: g("PLATFORM"),
+        day: g("DAY"),
+        score: g("SCORE"),
+        hook: g("HOOK"),
+        content: g("CONTENT"),
+        caption: g("CAPTION"),
+        hashtags: g("HASHTAGS")
+      });
+    });
+
+    // Save to Supabase
+    await sbSet("tww_week", _weekData);
+    _weekChats = {};
+
+    setProgress(100, "Your week is ready.", "");
+    setTimeout(function() {
+      document.getElementById("week-progress").style.display = "none";
+      renderWeek(_weekData);
+      btn.disabled = false;
+      btn.textContent = "\u2726 Stella, give me this week";
+    }, 800);
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = "\u2726 Stella, give me this week";
+    document.getElementById("week-progress").style.display = "none";
+    document.getElementById("week-out").innerHTML = "<div class='loading'>" + e.message + "</div>";
+  }
+}
+
+function formatClass(fmt) {
+  if (!fmt) return "format-broll";
+  var f = fmt.toLowerCase();
+  if (f.indexOf("talking") >= 0) return "format-talking";
+  if (f.indexOf("carousel") >= 0) return "format-carousel";
+  if (f.indexOf("reaction") >= 0) return "format-reaction";
+  if (f.indexOf("raw") >= 0) return "format-raw";
+  return "format-broll";
+}
+
+function renderWeek(data) {
+  var out = document.getElementById("week-out");
+  if (!data || !data.length) { out.innerHTML = "<div class='loading'>No content yet. Hit the button above!</div>"; return; }
+  var html = "";
+  data.forEach(function(p, i) {
+    var fc = formatClass(p.format);
+    var chatId = "chat-" + i;
+    html += "<div class='week-card' id='wcard-" + i + "'>";
+    html += "<div class='week-card-header'>";
+    html += "<div><span class='format-tag " + fc + "'>" + (p.format || "Content") + "</span>";
+    if (p.platform) html += " <span style='font-size:11px;color:var(--text-faint)'>" + p.platform + "</span>";
+    html += "</div>";
+    html += "<div style='display:flex;align-items:center;gap:8px'>";
+    if (p.score) html += "<span class='score-pill'>&#9733; " + p.score + "/10</span>";
+    if (p.day) html += "<span style='font-size:12px;color:var(--text-faint)'>" + p.day + "</span>";
+    html += "</div></div>";
+    if (p.idea) html += "<div class='week-idea'>" + p.idea + "</div>";
+    if (p.hook) {
+      html += "<div class='content-section'><div class='content-section-label'>Hook</div>";
+      html += "<div class='hook-line'>&ldquo;" + p.hook + "&rdquo;</div></div>";
+    }
+    if (p.content) {
+      html += "<div class='content-section'><div class='content-section-label'>Content</div>";
+      html += "<div class='content-section-body'>" + p.content.replace(/\n/g, "<br>") + "</div></div>";
+    }
+    if (p.caption) {
+      html += "<div class='content-section'><div class='content-section-label'>Caption</div>";
+      html += "<div style='font-size:14px;line-height:1.7'>" + p.caption + "</div></div>";
+    }
+    if (p.hashtags) {
+      html += "<div class='hashtags'>" + p.hashtags + "</div>";
+    }
+    // Actions
+    var fullText = [p.hook, p.content, p.caption, p.hashtags].filter(Boolean).join("\n\n");
+    html += "<div class='btn-actions'>";
+    html += "<button class='btn' onclick='cpText(this," + JSON.stringify(fullText) + ")'>Copy all</button>";
+    html += "<button class='btn accent' onclick='savePost(" + JSON.stringify(p.hook || "") + "," + JSON.stringify(fullText) + "," + JSON.stringify(p.platform || "") + ")'>Save</button>";
+    html += "<button class='reject-btn' onclick='rejectPiece(" + i + ")'>Not this one &rarr;</button>";
+    html += "</div>";
+    // Chat
+    html += "<div class='chat-wrap'><div class='chat-label'>Refine with Stella</div>";
+    html += "<div style='margin-bottom:8px'>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make the hook more provocative\")'>Sharper hook</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make it shorter and punchier\")'>Shorter</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make it more personal and specific to my real life\")'>More personal</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Rewrite for TikTok pace\")'>TikTok pace</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Add more of the unexpected flip\")'>More flip</button>";
+    html += "</div>";
+    html += "<div class='chat-messages' id='" + chatId + "-msgs'></div>";
+    html += "<div class='chat-input-row'>";
+    html += "<input class='chat-input' id='" + chatId + "-in' type='text' placeholder='Tell Stella how to improve this...' onkeydown='if(event.key===\"Enter\")sendWeekChat(" + i + ")' />";
+    html += "<button class='chat-send' onclick='sendWeekChat(" + i + ")'>Send</button>";
+    html += "</div></div>";
+    html += "</div>";
+  });
+  out.innerHTML = html;
+  document.getElementById("week-actions").style.display = "flex";
+}
+
+async function rejectPiece(idx) {
+  var card = document.getElementById("wcard-" + idx);
+  if (card) card.style.opacity = "0.5";
+
+  var voiceCtx = await getVoiceContext();
+  var current = _weekData[idx];
+  var usedFormats = _weekData.map(function(p, i) { return i !== idx ? p.format : null; }).filter(Boolean);
+
+  var prompt = SOUL + voiceCtx;
+  prompt += "\n\nReplace this piece of content with a better one. Keep the same format (" + current.format + ") unless that format already appears 2+ times this week.";
+  prompt += "\n\nFormats already used this week: " + usedFormats.join(", ");
+  prompt += "\n\nGenerate one new high-scoring idea and write the complete content. Output EXACTLY:\nIDEA: [idea]\nFORMAT: [format]\nPLATFORM: [platform]\nDAY: [day]\nSCORE: [score]\nHOOK: [hook]\nCONTENT:\n[full content]\nCAPTION: [caption]\nHASHTAGS: [hashtags or empty]\n---";
+
+  try {
+    var text = await callClaude([{ role: "user", content: prompt }], 1500);
+    function g(k) {
+      var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|$)", "i");
+      var m = text.match(re);
+      return m ? m[1].trim() : "";
+    }
+    _weekData[idx] = {
+      idea: g("IDEA"), format: g("FORMAT"), platform: g("PLATFORM"),
+      day: g("DAY"), score: g("SCORE"), hook: g("HOOK"),
+      content: g("CONTENT"), caption: g("CAPTION"), hashtags: g("HASHTAGS")
+    };
+    await sbSet("tww_week", _weekData);
+    renderWeek(_weekData);
+  } catch(e) {
+    if (card) card.style.opacity = "1";
+    alert("Could not replace: " + e.message);
+  }
+}
+
+async function sendWeekChat(idx, prefill) {
+  var chatId = "chat-" + idx;
+  var input = document.getElementById(chatId + "-in");
+  var msg = prefill || (input ? input.value.trim() : "");
+  if (!msg) return;
+  if (input) input.value = "";
+
+  var msgs = document.getElementById(chatId + "-msgs");
+  if (!msgs) return;
+
+  var userDiv = document.createElement("div");
+  userDiv.className = "chat-msg user";
+  userDiv.textContent = msg;
+  msgs.appendChild(userDiv);
+
+  var aiDiv = document.createElement("div");
+  aiDiv.className = "chat-msg ai";
+  aiDiv.textContent = "Rewriting...";
+  msgs.appendChild(aiDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  if (!_weekChats[idx]) {
+    var current = _weekData[idx];
+    var context = "You are Stella, helping refine this piece of content for The Whole Woman.\n\nCurrent content:\nFormat: " + current.format + "\nIdea: " + current.idea + "\nHook: " + current.hook + "\nContent: " + current.content + "\nCaption: " + current.caption;
+    _weekChats[idx] = [{ role: "user", content: context }, { role: "assistant", content: "Ready to refine. What would you like to change?" }];
+  }
+
+  _weekChats[idx].push({ role: "user", content: msg });
+
+  try {
+    var reply = await callClaude(_weekChats[idx], 1000, SOUL + " You are helping refine a specific piece of content. Be concise and output the revised version directly.");
+    _weekChats[idx].push({ role: "assistant", content: reply });
+    aiDiv.textContent = reply;
+
+    var saveBtn = document.createElement("button");
+    saveBtn.className = "btn accent";
+    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
+    saveBtn.textContent = "Use this version";
+    var snap = reply;
+    var snapIdx = idx;
+    saveBtn.onclick = function() {
+      _weekData[snapIdx].content = snap;
+      sbSet("tww_week", _weekData);
+      showToast("Updated!");
+    };
+    aiDiv.insertAdjacentElement("afterend", saveBtn);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    aiDiv.textContent = "Something went wrong - try again.";
+  }
+}
+
+async function copyWeekToClipboard() {
+  if (!_weekData.length) { alert("No week content yet."); return; }
+  var text = "MY WEEK - THE WHOLE WOMAN\n\n";
+  _weekData.forEach(function(p) {
+    text += (p.day || "") + " - " + (p.format || "") + "\n";
+    text += "Idea: " + (p.idea || "") + "\n\n";
+    if (p.hook) text += "HOOK: " + p.hook + "\n\n";
+    if (p.content) text += p.content + "\n\n";
+    if (p.caption) text += "CAPTION: " + p.caption + "\n";
+    if (p.hashtags) text += p.hashtags + "\n";
+    text += "\n---\n\n";
+  });
+  navigator.clipboard.writeText(text).then(function() { showToast("Week copied! Paste into Later."); });
+}
+
+async function startNewWeek() {
+  if (!confirm("Start a fresh week? This clears your current plan.")) return;
+  _weekData = [];
+  _weekChats = {};
+  await sbSet("tww_week", []);
+  document.getElementById("week-out").innerHTML = "";
+  document.getElementById("week-actions").style.display = "none";
+}
+
+async function loadSavedWeek() {
+  var saved = await sbGet("tww_week");
+  if (saved && saved.length) {
+    _weekData = saved;
+    renderWeek(_weekData);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// GENERATE POSTS (quick idea tool)
+// ═══════════════════════════════════════════════════════
+
+var QUICK_ANGLES = {
+  random: "any angle from her core philosophy",
+  grief: "the silent grief of joining an existing family",
+  freedom: "freedom and sovereignty through keeping your own life",
+  attachment: "how this lifestyle healed disorganised attachment",
+  space: "keeping your own home even when committed",
+  travel: "traveling solo while in a relationship",
+  myth: "dismantling the holy family myth",
+  approval: "not needing approval to belong"
+};
+
 async function generatePosts() {
   var platform = document.getElementById("gen-platform").value;
   var angle = document.getElementById("gen-angle").value;
   var out = document.getElementById("gen-out");
   out.innerHTML = "<div class='loading'>Writing posts in your voice...</div>";
   var n = platform === "both" ? 4 : 2;
-  var platformLabel = platform === "both" ? "Instagram and TikTok (mix them evenly)" : platform;
+  var platformLabel = platform === "both" ? "Instagram and TikTok (mix evenly)" : platform;
   var voiceCtx = await getVoiceContext();
-  var msg = VOICE + voiceCtx + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (ANGLES[angle] || ANGLES.random) + ".\n\nFor each post output exactly:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, shareable.";
+  var msg = SOUL + voiceCtx + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (QUICK_ANGLES[angle] || QUICK_ANGLES.random) + ".\n\nFor each post output EXACTLY:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, specific to her life.";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 1200);
     var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
     var html = "";
-    for (var i = 0; i < blocks.length; i++) {
-      var block = blocks[i];
-      var platMatch = block.match(/PLATFORM:\s*(.+)/i);
-      var hookMatch = block.match(/HOOK:\s*(.+)/i);
-      var postMatch = block.match(/POST:\s*([\s\S]+)/i);
-      var plat = platMatch ? platMatch[1].trim() : "Instagram";
-      var hook = hookMatch ? hookMatch[1].trim() : "";
-      var post = postMatch ? postMatch[1].trim() : block;
+    blocks.forEach(function(block) {
+      var platM = block.match(/PLATFORM:\s*(.+)/i);
+      var hookM = block.match(/HOOK:\s*(.+)/i);
+      var postM = block.match(/POST:\s*([\s\S]+)/i);
+      var plat = platM ? platM[1].trim() : "Instagram";
+      var hook = hookM ? hookM[1].trim() : "";
+      var post = postM ? postM[1].trim() : block;
       var isIG = plat.toLowerCase().indexOf("instagram") >= 0;
       var platName = isIG ? "Instagram" : "TikTok";
       html += "<div class='card'>";
       html += "<span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
-      if (hook) html += "<div class='hook-line'>\"" + hook + "\"</div>";
+      if (hook) html += "<div class='hook-line'>&ldquo;" + hook + "&rdquo;</div>";
       html += "<div class='post-text'>" + post + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button><button class='btn' data-post=" + JSON.stringify(post) + " onclick='addToInbox(this.getAttribute(&quot;data-post&quot;))'>+ This week</button></div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button></div>";
       html += "</div>";
-    }
+    });
     out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-function fillTest(el) {
-  document.getElementById("test-input").value = el.textContent;
-  runTest();
-}
+// ═══════════════════════════════════════════════════════
+// IDEA TESTER
+// ═══════════════════════════════════════════════════════
 
-var chatHistory = [];
+var _chatHistory = [];
+
+function fillTest(el) { document.getElementById("test-input").value = el.textContent; runTest(); }
 
 async function runTest() {
   var idea = document.getElementById("test-input").value.trim();
   if (!idea) return;
   var out = document.getElementById("test-out");
   out.innerHTML = "<div class='loading'>Analysing your idea...</div>";
-  var msg = VOICE + "\n\nA creator wants to post this idea:\n" + idea + "\n\nAnalyse it for Instagram and TikTok. Output EXACTLY:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Will not land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences]\nSHARPEN: [rewrite the hook stronger]\nFORMAT: [face-to-camera / carousel / text overlay / voiceover]\n---";
+  var msg = SOUL + "\n\nAnalyse this idea for Instagram and TikTok:\n" + idea + "\n\nOutput EXACTLY:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Will not land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences]\nSHARPEN: [rewrite the hook stronger]\nFORMAT: [best format recommendation]\n---";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 700);
-    chatHistory = [{ role: "user", content: msg }, { role: "assistant", content: text }];
-    function g(k) {
-      var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---|$)", "i");
-      var m = text.match(re); return m ? m[1].trim() : "";
-    }
+    _chatHistory = [{ role: "user", content: msg }, { role: "assistant", content: text }];
+    function g(k) { var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---|$)", "i"); var m = text.match(re); return m ? m[1].trim() : ""; }
     var score = parseInt(g("SCORE")) || 7;
     var verdict = g("VERDICT") || "Solid";
     var works = g("WHY_WORKS"); var wont = g("WHY_WONT");
@@ -1083,22 +1039,17 @@ async function runTest() {
     html += "<div class='bar-labels'><span>Will not land</span><span>Viral potential</span></div>";
     if (works) html += "<div class='section-head'>What is working</div><p style='font-size:14px;line-height:1.7'>" + works + "</p>";
     if (wont) html += "<div class='section-head'>What to watch</div><p style='font-size:14px;line-height:1.7'>" + wont + "</p>";
-    if (sharpen) html += "<div class='section-head'>Sharper hook</div><div class='hook-line' style='margin-top:6px'>\"" + sharpen + "\"</div>";
+    if (sharpen) html += "<div class='section-head'>Sharper hook</div><div class='hook-line' style='margin-top:6px'>&ldquo;" + sharpen + "&rdquo;</div>";
     if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px'>" + format + "</p>";
     html += "<div class='btn-actions' style='margin-top:1rem'>";
-    if (sharpen) {
-      html += "<button class='btn' onclick='cpText(this," + JSON.stringify(sharpen) + ")'>Copy hook</button>";
-      html += "<button class='btn accent' data-post=" + JSON.stringify(sharpen) + " data-hook='' data-plat='Idea tester' onclick='saveFromBtn(this)'>Save hook</button>";
-    html += "<button class='btn accent' onclick='addToInbox(" + JSON.stringify(sharpen) + ")'>+ This week</button>";
-    }
+    if (sharpen) html += "<button class='btn' onclick='cpText(this," + JSON.stringify(sharpen) + ")'>Copy hook</button><button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(sharpen) + ", \"Idea tester\")'>Save hook</button>";
     html += "</div>";
-    html += "<div class='chat-wrap'><div class='chat-label'>Refine this idea</div>";
-    html += "<div style='margin-bottom:10px'>";
-    ["Make it shorter","More provocative","Rewrite for TikTok","Give me 3 variations","More personal","Turn this into a video script"].forEach(function(c) {
+    html += "<div class='chat-wrap'><div class='chat-label'>Refine with Stella</div><div style='margin-bottom:10px'>";
+    ["Make it shorter", "More provocative", "Rewrite for TikTok", "3 variations", "More personal", "Write the script"].forEach(function(c) {
       html += "<button class='chip' onclick='sendChat(\"" + c + "\")'>" + c + "</button>";
     });
     html += "</div><div class='chat-messages' id='chat-msgs'></div>";
-    html += "<div class='chat-input-row'><input class='chat-input' id='chat-in' type='text' placeholder='Ask anything...' onkeydown='if(event.key===\"Enter\")sendChat()'/><button class='chat-send' onclick='sendChat()'>Send</button></div>";
+    html += "<div class='chat-input-row'><input class='chat-input' id='chat-in' type='text' placeholder='Ask Stella anything...' onkeydown='if(event.key===\"Enter\")sendChat()'/><button class='chat-send' onclick='sendChat()'>Send</button></div>";
     html += "</div></div>";
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
@@ -1113,10 +1064,10 @@ async function sendChat(prefill) {
   if (!msgs) return;
   var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
   var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Thinking..."; msgs.appendChild(aiDiv);
-  chatHistory.push({ role: "user", content: msg });
+  _chatHistory.push({ role: "user", content: msg });
   try {
-    var reply = await callClaude(chatHistory, 800, VOICE + " You are helping refine a social media post idea. Be concise and practical.");
-    chatHistory.push({ role: "assistant", content: reply });
+    var reply = await callClaude(_chatHistory, 800, SOUL + " Help refine this social media idea. Be concise and practical.");
+    _chatHistory.push({ role: "assistant", content: reply });
     aiDiv.textContent = reply;
     var saveBtn = document.createElement("button");
     saveBtn.className = "btn accent";
@@ -1124,183 +1075,149 @@ async function sendChat(prefill) {
     saveBtn.textContent = "Save this";
     var snap = reply;
     saveBtn.onclick = function() { savePost("", snap, "Idea tester"); };
-    var weekBtn = document.createElement("button");
-    weekBtn.className = "btn accent";
-    weekBtn.style.cssText = "margin-top:4px;font-size:11px;padding:3px 10px;display:block";
-    weekBtn.textContent = "+ This week";
-    var snapW = reply;
-    weekBtn.onclick = function() { addToInbox(snapW); };
-    aiDiv.insertAdjacentElement("afterend", weekBtn);
     aiDiv.insertAdjacentElement("afterend", saveBtn);
     msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
+  } catch(e) { aiDiv.textContent = "Something went wrong."; }
 }
+
+// ═══════════════════════════════════════════════════════
+// VIDEO SCRIPTS
+// ═══════════════════════════════════════════════════════
 
 async function generateScript() {
-  var idea = document.getElementById("script-idea") ? document.getElementById("script-idea").value.trim() : "";
+  var idea = document.getElementById("script-idea").value.trim();
   var length = document.getElementById("script-length").value;
-  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
+  var platform = document.getElementById("script-platform").value;
   var out = document.getElementById("script-out");
-  if (!idea) { out.innerHTML = "<div class='loading'>Paste your idea in the box above first.</div>"; return; }
+  if (!idea) { out.innerHTML = "<div class='loading'>Paste your idea above first.</div>"; return; }
   out.innerHTML = "<div class='loading'>Writing your script...</div>";
-  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
+  var platNote = platform === "instagram" ? "Instagram Reels - more breathing room, emotional, personal." : "TikTok - punchy, fast, hook must land in first 2 seconds.";
   var voiceCtx = await getVoiceContext();
-  var msg = VOICE + voiceCtx + "\n\nTurn this idea into a " + length + "-second face-to-camera video script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences - must stop the scroll]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nWrite in her voice. Make it feel lived, not scripted.";
+  var msg = SOUL + voiceCtx + "\n\nWrite a " + length + "-second face-to-camera script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 900);
-    renderScript(text, length, platform, out);
+    function g(k) { var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i"); var m = text.match(re); return m ? m[1].trim() : ""; }
+    var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
+    var full = [hook, body, cta].filter(Boolean).join("\n\n");
+    var platLabel = platform === "instagram" ? "Instagram Reel" : "TikTok";
+    var html = "<div class='card'>";
+    html += "<div style='display:flex;justify-content:space-between;margin-bottom:12px'><div class='card-label' style='margin:0'>" + length + "-second script</div><span class='badge " + (platform === "instagram" ? "badge-ig" : "badge-tt") + "' style='margin:0'>" + platLabel + "</span></div>";
+    if (hook) html += "<div class='content-section'><div class='content-section-label'>Hook</div><div class='hook-line'>&ldquo;" + hook + "&rdquo;</div></div>";
+    if (body) html += "<div class='content-section'><div class='content-section-label'>Body</div><div class='post-text'>" + body + "</div></div>";
+    if (cta) html += "<div class='content-section'><div class='content-section-label'>CTA</div><div class='post-text' style='font-weight:500'>&ldquo;" + cta + "&rdquo;</div></div>";
+    if (visual) html += "<div class='content-section'><div class='content-section-label'>On screen</div><div style='font-size:13px;color:var(--text-muted)'>" + visual + "</div></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(full) + ")'>Copy script</button><button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(full) + ", \"Script\")'>Save</button></div>";
+    html += "</div>";
+    out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-async function generateScriptFromAngle() {
-  var angle = document.getElementById("script-angle").value;
-  var length = document.getElementById("script-length").value;
-  var platform = document.getElementById("script-platform") ? document.getElementById("script-platform").value : "tiktok";
-  var out = document.getElementById("script-out");
-  out.innerHTML = "<div class='loading'>Writing your script...</div>";
-  var platNote = platform === "instagram" ? "This is for Instagram Reels - slightly longer, more breathing room, can be more emotional and personal." : "This is for TikTok - punchy, fast, hook must land in first 2 seconds, high energy.";
-  var voiceCtx = await getVoiceContext();
-  var msg = VOICE + voiceCtx + "\n\nWrite a " + length + "-second face-to-camera video script about: " + (ANGLES[angle] || ANGLES.random) + ".\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [what she says in the middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---\n\nMake the hook stop the scroll. Write in her voice.";
-  try {
-    var text = await callClaude([{ role: "user", content: msg }], 900);
-    renderScript(text, length, platform, out);
-  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
-}
-
-function renderScript(text, length, platform, out) {
-  function g(k) {
-    var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i");
-    var m = text.match(re); return m ? m[1].trim() : "";
-  }
-  var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
-  var full = [hook, body, cta].filter(Boolean).join("\n\n");
-  var platLabel = platform === "instagram" ? "Instagram Reel" : "TikTok";
-  var platBadge = platform === "instagram" ? "badge-ig" : "badge-tt";
-  var html = "<div class='card'>";
-  html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:12px'>";
-  html += "<div class='card-label' style='margin-bottom:0'>" + length + "-second script</div>";
-  html += "<span class='badge " + platBadge + "' style='margin-bottom:0'>" + platLabel + "</span></div>";
-  if (hook) html += "<div style='margin-bottom:1rem'><span class='badge badge-ig'>Hook</span><div class='hook-line' style='margin-top:8px'>\"" + hook + "\"</div></div>";
-  if (body) html += "<div style='margin-bottom:1rem'><span class='badge badge-tt'>Body</span><div class='post-text' style='margin-top:8px'>" + body + "</div></div>";
-  if (cta) html += "<div style='margin-bottom:1rem'><span class='badge badge-both'>CTA</span><div class='post-text' style='margin-top:8px;font-weight:500'>\"" + cta + "\"</div></div>";
-  if (visual) html += "<div style='margin-bottom:1rem'><span class='badge badge-saved'>On screen</span><div style='font-size:13px;color:var(--text-muted);line-height:1.6;margin-top:8px'>" + visual + "</div></div>";
-  html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(full) + ")'>Copy script</button>";
-  html += "<button class='btn accent' data-post=" + JSON.stringify("SCRIPT (" + platLabel + "):\n\n" + full) + " data-hook='' data-plat='Script' onclick='saveFromBtn(this)'>Save script</button>";
-  html += "<button class='btn' onclick='generateScript()'>Regenerate</button></div>";
-  html += "<div class='chat-wrap'><div class='chat-label'>Refine this script</div><div style='margin-bottom:10px'>";
-  ["Sharper hook","Shorter","More personal","TikTok pace","Reel pace"].forEach(function(c, idx) {
-    var prompts = ["Make the hook more provocative","Make it shorter and punchier","Make it more personal and vulnerable","Rewrite for TikTok - faster pace","Rewrite for Instagram Reel - more emotional"];
-    html += "<button class='chip' onclick='sendScriptChat(\"" + prompts[idx] + "\")'>" + c + "</button>";
-  });
-  html += "</div><div class='chat-messages' id='script-chat-msgs'></div>";
-  html += "<div class='chat-input-row'><input class='chat-input' id='script-chat-in' type='text' placeholder='Refine or adjust...' onkeydown='if(event.key===\"Enter\")sendScriptChat()'/><button class='chat-send' onclick='sendScriptChat()'>Send</button></div></div></div>";
-  out.innerHTML = html;
-  window._scriptChatHistory = [{ role: "user", content: "Here is a video script: " + full }, { role: "assistant", content: "Script created. How would you like to refine it?" }];
-}
-
-async function sendScriptChat(prefill) {
-  var input = document.getElementById("script-chat-in");
-  var msg = prefill || (input ? input.value.trim() : "");
-  if (!msg) return;
-  if (input) input.value = "";
-  var msgs = document.getElementById("script-chat-msgs");
-  if (!msgs) return;
-  var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
-  var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Rewriting..."; msgs.appendChild(aiDiv);
-  if (!window._scriptChatHistory) window._scriptChatHistory = [];
-  window._scriptChatHistory.push({ role: "user", content: msg });
-  try {
-    var reply = await callClaude(window._scriptChatHistory, 800, VOICE + " You are helping refine a video script. Be concise. Output the revised script directly.");
-    window._scriptChatHistory.push({ role: "assistant", content: reply });
-    aiDiv.textContent = reply;
-    var saveBtn = document.createElement("button");
-    saveBtn.className = "btn accent";
-    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
-    saveBtn.textContent = "Save this version";
-    var snap = reply;
-    saveBtn.onclick = function() { savePost("", snap, "Script"); };
-    aiDiv.insertAdjacentElement("afterend", saveBtn);
-    msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
-}
+// ═══════════════════════════════════════════════════════
+// HOOKS + AUDIO
+// ═══════════════════════════════════════════════════════
 
 async function generateAudio() {
   var out = document.getElementById("audio-out");
   out.innerHTML = "<div class='loading'>Generating hook formulas and audio strategy...</div>";
-  var msg = VOICE + "\n\nGenerate:\n1. HOOKS: 6 proven hook formulas with examples for this niche. Format each:\nFORMULA: [template]\nEXAMPLE: [example]\n\n2. AUDIO: 4 audio strategy tips for TikTok and Instagram Reels for emotional spoken-word content.\n\nSeparate the two sections with ===";
+  var msg = SOUL + "\n\nGenerate:\n1. HOOKS: 6 proven hook formulas with examples for this niche.\nFORMULA: [template]\nEXAMPLE: [example]\n\n2. AUDIO: 4 audio strategy tips for TikTok and Instagram Reels.\n\nSeparate sections with ===";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 1000);
     var parts = text.split("===");
     var hooksRaw = parts[0] || ""; var audioRaw = parts[1] || "";
     var hookBlocks = hooksRaw.split(/\nFORMULA:/i).filter(function(s) { return s.trim() && !s.match(/^1\.|^HOOK/i); });
-    var html = "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px'>Hook formulas</div>";
-    for (var i = 0; i < hookBlocks.length; i++) {
-      var block = hookBlocks[i];
+    var html = "<div class='section-head'>Hook formulas</div>";
+    hookBlocks.forEach(function(block) {
       var eMatch = block.match(/EXAMPLE:\s*([\s\S]+)/i);
       var formula = block.split("\n")[0].replace(/^FORMULA:\s*/i, "").trim();
       var example = eMatch ? eMatch[1].trim() : "";
-      if (!formula) continue;
+      if (!formula) return;
       html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px'>";
-      html += "<div style='font-family:Playfair Display,serif;font-size:14px;color:var(--pink-dark);font-style:italic'>\"" + formula + "\"</div>";
-      if (example) html += "<div style='font-size:13px;color:var(--text-muted);margin-top:4px;line-height:1.5'>" + example + "</div>";
+      html += "<div class='hook-line'>&ldquo;" + formula + "&rdquo;</div>";
+      if (example) html += "<div style='font-size:13px;color:var(--text-muted);margin-top:4px'>" + example + "</div>";
       html += "</div>";
-    }
+    });
     var audioLines = audioRaw.split("\n").filter(function(l) { return l.trim() && !l.match(/^AUDIO|^2\./i); });
-    html += "<div style='font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 10px'>Audio strategy</div>";
-    for (var i = 0; i < audioLines.length; i++) {
-      var line = audioLines[i].replace(/^\d+\.\s*/, "").trim();
-      if (!line) continue;
-      html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;font-size:14px;color:var(--text);line-height:1.6'>" + line + "</div>";
-    }
+    html += "<div class='section-head' style='margin-top:1.5rem'>Audio strategy</div>";
+    audioLines.forEach(function(line) {
+      var l = line.replace(/^\d+\.\s*/, "").trim();
+      if (!l) return;
+      html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;font-size:14px;line-height:1.6'>" + l + "</div>";
+    });
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
+
+// ═══════════════════════════════════════════════════════
+// REPLY TEMPLATES
+// ═══════════════════════════════════════════════════════
 
 async function generateReplies() {
   var comment = document.getElementById("reply-input").value.trim();
   if (!comment) return;
   var out = document.getElementById("reply-out");
   out.innerHTML = "<div class='loading'>Writing reply options...</div>";
-  var msg = VOICE + "\n\nSomeone left this comment:\n" + comment + "\n\nWrite 3 replies. Format each:\nTYPE: [Warm/Bold/Hook]\nREPLY: [1-3 sentences]\n---";
+  var msg = SOUL + "\n\nSomeone left this comment:\n" + comment + "\n\nWrite 3 replies in Cherryl's voice.\nTYPE: [Warm/Bold/Curious]\nREPLY: [1-3 sentences]\n---";
   try {
     var text = await callClaude([{ role: "user", content: msg }], 700);
     var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
-    var html = "<div style='font-size:13px;color:var(--text-muted);font-style:italic;padding:10px 14px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--pink);margin-bottom:1rem'>\"" + comment + "\"</div>";
-    for (var i = 0; i < blocks.length; i++) {
-      var block = blocks[i];
-      var tMatch = block.match(/TYPE:\s*(.+)/i); var rMatch = block.match(/REPLY:\s*([\s\S]+)/i);
-      var type = tMatch ? tMatch[1].trim() : "Warm"; var reply = rMatch ? rMatch[1].trim() : block;
+    var html = "<div style='font-size:13px;color:var(--text-muted);font-style:italic;padding:10px 14px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--pink);margin-bottom:1rem'>&ldquo;" + comment + "&rdquo;</div>";
+    blocks.forEach(function(block) {
+      var tM = block.match(/TYPE:\s*(.+)/i); var rM = block.match(/REPLY:\s*([\s\S]+)/i);
+      var type = tM ? tM[1].trim() : "Warm"; var reply = rM ? rM[1].trim() : block;
       var bc = type.toLowerCase() === "warm" ? "badge-ig" : type.toLowerCase() === "bold" ? "badge-tt" : "badge-both";
       html += "<div class='card'><span class='badge " + bc + "'>" + type + "</span><div class='post-text' style='font-size:14px'>" + reply + "</div>";
-      html += "<div class='btn-actions'><button class='btn' onclick='cp(this," + JSON.stringify(reply) + ")'>Copy</button></div></div>";
-    }
+      html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(reply) + ")'>Copy</button></div></div>";
+    });
     out.innerHTML = html;
   } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
 }
 
-async function extractTranscript() {
-  var transcript = document.getElementById("transcript-input").value.trim();
-  var coachName = document.getElementById("coach-name").value.trim();
-  if (!coachName) coachName = "the coach";
-  if (!transcript) return;
-  var out = document.getElementById("transcript-out");
-  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
-  var snippet = transcript.substring(0, 6000);
-  var msg = "Here is a coaching call transcript. The coach is labelled as: " + coachName + ". Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, speaker labels, filler words like um and uh. Output only the coach words as flowing natural text, preserving their exact phrasing and vocabulary. Do not summarise - keep their actual words. Output nothing else.\n\nTranscript:\n" + snippet;
-  try {
-    window._lastExtracted = null;
-    var extracted = await callClaude([{ role: "user", content: msg }], 2000);
-    window._lastExtracted = extracted;
-    var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
-    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
-      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted - your words only</div>" +
-      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
-      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(window._lastExtracted)'>Save to my voice profile</button>" +
-      "</div>";
-  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+// ═══════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════
+
+function goTo(page) {
+  document.querySelectorAll(".page").forEach(function(el) { el.classList.remove("active"); });
+  document.querySelectorAll(".nav-item").forEach(function(el) { el.classList.remove("active"); });
+  var pageEl = document.getElementById("page-" + page);
+  if (pageEl) pageEl.classList.add("active");
+  var navEl = document.querySelector("[data-page='" + page + "']");
+  if (navEl) navEl.classList.add("active");
+  if (page === "setup") {
+    var k = getKey();
+    if (k) document.getElementById("api-key-input").value = k;
+    var c = getSbCreds();
+    if (c.url) document.getElementById("sb-url-input").value = c.url;
+    if (c.key) document.getElementById("sb-key-input").value = c.key;
+  }
+  if (page === "saved") loadSavedPosts();
+  if (page === "voice") loadVoiceSamples();
+  if (page === "week") loadSavedWeek();
 }
 
-// ── Boot ──
+function cpText(btn, text) {
+  navigator.clipboard.writeText(text).then(function() {
+    var orig = btn.textContent; btn.textContent = "Copied!";
+    setTimeout(function() { btn.textContent = orig; }, 2000);
+  });
+}
+
+function showToast(msg) {
+  var t = document.createElement("div");
+  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--teal);color:white;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;font-family:DM Sans,sans-serif";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { document.body.removeChild(t); }, 2500);
+}
+
+function switchVoiceTab(n) {
+  document.getElementById("vpanel-extract").style.display = n === 0 ? "block" : "none";
+  document.getElementById("vpanel-manual").style.display = n === 1 ? "block" : "none";
+  document.getElementById("vtab-extract").className = n === 0 ? "voice-tab active" : "voice-tab";
+  document.getElementById("vtab-manual").className = n === 1 ? "voice-tab active" : "voice-tab";
+}
+
+// ── BOOT ───────────────────────────────────────────────
 initSupabase();
 updateKeyStatus();
 
