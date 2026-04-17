@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Whole Woman - Stella</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --pink: #D4537E; --pink-light: #FBEAF0; --pink-dark: #72243E;
+  --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+  --purple-light: #EEEDFE; --purple-dark: #3C3489;
+  --amber-light: #FAEEDA; --amber-dark: #633806;
+  --text: #1a1a1a; --text-muted: #6b6b6b; --text-faint: #a0a0a0;
+  --bg: #faf9f7; --surface: #ffffff;
+  --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.15);
+  --radius: 12px; --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "DM Sans", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+.logo { font-family: "Playfair Display", serif; font-size: 18px; }
+.logo span { color: var(--pink); font-style: italic; }
+.api-status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; }
+.dot.connected { background: var(--teal); }
+.app { display: flex; min-height: calc(100vh - 60px); }
+nav { width: 200px; min-width: 200px; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 1.25rem; font-size: 14px; color: var(--text-muted); cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; border-left: 2px solid transparent; }
+.nav-item:hover { color: var(--text); background: var(--bg); }
+.nav-item.active { color: var(--pink-dark); background: var(--pink-light); border-left-color: var(--pink); font-weight: 500; }
+.nav-section { padding: 1rem 1.25rem 0.25rem; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+main { flex: 1; padding: 2rem; max-width: 820px; }
+.page { display: none; }
+.page.active { display: block; }
+.page-title { font-family: "Playfair Display", serif; font-size: 26px; font-weight: 400; margin-bottom: 0.25rem; }
+.page-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 1.75rem; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+.card-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; }
+.badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; margin-bottom: 10px; }
+.badge-ig { background: var(--pink-light); color: var(--pink-dark); }
+.badge-tt { background: var(--teal-light); color: var(--teal-dark); }
+.badge-both { background: var(--purple-light); color: var(--purple-dark); }
+.badge-saved { background: var(--amber-light); color: var(--amber-dark); }
+select, textarea, input[type=text], input[type=password] { font-family: "DM Sans", sans-serif; font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 9px 12px; outline: none; width: 100%; }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.row { display: flex; gap: 10px; margin-bottom: 1rem; }
+.row select { flex: 1; }
+.btn-primary { display: block; width: 100%; padding: 13px; font-family: "DM Sans", sans-serif; font-size: 15px; font-weight: 500; color: white; background: var(--pink-dark); border: none; border-radius: var(--radius-sm); cursor: pointer; margin-bottom: 1.5rem; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-stella { display: block; width: 100%; padding: 18px; font-family: "Playfair Display", serif; font-size: 20px; font-weight: 400; font-style: italic; color: white; background: linear-gradient(135deg, var(--pink-dark), #3C3489); border: none; border-radius: var(--radius); cursor: pointer; margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+.btn-stella:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn { padding: 6px 14px; font-family: "DM Sans", sans-serif; font-size: 13px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn.accent { border-color: var(--pink); color: var(--pink-dark); }
+.btn-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+.hook-line { font-family: "Playfair Display", serif; font-size: 16px; color: var(--pink-dark); font-style: italic; margin-bottom: 8px; }
+.post-text { font-size: 15px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
+.loading { text-align: center; padding: 2.5rem; color: var(--text-faint); font-size: 14px; font-style: italic; }
+.score-num { font-family: "Playfair Display", serif; font-size: 36px; font-weight: 400; }
+.score-verdict { font-size: 14px; color: var(--text-muted); margin-top: 4px; margin-bottom: 1rem; }
+.bar-wrap { background: var(--bg); border-radius: 4px; height: 6px; margin: 10px 0 4px; overflow: hidden; }
+.bar-fill { height: 6px; border-radius: 4px; }
+.bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-faint); }
+.section-head { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 1rem 0 5px; }
+.pill { display: inline-block; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 20px; padding: 5px 14px; font-size: 13px; color: var(--text-muted); cursor: pointer; margin: 3px; }
+.pill:hover { border-color: var(--pink); color: var(--pink-dark); }
+.chat-wrap { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.chat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
+.chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; max-height: 300px; overflow-y: auto; }
+.chat-msg { max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+.chat-msg.user { background: var(--pink-light); color: var(--pink-dark); align-self: flex-end; }
+.chat-msg.ai { background: var(--bg); border: 1px solid var(--border); color: var(--text); align-self: flex-start; white-space: pre-wrap; }
+.chat-input-row { display: flex; gap: 8px; }
+.chat-input { flex: 1; padding: 9px 12px; font-size: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); font-family: "DM Sans", sans-serif; }
+.chat-send { padding: 9px 16px; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: "DM Sans", sans-serif; }
+.chip { font-size: 12px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); cursor: pointer; margin: 3px; font-family: "DM Sans", sans-serif; }
+.voice-tabs { display: flex; gap: 10px; margin-bottom: 1.25rem; }
+.voice-tab { flex: 1; padding: 10px; font-size: 13px; font-weight: 500; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; font-family: "DM Sans", sans-serif; }
+.voice-tab.active { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--pink-light); color: var(--pink-dark); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.25rem; }
+.step-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.step-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.step-body a { color: var(--pink); text-decoration: none; }
+.key-wrap { position: relative; margin-top: 8px; }
+.key-wrap input { padding-right: 90px; font-family: monospace; font-size: 13px; }
+.key-btn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); padding: 5px 12px; font-size: 12px; font-family: "DM Sans", sans-serif; font-weight: 500; background: var(--pink-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+/* Lane selector */
+.lane-selector { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; }
+.lane-selector-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
+.lane-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.lane-btn { padding: 8px 18px; font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 500; border: 1px solid var(--border-strong); border-radius: 20px; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.lane-btn:hover { border-color: var(--pink); color: var(--pink-dark); }
+.lane-btn.active { background: var(--pink-dark); color: white; border-color: var(--pink-dark); }
+.lane-description { font-size: 13px; color: var(--text-muted); margin-top: 10px; font-style: italic; line-height: 1.6; min-height: 18px; }
+
+/* Week output cards */
+.week-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem; position: relative; }
+.week-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.format-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+.format-talking { background: var(--pink-light); color: var(--pink-dark); }
+.format-broll { background: var(--teal-light); color: var(--teal-dark); }
+.format-carousel { background: var(--purple-light); color: var(--purple-dark); }
+.format-reaction { background: var(--amber-light); color: var(--amber-dark); }
+.format-raw { background: #f0f0f0; color: #555; }
+.score-pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); }
+.week-idea { font-size: 13px; color: var(--text-muted); font-style: italic; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.content-section { margin-bottom: 1rem; }
+.content-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; }
+.content-section-body { font-size: 14px; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
+.hashtags { font-size: 13px; color: var(--teal-dark); margin-top: 6px; }
+.reject-btn { font-size: 12px; color: var(--text-faint); background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; font-family: "DM Sans", sans-serif; }
+.reject-btn:hover { border-color: var(--pink); color: var(--pink-dark); }
+.week-progress { background: var(--bg); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+.progress-bar-outer { background: var(--border); border-radius: 4px; height: 6px; margin: 12px 0; overflow: hidden; }
+.progress-bar-inner { height: 6px; background: linear-gradient(90deg, var(--pink), #3C3489); border-radius: 4px; transition: width 0.5s ease; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">The Whole Woman &mdash; <span>Stella</span></div>
+  <button class="api-status" onclick="goTo('setup')" id="api-btn">
+    <div class="dot" id="api-dot"></div>
+    <span id="api-label">Add API key</span>
+  </button>
+</header>
+<div class="app">
+  <nav>
+    <div class="nav-section">Create</div>
+    <button class="nav-item active" onclick="goTo('week')" data-page="week"><span>&#10022;</span><span>My week</span></button>
+    <button class="nav-item" onclick="goTo('generate')" data-page="generate"><span>&#9998;</span><span>Generate posts</span></button>
+    <button class="nav-item" onclick="goTo('test')" data-page="test"><span>&#9678;</span><span>Idea tester</span></button>
+    <button class="nav-item" onclick="goTo('script')" data-page="script"><span>&#9654;</span><span>Video scripts</span></button>
+    <div class="nav-section">Strategy</div>
+    <button class="nav-item" onclick="goTo('audio')" data-page="audio"><span>&#9672;</span><span>Hooks + audio</span></button>
+    <button class="nav-item" onclick="goTo('reply')" data-page="reply"><span>&#9671;</span><span>Reply templates</span></button>
+    <button class="nav-item" onclick="goTo('schedule')" data-page="schedule"><span>&#9675;</span><span>Post schedule</span></button>
+    <div class="nav-section">My content</div>
+    <button class="nav-item" onclick="goTo('saved')" data-page="saved"><span>&#9825;</span><span>Saved posts</span></button>
+    <button class="nav-item" onclick="goTo('voice')" data-page="voice"><span>&#9680;</span><span>My voice</span></button>
+    <button class="nav-item" onclick="goTo('manifesto')" data-page="manifesto"><span>&#10023;</span><span>Manifesto</span></button>
+    <div class="nav-section">Settings</div>
+    <button class="nav-item" onclick="goTo('setup')" data-page="setup"><span>&#9881;</span><span>API setup</span></button>
+  </nav>
+  <main>
+
+    <!-- MY WEEK -->
+    <div class="page active" id="page-week">
+      <div class="page-title">My week</div>
+      <div class="page-sub">Stella generates, scores and writes your full week of content. You review, refine and film.</div>
+
+      <!-- LANE SELECTOR -->
+      <div class="lane-selector">
+        <div class="lane-selector-label">This week I&rsquo;m pushing</div>
+        <div class="lane-buttons">
+          <button class="lane-btn active" onclick="selectLane('stepmother', this)">The Wicked Stepmother</button>
+          <button class="lane-btn" onclick="selectLane('courtesan', this)">The Courtesan&rsquo;s Code</button>
+          <button class="lane-btn" onclick="selectLane('yoga', this)">Yoga Vault</button>
+          <button class="lane-btn" onclick="selectLane('substack', this)">Substack</button>
+        </div>
+        <div class="lane-description" id="lane-desc">Stepmother narrative — the woman who came after. 1:1 coaching coming soon.</div>
+      </div>
+
+      <button class="btn-stella" id="stella-btn" onclick="stellaGenerateWeek()">&#10022; Stella, give me this week</button>
+      <div id="week-progress" style="display:none" class="week-progress">
+        <div style="font-size:14px;color:var(--text-muted)" id="progress-label">Stella is thinking...</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="progress-bar" style="width:5%"></div></div>
+        <div style="font-size:12px;color:var(--text-faint);margin-top:8px" id="progress-sub"></div>
+      </div>
+      <div id="week-out"></div>
+      <div id="week-actions" style="display:none;gap:10px;margin-top:1rem;flex-wrap:wrap">
+        <button class="btn accent" onclick="copyWeekToClipboard()">Copy all for Later</button>
+        <button class="btn" onclick="startNewWeek()">Start new week</button>
+      </div>
+    </div>
+
+    <!-- GENERATE POSTS -->
+    <div class="page" id="page-generate">
+      <div class="page-title">Generate posts</div>
+      <div class="page-sub">Create captions for Instagram and TikTok in your voice.</div>
+      <div class="row">
+        <select id="gen-platform">
+          <option value="both">Instagram + TikTok</option>
+          <option value="instagram">Instagram only</option>
+          <option value="tiktok">TikTok only</option>
+        </select>
+        <select id="gen-angle">
+          <option value="random">Any angle</option>
+          <option value="grief">The silent grief</option>
+          <option value="freedom">Freedom + sovereignty</option>
+          <option value="attachment">Healing disorganised attachment</option>
+          <option value="space">Keeping your own space</option>
+          <option value="travel">Solo travel in a relationship</option>
+          <option value="myth">Myth-busting the holy family</option>
+          <option value="approval">Not needing approval to belong</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="generatePosts()">Generate posts &rarr;</button>
+      <div id="gen-out"></div>
+    </div>
+
+    <!-- IDEA TESTER -->
+    <div class="page" id="page-test">
+      <div class="page-title">Idea tester</div>
+      <div class="page-sub">Paste a rough idea or draft. Get an honest score and sharper version.</div>
+      <textarea id="test-input" placeholder="Paste your idea, hook, or full caption draft here..."></textarea>
+      <div style="margin-bottom:1rem;">
+        <div class="card-label">Try a sample idea</div>
+        <span class="pill" onclick="fillTest(this)">keeping my own apartment</span>
+        <span class="pill" onclick="fillTest(this)">the grief no one names</span>
+        <span class="pill" onclick="fillTest(this)">dating a dad cured my anxiety</span>
+        <span class="pill" onclick="fillTest(this)">I travel alone and I have a partner</span>
+        <span class="pill" onclick="fillTest(this)">I do not try to win the kids over</span>
+      </div>
+      <button class="btn-primary" onclick="runTest()">Test this idea &rarr;</button>
+      <div id="test-out"></div>
+    </div>
+
+    <!-- VIDEO SCRIPTS -->
+    <div class="page" id="page-script">
+      <div class="page-title">Video scripts</div>
+      <div class="page-sub">Turn any idea into a platform-specific script.</div>
+      <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1.25rem">
+        <div class="card-label" style="color:var(--pink-dark)">Paste your idea or saved caption</div>
+        <textarea id="script-idea" placeholder="Paste your idea, hook, or caption here..." style="min-height:80px;margin-bottom:10px"></textarea>
+        <div class="row" style="margin-bottom:0">
+          <select id="script-platform"><option value="tiktok">TikTok</option><option value="instagram">Instagram Reel</option></select>
+          <select id="script-length"><option value="30">30 sec</option><option value="60">60 sec</option><option value="90">90 sec</option><option value="180">3 min</option></select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="generateScript()">Write my script &rarr;</button>
+      <div id="script-out"></div>
+    </div>
+
+    <!-- HOOKS + AUDIO -->
+    <div class="page" id="page-audio">
+      <div class="page-title">Hooks + audio tips</div>
+      <div class="page-sub">Hook formulas and sound strategy for face-to-camera content.</div>
+      <button class="btn-primary" onclick="generateAudio()">Get hook formulas + audio strategy &rarr;</button>
+      <div id="audio-out"></div>
+    </div>
+
+    <!-- REPLY TEMPLATES -->
+    <div class="page" id="page-reply">
+      <div class="page-title">Reply templates</div>
+      <div class="page-sub">Paste a comment and get three reply options.</div>
+      <textarea id="reply-input" placeholder="Paste a comment here..."></textarea>
+      <button class="btn-primary" onclick="generateReplies()">Generate replies &rarr;</button>
+      <div id="reply-out"></div>
+    </div>
+
+    <!-- POST SCHEDULE -->
+    <div class="page" id="page-schedule">
+      <div class="page-title">Posting rhythm</div>
+      <div class="page-sub">Your recommended daily posting schedule.</div>
+      <div class="card">
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">7:00 am</div><div><div style="font-size:14px;font-weight:500">Morning provocation</div><div style="font-size:13px;color:var(--text-muted)">Bold 1-liner or hot take. Text overlay or quick talking head.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">10:00 am</div><div><div style="font-size:14px;font-weight:500">Talking head — main piece</div><div style="font-size:13px;color:var(--text-muted)">Your fully filmed and edited hero content.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">1:00 pm</div><div><div style="font-size:14px;font-weight:500">Reaction clip</div><div style="font-size:13px;color:var(--text-muted)">Movie or viral clip with your commentary. 30 seconds.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border)"><div style="font-size:13px;color:var(--text-faint);min-width:60px">5:00 pm</div><div><div style="font-size:14px;font-weight:500">Raw story-style</div><div style="font-size:13px;color:var(--text-muted)">You on your phone. One thought. 15-30 seconds. No editing.</div></div></div>
+        <div style="display:flex;gap:14px;padding:10px 0"><div style="font-size:13px;color:var(--text-faint);min-width:60px">8:00 pm</div><div><div style="font-size:14px;font-weight:500">Text overlay or repurpose</div><div style="font-size:13px;color:var(--text-muted)">Best caption as text on screen with trending audio.</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Scheduling tools</div>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:1rem">Generate content in Stella, schedule in Later. Later sends you a push notification to post natively from your phone.</p>
+        <a href="https://buffer.com" target="_blank" class="btn" style="margin-right:8px;text-decoration:none">Buffer &rarr;</a>
+        <a href="https://later.com" target="_blank" class="btn" style="text-decoration:none">Later &rarr;</a>
+      </div>
+    </div>
+
+    <!-- SAVED POSTS -->
+    <div class="page" id="page-saved">
+      <div class="page-title">Saved posts</div>
+      <div class="page-sub">Your personal library of content that resonates.</div>
+      <div id="saved-out"></div>
+    </div>
+
+    <!-- MY VOICE -->
+    <div class="page" id="page-voice">
+      <div class="page-title">My voice</div>
+      <div class="page-sub">Build your voice profile so every post sounds like you, not like AI.</div>
+      <div class="voice-tabs">
+        <button class="voice-tab active" id="vtab-extract" onclick="switchVoiceTab(0)">Extract from coaching call</button>
+        <button class="voice-tab" id="vtab-manual" onclick="switchVoiceTab(1)">Add my own words</button>
+      </div>
+      <div id="vpanel-extract">
+        <div class="card" style="background:var(--pink-light);border-color:var(--pink);margin-bottom:1rem">
+          <div class="card-label" style="color:var(--pink-dark)">How this works</div>
+          <p style="font-size:14px;color:var(--pink-dark);line-height:1.7">Paste your raw coaching call transcript, client lines and all. Stella extracts only your words and saves them to your voice profile.</p>
+        </div>
+        <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:6px">Your name as it appears in the transcript</label>
+        <input type="text" id="coach-name" placeholder="e.g. Cherryl, Coach, C:" style="margin-bottom:10px" />
+        <textarea id="transcript-input" placeholder="Paste your full coaching call transcript here..." style="min-height:200px"></textarea>
+        <button class="btn-primary" onclick="extractTranscript()" style="margin-top:10px">Extract my voice from this transcript &rarr;</button>
+        <div id="transcript-out"></div>
+      </div>
+      <div id="vpanel-manual" style="display:none">
+        <div class="card" style="margin-bottom:1rem">
+          <div class="card-label">What to paste in</div>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.7">Captions, book proposals, voice notes, rough notes, your briefing document. Anything in your natural voice.</p>
+        </div>
+        <textarea id="voice-input" placeholder="Paste your content here..." style="min-height:160px"></textarea>
+        <button class="btn-primary" onclick="saveVoice()">Save to my voice profile &rarr;</button>
+      </div>
+      <div id="voice-saved-list" style="margin-top:1.5rem"></div>
+    </div>
+
+    <!-- MANIFESTO -->
+    <div class="page" id="page-manifesto">
+      <div class="page-title">My manifesto</div>
+      <div class="page-sub">Your philosophy, in full.</div>
+      <div class="card" style="line-height:1.85">
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.5rem">A manifesto for women who love fully without losing themselves</p>
+        <h2 style="font-family:Playfair Display,serif;font-size:28px;font-weight:400;margin-bottom:2rem">The whole woman manifesto</h2>
+        <div style="border-left:2px solid var(--pink);padding-left:1.25rem;margin-bottom:2rem"><p style="font-size:17px;font-style:italic;font-family:Playfair Display,serif">You were never meant to shrink into someone else&apos;s story. You are not a gap to be filled. You are not an understudy. You are the whole thing.</p></div>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">I. The grief they don&apos;t name</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">When you love a man who already has children, the world hands you a script you never auditioned for. You hear the children come first and you cannot argue. So you grieve in silence. That grief is real. It deserves to be named. And then it deserves to be set down.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">II. The invitation inside the difficulty</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">Loving a man with children forces something rare and radical. It forces you to keep your own life. You cannot dissolve into this relationship even if you tried. And that refusal to dissolve is not loss. That is freedom.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">III. The life I am choosing</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I keep my own space. I travel sometimes alone, sometimes with friends, and I return to a love that is deeper because it is chosen freshly again and again. I do not compete with a family that existed before me. The time we share is rare. And because it is rare, it is luminous.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">IV. What this heals</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I used to reach. I used to scan for signs of belonging, of approval, of being enough. This way of living cured that. Not because I stopped caring but because I stopped needing. I belong to myself first.</p>
+        <p style="font-size:11px;letter-spacing:0.1em;color:var(--pink-dark);text-transform:uppercase;margin-bottom:0.5rem;font-weight:500">V. What I believe</p>
+        <p style="font-size:15px;margin-bottom:1.75rem">I believe a woman can have love and sovereignty at the same time. I believe you can be almost-single in your independence and deeply partnered in your heart. I believe the woman who keeps her own life is not cold. She is awake.</p>
+        <div style="border-top:1px solid var(--border);padding-top:1.5rem"><p style="font-size:15px;font-style:italic;margin-bottom:0.75rem">The boldest thing you can do in love and in life is to remain entirely yourself.</p><p style="font-size:14px;font-weight:500;color:var(--pink-dark)">Stay whole. Stay yours.</p></div>
+      </div>
+    </div>
+
+    <!-- SETUP -->
+    <div class="page" id="page-setup">
+      <div class="page-title">API setup</div>
+      <div class="page-sub">Connect your keys once. Your data lives in the cloud — safe from cache clears forever.</div>
+      <div class="card" style="margin-bottom:1rem">
+        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">1. Anthropic API key</div>
+        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Anthropic account</div><div class="step-body">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign up.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Get your API key</div><div class="step-body">Go to API Keys, click Create Key, copy it.</div></div></div>
+        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your key below</div>
+          <div class="key-wrap"><input type="password" id="api-key-input" placeholder="sk-ant-api03-..." /><button class="key-btn" onclick="saveAnthropicKey()">Save</button></div>
+          <div id="saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Anthropic key saved.</div>
+        </div></div>
+      </div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:500;margin-bottom:1rem">2. Supabase — cloud storage</div>
+        <div class="step-row"><div class="step-num">1</div><div><div class="step-title">Create a free Supabase account</div><div class="step-body">Go to <a href="https://supabase.com" target="_blank">supabase.com</a> and create a project.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div><div class="step-title">Run the setup SQL</div><div class="step-body">In SQL Editor run the SQL from your original setup.</div></div></div>
+        <div class="step-row" style="margin-bottom:0"><div class="step-num">3</div><div style="flex:1"><div class="step-title">Paste your Project URL and anon key</div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-top:10px;margin-bottom:4px">Project URL</label>
+          <input type="text" id="sb-url-input" placeholder="https://xxxx.supabase.co" style="margin-bottom:8px" />
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Anon / public key</label>
+          <div class="key-wrap"><input type="password" id="sb-key-input" placeholder="eyJhbGci..." /><button class="key-btn" onclick="saveSupabaseKeys()">Save</button></div>
+          <div id="sb-saved-notice" style="font-size:12px;color:var(--teal);margin-top:6px;display:none">Supabase connected! Your data is now cloud-safe.</div>
+          <div id="sb-error-notice" style="font-size:12px;color:#c0392b;margin-top:6px;display:none"></div>
+        </div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script>
+// ═══════════════════════════════════════════════════════
+// STELLA — THE WHOLE WOMAN CONTENT AGENT
+// ═══════════════════════════════════════════════════════
+
+// ── LANE SYSTEM ────────────────────────────────────────
+
+var _currentLane = "stepmother";
+
+var LANES = {
+  stepmother: {
+    label: "The Wicked Stepmother",
+    description: "Stepmother narrative — the woman who came after. 1:1 coaching coming soon.",
+    cta: "DM me or link in bio",
+    offer: "1:1 coaching — coming soon",
+    audience: "women 35-55 in relationships with men who have children from a previous relationship",
+    angles: [
+      "the silent grief of joining an existing family — the pain that has no category",
+      "keeping your own life as the thing that saves the relationship",
+      "how this lifestyle healed disorganised attachment — from co-dependent fixer to whole woman",
+      "keeping your own apartment, your own rhythms, your own world",
+      "not assigning yourself a role with his kids — and why that is the only thing that works",
+      "the loneliness of public holidays when he is with his family",
+      "his guilt is not your problem to solve",
+      "what she would tell a woman just starting this — run — and then the real answer",
+      "the absurdity of the front seat fight and what it taught her",
+      "getting a dog as an act of territorial expansion",
+      "finally belonging — when he flew her parents from South Africa",
+      "reading him the manifesto — when he finally saw her pain"
+    ],
+    soul_addition: "THIS WEEK focus: The Wicked Stepmother narrative. Content is for women partnered with men who have children. Write from Cherryl's personal experience. CHILD PROTECTION RULE — non-negotiable: Always write from Cherryl's experience only. Never write about the children's behaviour, struggles, or choices. The kids are never on the page. Cherryl's feelings, observations and growth are always on the page."
+  },
+  courtesan: {
+    label: "The Courtesan's Code",
+    description: "Patriarchy musings + premium 1:1 coaching. \u20AC3,250 for 90 days. Stop chasing. Start being met.",
+    cta: "Link in bio to apply — or DM me",
+    offer: "The Courtesan's Code — 90-day private 1:1 coaching, \u20AC3,250 (payment plans available). Weekly calls, Voxer support, video modules, embodiment practices.",
+    audience: "high-achieving women 35-55 who are done overgiving and ready to be met in love",
+    angles: [
+      "patriarchy assigns power by proximity to white, straight, male — and what to do with that",
+      "the woman who over-functions in love and why she does it",
+      "stop chasing clarity — start commanding respect",
+      "the difference between standards and ultimatums",
+      "why being the strong one is keeping you stuck",
+      "feminine influence is not manipulation — it is embodiment",
+      "hearing no without shrinking — the skill no one teaches women",
+      "devotion comes from polarity not performance",
+      "how to ask for what you want without collapsing",
+      "the woman who receives without guilt changes everything",
+      "why your nervous system panics when you say no",
+      "love should not feel like the place you work the hardest"
+    ],
+    soul_addition: "THIS WEEK focus: The Courtesan's Code. This is Cherryl's response to patriarchy — a framework for women who want to stop overgiving and start being met in love. Content bridges her patriarchy musings with the coaching offer. CTA drives to the sales page. The tone is warm, direct, occasionally provocative. Never preachy. Never a life coach with a framework. The writing IS the proof of the coaching."
+  },
+  yoga: {
+    label: "Yoga Vault",
+    description: "The easiest way into Cherryl\u2019s world. Daily embodiment practice. \u20AC37.",
+    cta: "Link in bio — \u20AC37",
+    offer: "The Yoga Vault — \u20AC37. A collection of 30\u201340 minute yoga practices filmed across three years and multiple locations, each with an inspirational talk, for women who want a daily embodiment practice that goes deeper than the physical.",
+    audience: "women who want a grounded daily practice — complete beginners to intermediate, anyone drawn to Cherryl's philosophy",
+    angles: [
+      "why a yoga practice is the foundation for everything else — including how you show up in love",
+      "the vault was filmed across three years and three countries — what changed",
+      "an inspirational talk before every practice — not just movement",
+      "beginner to intermediate — it meets you where you are",
+      "daily embodiment as the thing that holds you when life gets complicated",
+      "staying connected, grounded and anchored in your body",
+      "what 20 years of teaching yoga looks like in practice",
+      "the link between nervous system regulation and how you show up in your relationships",
+      "a practice for the woman who keeps her own life",
+      "yoga as a portal — not a fitness class",
+      "\u20AC37 for a whole vault — the best investment in your body this year",
+      "morning practice as an act of self-ownership"
+    ],
+    soul_addition: "THIS WEEK focus: The Yoga Vault. This is a low-price-point entry into Cherryl's world — \u20AC37 for a curated vault of 30\u201340 minute practices with inspirational talks. Sell the feeling and the philosophy, not the features. Content speaks to the woman who wants to stay connected to herself. The vault is also a doorway — women who buy it often move into coaching."
+  },
+  substack: {
+    label: "Substack",
+    description: "Drive traffic to Cherryl\u2019s latest article. Use this when you\u2019ve just published.",
+    cta: "Link in bio — read the full piece on Substack",
+    offer: "Cherryl's Substack — long-form writing on patriarchy, love, power and the off-script woman",
+    audience: "women who want to think, not just be inspired — readers who go deeper",
+    angles: [
+      "tease the central argument of the article without giving it all away",
+      "the one line from the article that will stop someone mid-scroll",
+      "the question the article asks that most people are afraid to ask",
+      "what Cherryl was working through when she wrote this",
+      "the thing this article says that no one else is saying",
+      "why she had to write this piece — the personal hook",
+      "a provocative reframe from the article",
+      "the reader who needs this article — paint her specifically",
+      "what changes when you read this piece",
+      "the conversation this article is part of"
+    ],
+    soul_addition: "THIS WEEK focus: Substack. Cherryl has published a new article. Content teases the piece and drives followers to read the full thing on Substack. Each post should feel like the best possible reason to click the link — not a summary, but an invitation. The writing quality matters most here — it IS the preview of what they'll find on Substack."
+  }
+};
+
+function selectLane(laneKey, btn) {
+  _currentLane = laneKey;
+  document.querySelectorAll(".lane-btn").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  document.getElementById("lane-desc").textContent = LANES[laneKey].description;
+}
+
+function getLaneContext() {
+  var lane = LANES[_currentLane];
+  return "\n\n\u2550\u2550\u2550 THIS WEEK'S LANE \u2550\u2550\u2550\n" +
+    "Lane: " + lane.label + "\n" +
+    "Offer: " + lane.offer + "\n" +
+    "Audience this week: " + lane.audience + "\n" +
+    "CTA: " + lane.cta + "\n" +
+    lane.soul_addition + "\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550";
+}
+
+function getLaneAngles() { return LANES[_currentLane].angles; }
+
+// ── STELLA'S SOUL ──────────────────────────────────────
+
+var SOUL = "You are Stella, content strategist and ghostwriter for Cherryl Duncan, creator of The Whole Woman.\n\nCherryl is a South African woman in her 40s living in Munich. She is in a relationship with a man who has two children from a previous marriage. He left his wife for her. They live in separate apartments 7 minutes apart in the city, plus a shared lake retreat on weekends. This architecture is deliberate.\n\nHer philosophy: she keeps her own space, her own life, her own rhythms. She approves of everything in the family dynamic and tries to harmonise nothing. When things get too intense she takes a walk, books a massage, has lunch alone. She assigns herself no role with the kids. She assigned herself no expectations. The result: his son calls her when he can't reach his dad. His son babysits her dog for pay. They like her but are slightly afraid of her.\n\nShe got a dog as an act of territorial expansion — not just because she wanted one, but to take up more space in a dynamic that kept trying to shrink her.\n\nShe used to be either avoidant (when the man was more attached) or fully co-dependent (when the man was avoidant — fixing his family, his ex wife, his dynamics, hoping he would finally see her). This relationship broke the pattern. She fell deeply in love, was in her 40s, couldn't face another failure, and instead of leaving the man she left the idea she had been carrying about what love was supposed to look like.\n\nHis ex wife denies her existence. The pain of the ex wife, the children, the father's guilt all had names and categories. Cherryl's pain — the woman who came after — had no category. The Whole Woman exists to name that pain and offer a different way.\n\nWhen she read him the manifesto he wept. For the first time he saw her pain. He is now proud of how hard she works on her business. He flew her parents from South Africa for Christmas to meet his kids. She found it a strain and found it incredibly cute. She finally felt like she belonged.\n\nShe does not yet fully understand how lonely she feels on public holidays when he plans things with his kids. But she will one day. She says this without bitterness.\n\nShe also has 20 years of yoga teaching and 10 years of coaching behind her. Her flagship coaching program is The Courtesan's Code — her response to patriarchy — for high-achieving women who are done overgiving and ready to be met in love. She also offers a Yoga Vault (€37) — a curated collection of 30-40 minute practices with inspirational talks, filmed across three years in multiple locations. She writes long-form on Substack.\n\nHer tone: warm, direct, wise, occasionally provocative and funny. The brilliant friend who says what women think but won't say. Never preachy. Never generic. Never a life coach with a framework. Never AI-sounding.\n\nNever: hollow affirmations, 'you've got this', 'your feelings are valid', making the kids the villain, making the ex wife the villain. The truth is always more interesting than the villain narrative.\n\nCHILD PROTECTION RULE — non-negotiable: Always write from Cherryl's experience only. Never write about the children's behaviour, struggles, or choices. Never reference the eating disorder, the politics, the loyalty conflicts, or any specific child behaviour — even obliquely. The kids are never on the page. Cherryl's feelings, observations and growth are always on the page.";
+
+var FORMAT_RULES = "WEEKLY FORMAT RULES:\n- Exactly 1 Carousel (Instagram only) per week\n- At least 2 Talking Head (TikTok) pieces — these drive follows\n- At least 1 B-Roll TikTok — punchy, text overlay\n- At least 1 B-Roll Instagram — same idea, polished caption\n- 1 Raw TikTok — one thought, no production\n- Reaction Clip if a strong pop culture hook exists\n- Never more than 2 of the same format in one week";
+
+// ── SUPABASE ───────────────────────────────────────────
+
+var _sb = null;
+
+function getSbCreds() {
+  return { url: localStorage.getItem("tww_sb_url") || "", key: localStorage.getItem("tww_sb_key") || "" };
+}
+
+function initSupabase() {
+  var c = getSbCreds();
+  if (c.url && c.key) {
+    try { _sb = supabase.createClient(c.url, c.key); return true; } catch(e) { _sb = null; }
+  }
+  return false;
+}
+
+function sbReady() { return _sb !== null; }
+
+async function sbGet(key) {
+  if (!sbReady()) return null;
+  try {
+    var r = await _sb.from("tww_settings").select("value").eq("key", key).single();
+    return (r.data && r.data.value) ? JSON.parse(r.data.value) : null;
+  } catch(e) { return null; }
+}
+
+async function sbSet(key, value) {
+  if (!sbReady()) return;
+  try { await _sb.from("tww_settings").upsert({ key: key, value: JSON.stringify(value), updated_at: new Date().toISOString() }); } catch(e) {}
+}
+
+// ── KEYS ───────────────────────────────────────────────
+
+function getKey() { return localStorage.getItem("tww_key") || ""; }
+
+function saveAnthropicKey() {
+  var val = document.getElementById("api-key-input").value.trim();
+  if (!val) return;
+  localStorage.setItem("tww_key", val);
+  document.getElementById("saved-notice").style.display = "block";
+  updateKeyStatus();
+}
+
+async function saveSupabaseKeys() {
+  var url = document.getElementById("sb-url-input").value.trim();
+  var key = document.getElementById("sb-key-input").value.trim();
+  if (!url || !key) return;
+  localStorage.setItem("tww_sb_url", url);
+  localStorage.setItem("tww_sb_key", key);
+  initSupabase();
+  try {
+    var r = await _sb.from("tww_settings").upsert({ key: "tww_connected", value: JSON.stringify("1"), updated_at: new Date().toISOString() });
+    if (r.error) throw r.error;
+    document.getElementById("sb-saved-notice").style.display = "block";
+    document.getElementById("sb-error-notice").style.display = "none";
+    updateKeyStatus();
+  } catch(e) {
+    document.getElementById("sb-error-notice").textContent = "Could not connect: " + (e.message || e);
+    document.getElementById("sb-error-notice").style.display = "block";
+  }
+}
+
+async function updateKeyStatus() {
+  var key = getKey();
+  var dot = document.getElementById("api-dot");
+  var label = document.getElementById("api-label");
+  if (key) {
+    dot.className = "dot connected";
+    label.textContent = sbReady() ? "Connected (cloud)" : "Connected";
+  } else {
+    dot.className = "dot";
+    label.textContent = "Add API key";
+  }
+}
+
+// ── VOICE ──────────────────────────────────────────────
+
+async function getVoiceContext() {
+  var samples = [];
+  if (sbReady()) {
+    try {
+      var r = await _sb.from("tww_voice").select("text").order("created_at", { ascending: false });
+      samples = r.data || [];
+    } catch(e) {}
+  }
+  if (!samples.length) {
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+  }
+  if (!samples.length) return "";
+  var combined = samples.map(function(s) { return s.text || ""; }).join("\n\n").substring(0, 3000);
+  return "\n\nVOICE REFERENCE — Cherryl's actual words and writing. Use as primary tone reference:\n" + combined;
+}
+
+async function saveVoice() {
+  var input = document.getElementById("voice-input").value.trim();
+  if (!input) return;
+  var entry = { text: input, date: new Date().toLocaleDateString(), words: input.split(" ").length, source: "manual" };
+  if (sbReady()) {
+    try { await _sb.from("tww_voice").insert(entry); } catch(e) {}
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.unshift(entry);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  document.getElementById("voice-input").value = "";
+  loadVoiceSamples();
+}
+
+async function loadVoiceSamples() {
+  var samples = [];
+  if (sbReady()) {
+    try {
+      var r = await _sb.from("tww_voice").select("*").order("created_at", { ascending: false });
+      samples = r.data || [];
+    } catch(e) {}
+  }
+  if (!samples.length) {
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+  }
+  var out = document.getElementById("voice-saved-list");
+  if (!samples.length) { out.innerHTML = ""; return; }
+  var totalWords = samples.reduce(function(a, s) { return a + (s.words || 0); }, 0);
+  var html = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-bottom:1rem'>";
+  html += "<div style='font-size:13px;color:var(--teal-dark);font-weight:500'>" + totalWords + " words of your voice saved</div>";
+  html += "<div style='font-size:12px;color:var(--teal-dark);margin-top:3px'>Stella uses all of this when generating content for you</div></div>";
+  samples.forEach(function(s, i) {
+    var rowId = sbReady() ? s.id : i;
+    var preview = (s.text || "").substring(0, 200) + ((s.text || "").length > 200 ? "..." : "");
+    html += "<div class='card'><div style='display:flex;justify-content:space-between;margin-bottom:6px'>";
+    html += "<span style='font-size:11px;color:var(--text-faint)'>" + (s.words || 0) + " words &mdash; " + s.date + (s.source === "coaching call" ? " (coaching call)" : "") + "</span>";
+    html += "<button class='btn' style='padding:2px 10px;font-size:11px' onclick='deleteVoice(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
+    html += "<div style='font-size:13px;color:var(--text-muted);line-height:1.6'>" + preview + "</div></div>";
+  });
+  out.innerHTML = html;
+}
+
+async function deleteVoice(rowId) {
+  if (sbReady()) {
+    try { await _sb.from("tww_voice").delete().eq("id", rowId); } catch(e) {}
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.splice(rowId, 1);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  loadVoiceSamples();
+}
+
+async function extractTranscript() {
+  var transcript = document.getElementById("transcript-input").value.trim();
+  var coachName = document.getElementById("coach-name").value.trim() || "the coach";
+  if (!transcript) return;
+  var out = document.getElementById("transcript-out");
+  out.innerHTML = "<div class='loading'>Reading your transcript and extracting your voice...</div>";
+  var msg = "Here is a coaching call transcript. The coach is labelled as: " + coachName + ". Extract ONLY what the coach said. Remove everything the client said. Remove timestamps, speaker labels, filler words. Output only the coach words as flowing natural text, preserving their exact phrasing. Do not summarise. Output nothing else.\n\nTranscript:\n" + transcript.substring(0, 6000);
+  try {
+    var extracted = await callClaude([{ role: "user", content: msg }], 2000);
+    window._lastExtracted = extracted;
+    var preview = extracted.substring(0, 400) + (extracted.length > 400 ? "..." : "");
+    out.innerHTML = "<div class='card' style='background:var(--teal-light);border-color:var(--teal);margin-top:1rem'>" +
+      "<div style='font-size:13px;font-weight:500;color:var(--teal-dark);margin-bottom:8px'>Extracted &mdash; your words only</div>" +
+      "<div style='font-size:13px;color:var(--teal-dark);line-height:1.7;max-height:200px;overflow:auto;margin-bottom:10px'>" + preview + "</div>" +
+      "<button class='btn' style='border-color:var(--teal);color:var(--teal-dark)' onclick='saveExtracted(window._lastExtracted)'>Save to my voice profile</button>" +
+      "</div>";
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+async function saveExtracted(text) {
+  if (!text) return;
+  var entry = { text: text, date: new Date().toLocaleDateString(), words: text.split(" ").length, source: "coaching call" };
+  if (sbReady()) {
+    try { await _sb.from("tww_voice").insert(entry); } catch(e) {}
+  } else {
+    var samples = [];
+    try { samples = JSON.parse(localStorage.getItem("tww_voice") || "[]"); } catch(e) {}
+    samples.unshift(entry);
+    localStorage.setItem("tww_voice", JSON.stringify(samples));
+  }
+  document.getElementById("transcript-out").innerHTML += "<div style='font-size:13px;color:var(--teal);margin-top:8px;font-weight:500'>Saved to your voice profile!</div>";
+  loadVoiceSamples();
+}
+
+// ── SAVED POSTS ────────────────────────────────────────
+
+async function savePost(hook, post, platform) {
+  var entry = { hook: hook || "", post: post || "", platform: platform || "", date: new Date().toLocaleDateString() };
+  if (sbReady()) {
+    try { await _sb.from("tww_saved").insert(entry); } catch(e) {}
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.unshift(entry);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  showToast("Saved to your library!");
+}
+
+function saveFromBtn(btn) {
+  savePost(btn.getAttribute("data-hook") || "", btn.getAttribute("data-post") || "", btn.getAttribute("data-plat") || "");
+}
+
+async function loadSavedPosts() {
+  var out = document.getElementById("saved-out");
+  out.innerHTML = "<div class='loading'>Loading...</div>";
+  var saved = [];
+  if (sbReady()) {
+    try {
+      var r = await _sb.from("tww_saved").select("*").order("created_at", { ascending: false });
+      saved = r.data || [];
+    } catch(e) {}
+  }
+  if (!saved.length) {
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+  }
+  if (!saved.length) { out.innerHTML = "<div class='loading'>No saved posts yet.</div>"; return; }
+  var html = "";
+  saved.forEach(function(p, i) {
+    var rowId = sbReady() ? p.id : i;
+    var bc = p.platform === "Instagram" ? "badge-ig" : p.platform === "TikTok" ? "badge-tt" : "badge-saved";
+    html += "<div class='card'>";
+    html += "<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px'><span class='badge " + bc + "'>" + p.platform + "</span><span style='font-size:11px;color:var(--text-faint)'>" + p.date + "</span></div>";
+    if (p.hook) html += "<div class='hook-line'>&ldquo;" + p.hook + "&rdquo;</div>";
+    html += "<div class='post-text'>" + p.post + "</div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(p.post) + ")'>Copy</button><button class='btn accent' onclick='scriptFromPost(" + JSON.stringify(p.post) + ")'>Write script</button><button class='btn' onclick='deleteSaved(" + JSON.stringify(rowId) + ")'>Remove</button></div>";
+    html += "</div>";
+  });
+  out.innerHTML = html;
+}
+
+async function deleteSaved(rowId) {
+  if (sbReady()) {
+    try { await _sb.from("tww_saved").delete().eq("id", rowId); } catch(e) {}
+  } else {
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem("tww_saved") || "[]"); } catch(e) {}
+    saved.splice(rowId, 1);
+    localStorage.setItem("tww_saved", JSON.stringify(saved));
+  }
+  loadSavedPosts();
+}
+
+function scriptFromPost(postText) {
+  goTo("script");
+  setTimeout(function() { var el = document.getElementById("script-idea"); if (el) el.value = postText; }, 100);
+}
+
+// ── CLAUDE API ─────────────────────────────────────────
+
+async function callClaude(messages, maxTokens, systemPrompt) {
+  var key = getKey();
+  if (!key) { goTo("setup"); throw new Error("No API key. Please add your key in Settings."); }
+  var body = { model: "claude-sonnet-4-20250514", max_tokens: maxTokens || 1000, messages: messages };
+  if (systemPrompt) body.system = systemPrompt;
+  var res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    var err = await res.json().catch(function() { return {}; });
+    throw new Error(err.error ? err.error.message : "API error " + res.status);
+  }
+  var data = await res.json();
+  return data.content.map(function(b) { return b.text || ""; }).join("");
+}
+
+// ═══════════════════════════════════════════════════════
+// STELLA — GIVE ME THIS WEEK
+// ═══════════════════════════════════════════════════════
+
+var _weekData = [];
+var _weekChats = {};
+
+function setProgress(pct, label, sub) {
+  document.getElementById("progress-bar").style.width = pct + "%";
+  if (label) document.getElementById("progress-label").textContent = label;
+  if (sub !== undefined) document.getElementById("progress-sub").textContent = sub || "";
+}
+
+async function stellaGenerateWeek() {
+  var btn = document.getElementById("stella-btn");
+  btn.disabled = true;
+  btn.textContent = "Stella is working...";
+  document.getElementById("week-progress").style.display = "block";
+  document.getElementById("week-out").innerHTML = "";
+  document.getElementById("week-actions").style.display = "none";
+
+  setProgress(5, "Stella is thinking about your week...", "Generating ideas for " + LANES[_currentLane].label);
+
+  var voiceCtx = await getVoiceContext();
+  var laneCtx = getLaneContext();
+  var laneAngles = getLaneAngles();
+
+  // STEP 1: Generate and score 14 ideas
+  var scorePrompt = SOUL + laneCtx + voiceCtx;
+  scorePrompt += "\n\nGenerate 14 content ideas for this week's lane across these angles:\n" + laneAngles.join("\n");
+  scorePrompt += "\n\nFor each idea, score it 1-10 on: scroll-stopping power, emotional resonance, originality, fit with Cherryl's real life details.";
+  scorePrompt += "\n\nOnly include ideas that feel specific and real — not generic advice.";
+  scorePrompt += "\n\nFor each idea output EXACTLY:\nIDEA: [one punchy hook line, max 12 words]\nANGLE: [which angle]\nSCORE: [1-10]\nWHY: [one sentence why it will work]\n---";
+
+  setProgress(15, "Generating and scoring ideas...", "Stella is testing 14 ideas against your philosophy");
+
+  var scored = [];
+  try {
+    var scoreText = await callClaude([{ role: "user", content: scorePrompt }], 2000);
+    var blocks = scoreText.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
+    blocks.forEach(function(block) {
+      var ideaM = block.match(/IDEA:\s*(.+)/i);
+      var angleM = block.match(/ANGLE:\s*(.+)/i);
+      var scoreM = block.match(/SCORE:\s*(\d+)/i);
+      var whyM = block.match(/WHY:\s*(.+)/i);
+      if (ideaM && scoreM) {
+        scored.push({
+          idea: ideaM[1].trim(),
+          angle: angleM ? angleM[1].trim() : "",
+          score: parseInt(scoreM[1]),
+          why: whyM ? whyM[1].trim() : ""
+        });
+      }
+    });
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = "\u2726 Stella, give me this week";
+    document.getElementById("week-progress").style.display = "none";
+    document.getElementById("week-out").innerHTML = "<div class='loading'>" + e.message + "</div>";
+    return;
+  }
+
+  var passing = scored.filter(function(s) { return s.score >= 8; });
+  passing.sort(function(a, b) { return b.score - a.score; });
+  var selected = passing.slice(0, 7);
+  if (selected.length < 7) {
+    scored.sort(function(a, b) { return b.score - a.score; });
+    selected = scored.slice(0, 7);
+  }
+
+  setProgress(35, "Selected " + selected.length + " winning ideas...", "Assigning formats and writing content");
+
+  // STEP 2: Write full content
+  var lane = LANES[_currentLane];
+  var producePrompt = SOUL + laneCtx + voiceCtx;
+  producePrompt += "\n\n" + FORMAT_RULES;
+  producePrompt += "\n\nHere are " + selected.length + " ideas for this week. For each one, assign the best format and write the complete content.\n\n";
+  selected.forEach(function(s, i) {
+    producePrompt += (i + 1) + ". " + s.idea + " (score: " + s.score + ")\n";
+  });
+  producePrompt += "\n\nFor EACH idea write the complete production-ready content. Output EXACTLY:\n";
+  producePrompt += "IDEA: [the idea]\nFORMAT: [Talking Head TikTok / B-Roll TikTok / B-Roll Instagram / Carousel Instagram / Reaction Clip TikTok / Raw TikTok]\nPLATFORM: [TikTok / Instagram / Both]\nDAY: [Monday through Sunday]\nSCORE: [score]\nHOOK: [the opening line — must stop the scroll]\nCONTENT:\n[Full content based on format:\n- Talking Head: HOOK LINE + BODY (what she says) + CTA\n- B-Roll TikTok: 5 text overlay lines, one per screen, max 6 words each\n- B-Roll Instagram: caption 3-5 sentences no hashtags\n- Carousel: SLIDE 1 through SLIDE 7, each 1-2 punchy lines\n- Reaction Clip: your commentary script\n- Raw TikTok: one thought, 2-3 sentences, film and post immediately]\nCAPTION: [posting caption — 1-3 lines max]\nHASHTAGS: [3 hashtags for TikTok only, leave empty for Instagram]\n---\n\nWrite everything in Cherryl's voice. Specific. Real. No generic advice.\nEVERY piece must end with this CTA: " + lane.cta;
+
+  setProgress(50, "Writing your week...", "Scripts, overlays, carousel slides, captions");
+
+  try {
+    var produceText = await callClaude([{ role: "user", content: producePrompt }], 5000);
+    setProgress(85, "Almost done...", "Formatting your content");
+
+    var pieces = produceText.split("\n---").map(function(s) { return s.trim(); }).filter(Boolean);
+    _weekData = [];
+    pieces.forEach(function(piece) {
+      function g(k) {
+        var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|$)", "i");
+        var m = piece.match(re);
+        return m ? m[1].trim() : "";
+      }
+      _weekData.push({ idea: g("IDEA"), format: g("FORMAT"), platform: g("PLATFORM"), day: g("DAY"), score: g("SCORE"), hook: g("HOOK"), content: g("CONTENT"), caption: g("CAPTION"), hashtags: g("HASHTAGS"), lane: _currentLane });
+    });
+
+    await sbSet("tww_week", _weekData);
+    _weekChats = {};
+    setProgress(100, "Your week is ready.", "");
+    setTimeout(function() {
+      document.getElementById("week-progress").style.display = "none";
+      renderWeek(_weekData);
+      btn.disabled = false;
+      btn.textContent = "\u2726 Stella, give me this week";
+    }, 800);
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = "\u2726 Stella, give me this week";
+    document.getElementById("week-progress").style.display = "none";
+    document.getElementById("week-out").innerHTML = "<div class='loading'>" + e.message + "</div>";
+  }
+}
+
+function formatClass(fmt) {
+  if (!fmt) return "format-broll";
+  var f = fmt.toLowerCase();
+  if (f.indexOf("talking") >= 0) return "format-talking";
+  if (f.indexOf("carousel") >= 0) return "format-carousel";
+  if (f.indexOf("reaction") >= 0) return "format-reaction";
+  if (f.indexOf("raw") >= 0) return "format-raw";
+  return "format-broll";
+}
+
+function renderWeek(data) {
+  var out = document.getElementById("week-out");
+  if (!data || !data.length) { out.innerHTML = "<div class='loading'>No content yet. Hit the button above!</div>"; return; }
+  var laneName = data[0] && data[0].lane && LANES[data[0].lane] ? LANES[data[0].lane].label : "";
+  var html = laneName ? "<div style='font-size:12px;color:var(--text-faint);margin-bottom:1.25rem;font-style:italic'>Generated for: " + laneName + "</div>" : "";
+  data.forEach(function(p, i) {
+    var fc = formatClass(p.format);
+    var chatId = "chat-" + i;
+    html += "<div class='week-card' id='wcard-" + i + "'>";
+    html += "<div class='week-card-header'>";
+    html += "<div><span class='format-tag " + fc + "'>" + (p.format || "Content") + "</span>";
+    if (p.platform) html += " <span style='font-size:11px;color:var(--text-faint)'>" + p.platform + "</span>";
+    html += "</div><div style='display:flex;align-items:center;gap:8px'>";
+    if (p.score) html += "<span class='score-pill'>&#9733; " + p.score + "/10</span>";
+    if (p.day) html += "<span style='font-size:12px;color:var(--text-faint)'>" + p.day + "</span>";
+    html += "</div></div>";
+    if (p.idea) html += "<div class='week-idea'>" + p.idea + "</div>";
+    if (p.hook) html += "<div class='content-section'><div class='content-section-label'>Hook</div><div class='hook-line'>&ldquo;" + p.hook + "&rdquo;</div></div>";
+    if (p.content) html += "<div class='content-section'><div class='content-section-label'>Content</div><div class='content-section-body'>" + p.content.replace(/\n/g, "<br>") + "</div></div>";
+    if (p.caption) html += "<div class='content-section'><div class='content-section-label'>Caption</div><div style='font-size:14px;line-height:1.7'>" + p.caption + "</div></div>";
+    if (p.hashtags) html += "<div class='hashtags'>" + p.hashtags + "</div>";
+    var fullText = [p.hook, p.content, p.caption, p.hashtags].filter(Boolean).join("\n\n");
+    html += "<div class='btn-actions'>";
+    html += "<button class='btn' onclick='cpText(this," + JSON.stringify(fullText) + ")'>Copy all</button>";
+    html += "<button class='btn accent' onclick='savePost(" + JSON.stringify(p.hook || "") + "," + JSON.stringify(fullText) + "," + JSON.stringify(p.platform || "") + ")'>Save</button>";
+    html += "<button class='reject-btn' onclick='rejectPiece(" + i + ")'>Not this one &rarr;</button>";
+    html += "</div>";
+    html += "<div class='chat-wrap'><div class='chat-label'>Refine with Stella</div><div style='margin-bottom:8px'>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make the hook more provocative\")'>Sharper hook</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make it shorter and punchier\")'>Shorter</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Make it more personal and specific to my real life\")'>More personal</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Rewrite for TikTok pace\")'>TikTok pace</button>";
+    html += "<button class='chip' onclick='sendWeekChat(" + i + ",\"Add more of the unexpected flip\")'>More flip</button>";
+    html += "</div><div class='chat-messages' id='" + chatId + "-msgs'></div>";
+    html += "<div class='chat-input-row'><input class='chat-input' id='" + chatId + "-in' type='text' placeholder='Tell Stella how to improve this...' onkeydown='if(event.key===\"Enter\")sendWeekChat(" + i + ")' /><button class='chat-send' onclick='sendWeekChat(" + i + ")'>Send</button></div></div></div>";
+  });
+  out.innerHTML = html;
+  document.getElementById("week-actions").style.display = "flex";
+}
+
+async function rejectPiece(idx) {
+  var card = document.getElementById("wcard-" + idx);
+  if (card) card.style.opacity = "0.5";
+  var voiceCtx = await getVoiceContext();
+  var laneCtx = getLaneContext();
+  var current = _weekData[idx];
+  var usedFormats = _weekData.map(function(p, i) { return i !== idx ? p.format : null; }).filter(Boolean);
+  var prompt = SOUL + laneCtx + voiceCtx;
+  prompt += "\n\nReplace this piece of content with a better one. Keep the same format (" + current.format + ") unless that format already appears 2+ times this week.";
+  prompt += "\n\nFormats already used this week: " + usedFormats.join(", ");
+  prompt += "\n\nGenerate one new high-scoring idea and write the complete content. Output EXACTLY:\nIDEA: [idea]\nFORMAT: [format]\nPLATFORM: [platform]\nDAY: [day]\nSCORE: [score]\nHOOK: [hook]\nCONTENT:\n[full content]\nCAPTION: [caption]\nHASHTAGS: [hashtags or empty]\n---";
+  try {
+    var text = await callClaude([{ role: "user", content: prompt }], 1500);
+    function g(k) { var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|$)", "i"); var m = text.match(re); return m ? m[1].trim() : ""; }
+    _weekData[idx] = { idea: g("IDEA"), format: g("FORMAT"), platform: g("PLATFORM"), day: g("DAY"), score: g("SCORE"), hook: g("HOOK"), content: g("CONTENT"), caption: g("CAPTION"), hashtags: g("HASHTAGS"), lane: _currentLane };
+    await sbSet("tww_week", _weekData);
+    renderWeek(_weekData);
+  } catch(e) {
+    if (card) card.style.opacity = "1";
+    alert("Could not replace: " + e.message);
+  }
+}
+
+async function sendWeekChat(idx, prefill) {
+  var chatId = "chat-" + idx;
+  var input = document.getElementById(chatId + "-in");
+  var msg = prefill || (input ? input.value.trim() : "");
+  if (!msg) return;
+  if (input) input.value = "";
+  var msgs = document.getElementById(chatId + "-msgs");
+  if (!msgs) return;
+  var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Rewriting..."; msgs.appendChild(aiDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+  if (!_weekChats[idx]) {
+    var current = _weekData[idx];
+    var context = "You are Stella, helping refine this piece of content for The Whole Woman.\n\nCurrent content:\nFormat: " + current.format + "\nIdea: " + current.idea + "\nHook: " + current.hook + "\nContent: " + current.content + "\nCaption: " + current.caption;
+    _weekChats[idx] = [{ role: "user", content: context }, { role: "assistant", content: "Ready to refine. What would you like to change?" }];
+  }
+  _weekChats[idx].push({ role: "user", content: msg });
+  try {
+    var reply = await callClaude(_weekChats[idx], 1000, SOUL + getLaneContext() + " You are helping refine a specific piece of content. Be concise and output the revised version directly.");
+    _weekChats[idx].push({ role: "assistant", content: reply });
+    aiDiv.textContent = reply;
+    var saveBtn = document.createElement("button");
+    saveBtn.className = "btn accent";
+    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block";
+    saveBtn.textContent = "Use this version";
+    var snap = reply; var snapIdx = idx;
+    saveBtn.onclick = function() { _weekData[snapIdx].content = snap; sbSet("tww_week", _weekData); showToast("Updated!"); };
+    aiDiv.insertAdjacentElement("afterend", saveBtn);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) { aiDiv.textContent = "Something went wrong - try again."; }
+}
+
+async function copyWeekToClipboard() {
+  if (!_weekData.length) { alert("No week content yet."); return; }
+  var laneName = _weekData[0] && _weekData[0].lane && LANES[_weekData[0].lane] ? LANES[_weekData[0].lane].label : "The Whole Woman";
+  var text = "MY WEEK \u2014 " + laneName.toUpperCase() + "\n\n";
+  _weekData.forEach(function(p) {
+    text += (p.day || "") + " - " + (p.format || "") + "\n";
+    text += "Idea: " + (p.idea || "") + "\n\n";
+    if (p.hook) text += "HOOK: " + p.hook + "\n\n";
+    if (p.content) text += p.content + "\n\n";
+    if (p.caption) text += "CAPTION: " + p.caption + "\n";
+    if (p.hashtags) text += p.hashtags + "\n";
+    text += "\n---\n\n";
+  });
+  navigator.clipboard.writeText(text).then(function() { showToast("Week copied! Paste into Later."); });
+}
+
+async function startNewWeek() {
+  if (!confirm("Start a fresh week? This clears your current plan.")) return;
+  _weekData = []; _weekChats = {};
+  await sbSet("tww_week", []);
+  document.getElementById("week-out").innerHTML = "";
+  document.getElementById("week-actions").style.display = "none";
+}
+
+async function loadSavedWeek() {
+  var saved = await sbGet("tww_week");
+  if (saved && saved.length) {
+    _weekData = saved;
+    if (saved[0] && saved[0].lane && LANES[saved[0].lane]) {
+      _currentLane = saved[0].lane;
+      document.querySelectorAll(".lane-btn").forEach(function(b) {
+        b.classList.remove("active");
+        if (b.getAttribute("onclick") && b.getAttribute("onclick").indexOf("'" + _currentLane + "'") >= 0) b.classList.add("active");
+      });
+      document.getElementById("lane-desc").textContent = LANES[_currentLane].description;
+    }
+    renderWeek(_weekData);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// GENERATE POSTS
+// ═══════════════════════════════════════════════════════
+
+var QUICK_ANGLES = {
+  random: "any angle from her core philosophy",
+  grief: "the silent grief of joining an existing family",
+  freedom: "freedom and sovereignty through keeping your own life",
+  attachment: "how this lifestyle healed disorganised attachment",
+  space: "keeping your own home even when committed",
+  travel: "traveling solo while in a relationship",
+  myth: "dismantling the holy family myth",
+  approval: "not needing approval to belong"
+};
+
+async function generatePosts() {
+  var platform = document.getElementById("gen-platform").value;
+  var angle = document.getElementById("gen-angle").value;
+  var out = document.getElementById("gen-out");
+  out.innerHTML = "<div class='loading'>Writing posts in your voice...</div>";
+  var n = platform === "both" ? 4 : 2;
+  var platformLabel = platform === "both" ? "Instagram and TikTok (mix evenly)" : platform;
+  var voiceCtx = await getVoiceContext();
+  var msg = SOUL + voiceCtx + "\n\nGenerate " + n + " social media posts for " + platformLabel + " about: " + (QUICK_ANGLES[angle] || QUICK_ANGLES.random) + ".\n\nFor each post output EXACTLY:\nPLATFORM: [Instagram or TikTok]\nHOOK: [one punchy opening line, max 10 words]\nPOST: [full caption, 3-6 sentences, no hashtags]\n---\n\nVary formats. Raw, real, specific to her life.";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 1200);
+    var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
+    var html = "";
+    blocks.forEach(function(block) {
+      var platM = block.match(/PLATFORM:\s*(.+)/i); var hookM = block.match(/HOOK:\s*(.+)/i); var postM = block.match(/POST:\s*([\s\S]+)/i);
+      var plat = platM ? platM[1].trim() : "Instagram"; var hook = hookM ? hookM[1].trim() : ""; var post = postM ? postM[1].trim() : block;
+      var isIG = plat.toLowerCase().indexOf("instagram") >= 0; var platName = isIG ? "Instagram" : "TikTok";
+      html += "<div class='card'><span class='badge " + (isIG ? "badge-ig" : "badge-tt") + "'>" + platName + "</span>";
+      if (hook) html += "<div class='hook-line'>&ldquo;" + hook + "&rdquo;</div>";
+      html += "<div class='post-text'>" + post + "</div>";
+      html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(post) + ")'>Copy</button><button class='btn accent' data-hook=" + JSON.stringify(hook) + " data-post=" + JSON.stringify(post) + " data-plat=" + JSON.stringify(platName) + " onclick='saveFromBtn(this)'>Save</button></div></div>";
+    });
+    out.innerHTML = html || "<div class='loading'>No posts generated. Try again.</div>";
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+// ═══════════════════════════════════════════════════════
+// IDEA TESTER
+// ═══════════════════════════════════════════════════════
+
+var _chatHistory = [];
+
+function fillTest(el) { document.getElementById("test-input").value = el.textContent; runTest(); }
+
+async function runTest() {
+  var idea = document.getElementById("test-input").value.trim();
+  if (!idea) return;
+  var out = document.getElementById("test-out");
+  out.innerHTML = "<div class='loading'>Analysing your idea...</div>";
+  var msg = SOUL + "\n\nAnalyse this idea for Instagram and TikTok:\n" + idea + "\n\nOutput EXACTLY:\nSCORE: [1-10]\nVERDICT: [Strong / Solid / Needs work / Will not land]\nWHY_WORKS: [2-3 sentences]\nWHY_WONT: [2-3 sentences]\nSHARPEN: [rewrite the hook stronger]\nFORMAT: [best format recommendation]\n---";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 700);
+    _chatHistory = [{ role: "user", content: msg }, { role: "assistant", content: text }];
+    function g(k) { var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z_]+:|---|$)", "i"); var m = text.match(re); return m ? m[1].trim() : ""; }
+    var score = parseInt(g("SCORE")) || 7; var verdict = g("VERDICT") || "Solid";
+    var works = g("WHY_WORKS"); var wont = g("WHY_WONT"); var sharpen = g("SHARPEN"); var format = g("FORMAT");
+    var pct = score * 10; var col = score >= 8 ? "#1D9E75" : score >= 6 ? "#BA7517" : "#D85A30";
+    var html = "<div class='card'><div class='score-num'>" + score + "<span style='font-size:20px;color:var(--text-faint)'>/10</span></div>";
+    html += "<div class='score-verdict'>" + verdict + "</div>";
+    html += "<div class='bar-wrap'><div class='bar-fill' style='width:" + pct + "%;background:" + col + "'></div></div>";
+    html += "<div class='bar-labels'><span>Will not land</span><span>Viral potential</span></div>";
+    if (works) html += "<div class='section-head'>What is working</div><p style='font-size:14px;line-height:1.7'>" + works + "</p>";
+    if (wont) html += "<div class='section-head'>What to watch</div><p style='font-size:14px;line-height:1.7'>" + wont + "</p>";
+    if (sharpen) html += "<div class='section-head'>Sharper hook</div><div class='hook-line' style='margin-top:6px'>&ldquo;" + sharpen + "&rdquo;</div>";
+    if (format) html += "<div class='section-head' style='margin-top:1rem'>Best format</div><p style='font-size:14px'>" + format + "</p>";
+    html += "<div class='btn-actions' style='margin-top:1rem'>";
+    if (sharpen) html += "<button class='btn' onclick='cpText(this," + JSON.stringify(sharpen) + ")'>Copy hook</button><button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(sharpen) + ", \"Idea tester\")'>Save hook</button>";
+    html += "</div><div class='chat-wrap'><div class='chat-label'>Refine with Stella</div><div style='margin-bottom:10px'>";
+    ["Make it shorter", "More provocative", "Rewrite for TikTok", "3 variations", "More personal", "Write the script"].forEach(function(c) { html += "<button class='chip' onclick='sendChat(\"" + c + "\")'>" + c + "</button>"; });
+    html += "</div><div class='chat-messages' id='chat-msgs'></div>";
+    html += "<div class='chat-input-row'><input class='chat-input' id='chat-in' type='text' placeholder='Ask Stella anything...' onkeydown='if(event.key===\"Enter\")sendChat()'/><button class='chat-send' onclick='sendChat()'>Send</button></div></div></div>";
+    out.innerHTML = html;
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+async function sendChat(prefill) {
+  var input = document.getElementById("chat-in"); var msg = prefill || (input ? input.value.trim() : "");
+  if (!msg) return; if (input) input.value = "";
+  var msgs = document.getElementById("chat-msgs"); if (!msgs) return;
+  var userDiv = document.createElement("div"); userDiv.className = "chat-msg user"; userDiv.textContent = msg; msgs.appendChild(userDiv);
+  var aiDiv = document.createElement("div"); aiDiv.className = "chat-msg ai"; aiDiv.textContent = "Thinking..."; msgs.appendChild(aiDiv);
+  _chatHistory.push({ role: "user", content: msg });
+  try {
+    var reply = await callClaude(_chatHistory, 800, SOUL + " Help refine this social media idea. Be concise and practical.");
+    _chatHistory.push({ role: "assistant", content: reply }); aiDiv.textContent = reply;
+    var saveBtn = document.createElement("button"); saveBtn.className = "btn accent";
+    saveBtn.style.cssText = "margin-top:6px;font-size:11px;padding:3px 10px;display:block"; saveBtn.textContent = "Save this";
+    var snap = reply; saveBtn.onclick = function() { savePost("", snap, "Idea tester"); };
+    aiDiv.insertAdjacentElement("afterend", saveBtn); msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) { aiDiv.textContent = "Something went wrong."; }
+}
+
+// ═══════════════════════════════════════════════════════
+// VIDEO SCRIPTS
+// ═══════════════════════════════════════════════════════
+
+async function generateScript() {
+  var idea = document.getElementById("script-idea").value.trim();
+  var length = document.getElementById("script-length").value;
+  var platform = document.getElementById("script-platform").value;
+  var out = document.getElementById("script-out");
+  if (!idea) { out.innerHTML = "<div class='loading'>Paste your idea above first.</div>"; return; }
+  out.innerHTML = "<div class='loading'>Writing your script...</div>";
+  var platNote = platform === "instagram" ? "Instagram Reels - more breathing room, emotional, personal." : "TikTok - punchy, fast, hook must land in first 2 seconds.";
+  var voiceCtx = await getVoiceContext();
+  var msg = SOUL + voiceCtx + "\n\nWrite a " + length + "-second face-to-camera script:\n" + idea + "\n\n" + platNote + "\n\nOutput EXACTLY:\nHOOK: [first 1-2 sentences]\nBODY: [middle]\nCTA: [final line]\nVISUAL: [on-screen direction]\n---";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 900);
+    function g(k) { var re = new RegExp(k + ":\\s*([\\s\\S]+?)(?=\\n[A-Z]+:|---|$)", "i"); var m = text.match(re); return m ? m[1].trim() : ""; }
+    var hook = g("HOOK"); var body = g("BODY"); var cta = g("CTA"); var visual = g("VISUAL");
+    var full = [hook, body, cta].filter(Boolean).join("\n\n"); var platLabel = platform === "instagram" ? "Instagram Reel" : "TikTok";
+    var html = "<div class='card'><div style='display:flex;justify-content:space-between;margin-bottom:12px'><div class='card-label' style='margin:0'>" + length + "-second script</div><span class='badge " + (platform === "instagram" ? "badge-ig" : "badge-tt") + "' style='margin:0'>" + platLabel + "</span></div>";
+    if (hook) html += "<div class='content-section'><div class='content-section-label'>Hook</div><div class='hook-line'>&ldquo;" + hook + "&rdquo;</div></div>";
+    if (body) html += "<div class='content-section'><div class='content-section-label'>Body</div><div class='post-text'>" + body + "</div></div>";
+    if (cta) html += "<div class='content-section'><div class='content-section-label'>CTA</div><div class='post-text' style='font-weight:500'>&ldquo;" + cta + "&rdquo;</div></div>";
+    if (visual) html += "<div class='content-section'><div class='content-section-label'>On screen</div><div style='font-size:13px;color:var(--text-muted)'>" + visual + "</div></div>";
+    html += "<div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(full) + ")'>Copy script</button><button class='btn accent' onclick='savePost(\"\", " + JSON.stringify(full) + ", \"Script\")'>Save</button></div></div>";
+    out.innerHTML = html;
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+// ═══════════════════════════════════════════════════════
+// HOOKS + AUDIO
+// ═══════════════════════════════════════════════════════
+
+async function generateAudio() {
+  var out = document.getElementById("audio-out");
+  out.innerHTML = "<div class='loading'>Generating hook formulas and audio strategy...</div>";
+  var msg = SOUL + "\n\nGenerate:\n1. HOOKS: 6 proven hook formulas with examples for this niche.\nFORMULA: [template]\nEXAMPLE: [example]\n\n2. AUDIO: 4 audio strategy tips for TikTok and Instagram Reels.\n\nSeparate sections with ===";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 1000);
+    var parts = text.split("==="); var hooksRaw = parts[0] || ""; var audioRaw = parts[1] || "";
+    var hookBlocks = hooksRaw.split(/\nFORMULA:/i).filter(function(s) { return s.trim() && !s.match(/^1\.|^HOOK/i); });
+    var html = "<div class='section-head'>Hook formulas</div>";
+    hookBlocks.forEach(function(block) {
+      var eMatch = block.match(/EXAMPLE:\s*([\s\S]+)/i); var formula = block.split("\n")[0].replace(/^FORMULA:\s*/i, "").trim(); var example = eMatch ? eMatch[1].trim() : "";
+      if (!formula) return;
+      html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px'><div class='hook-line'>&ldquo;" + formula + "&rdquo;</div>";
+      if (example) html += "<div style='font-size:13px;color:var(--text-muted);margin-top:4px'>" + example + "</div>";
+      html += "</div>";
+    });
+    var audioLines = audioRaw.split("\n").filter(function(l) { return l.trim() && !l.match(/^AUDIO|^2\./i); });
+    html += "<div class='section-head' style='margin-top:1.5rem'>Audio strategy</div>";
+    audioLines.forEach(function(line) { var l = line.replace(/^\d+\.\s*/, "").trim(); if (!l) return; html += "<div style='background:var(--bg);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;font-size:14px;line-height:1.6'>" + l + "</div>"; });
+    out.innerHTML = html;
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+// ═══════════════════════════════════════════════════════
+// REPLY TEMPLATES
+// ═══════════════════════════════════════════════════════
+
+async function generateReplies() {
+  var comment = document.getElementById("reply-input").value.trim();
+  if (!comment) return;
+  var out = document.getElementById("reply-out");
+  out.innerHTML = "<div class='loading'>Writing reply options...</div>";
+  var msg = SOUL + "\n\nSomeone left this comment:\n" + comment + "\n\nWrite 3 replies in Cherryl's voice.\nTYPE: [Warm/Bold/Curious]\nREPLY: [1-3 sentences]\n---";
+  try {
+    var text = await callClaude([{ role: "user", content: msg }], 700);
+    var blocks = text.split("---").map(function(s) { return s.trim(); }).filter(Boolean);
+    var html = "<div style='font-size:13px;color:var(--text-muted);font-style:italic;padding:10px 14px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--pink);margin-bottom:1rem'>&ldquo;" + comment + "&rdquo;</div>";
+    blocks.forEach(function(block) {
+      var tM = block.match(/TYPE:\s*(.+)/i); var rM = block.match(/REPLY:\s*([\s\S]+)/i);
+      var type = tM ? tM[1].trim() : "Warm"; var reply = rM ? rM[1].trim() : block;
+      var bc = type.toLowerCase() === "warm" ? "badge-ig" : type.toLowerCase() === "bold" ? "badge-tt" : "badge-both";
+      html += "<div class='card'><span class='badge " + bc + "'>" + type + "</span><div class='post-text' style='font-size:14px'>" + reply + "</div><div class='btn-actions'><button class='btn' onclick='cpText(this," + JSON.stringify(reply) + ")'>Copy</button></div></div>";
+    });
+    out.innerHTML = html;
+  } catch(e) { out.innerHTML = "<div class='loading'>" + e.message + "</div>"; }
+}
+
+// ═══════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════
+
+function goTo(page) {
+  document.querySelectorAll(".page").forEach(function(el) { el.classList.remove("active"); });
+  document.querySelectorAll(".nav-item").forEach(function(el) { el.classList.remove("active"); });
+  var pageEl = document.getElementById("page-" + page); if (pageEl) pageEl.classList.add("active");
+  var navEl = document.querySelector("[data-page='" + page + "']"); if (navEl) navEl.classList.add("active");
+  if (page === "setup") {
+    var k = getKey(); if (k) document.getElementById("api-key-input").value = k;
+    var c = getSbCreds(); if (c.url) document.getElementById("sb-url-input").value = c.url; if (c.key) document.getElementById("sb-key-input").value = c.key;
+  }
+  if (page === "saved") loadSavedPosts();
+  if (page === "voice") loadVoiceSamples();
+  if (page === "week") loadSavedWeek();
+}
+
+function cpText(btn, text) {
+  navigator.clipboard.writeText(text).then(function() { var orig = btn.textContent; btn.textContent = "Copied!"; setTimeout(function() { btn.textContent = orig; }, 2000); });
+}
+
+function showToast(msg) {
+  var t = document.createElement("div");
+  t.style.cssText = "position:fixed;bottom:20px;right:20px;background:var(--teal);color:white;padding:10px 18px;border-radius:8px;font-size:13px;z-index:9999;font-family:DM Sans,sans-serif";
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(function() { document.body.removeChild(t); }, 2500);
+}
+
+function switchVoiceTab(n) {
+  document.getElementById("vpanel-extract").style.display = n === 0 ? "block" : "none";
+  document.getElementById("vpanel-manual").style.display = n === 1 ? "block" : "none";
+  document.getElementById("vtab-extract").className = n === 0 ? "voice-tab active" : "voice-tab";
+  document.getElementById("vtab-manual").className = n === 1 ? "voice-tab active" : "voice-tab";
+}
+
+// ── BOOT ───────────────────────────────────────────────
+initSupabase();
+updateKeyStatus();
+</script>
+</body>
+</html>
